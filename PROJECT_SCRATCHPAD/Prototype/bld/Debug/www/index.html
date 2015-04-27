@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Prototype</title>
+
+    <!-- Prototype references -->
+    <link href="css/index.css" rel="stylesheet" />
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="js/ajax.js"></script>
+</head>
+<body>
+    <p id="text" >
+        Hello, your application is ready!
+    </p>
+
+   
+    <!-- Cordova reference, this is added to your app when it's built. -->
+    <script src="cordova.js"></script>
+    <script src="scripts/platformOverrides.js"></script>
+
+    <script src="scripts/index.js"></script>
+
+    <script>
+        
+       /* var getProducts = function () {
+            //op basis van membership bedrijven ophalen
+
+            var values = '';
+            var viewController = '';
+            var ajax = new Ajax();
+            ajax.url
+            ajax.asynchronousFlag = true;
+            ajax.postRequest('http://localhost:4627/ZEvent/EventSVC.svc?wsdl', '', values, '');
+
+            
+        }*/
+
+        /*var getProducts = function () {
+            //op basis van membership bedrijven ophalen
+
+            var values = '';
+            var ajax = new Ajax();
+            ajax.asynchronousFlag = true;
+            ajax.postRequest('http://localhost:4627/ZEvent/EventSVC.svc?wsdl', '', function (data) { $('#text').append(data); }, 'text');
+            
+            $('#text').append('hello');
+        }*/
+
+        $.ajax({
+            url: 'http://localhost:4627/ZEvent/EventSVC.svc?wsdl',
+            type: 'GET',
+            data: { },
+            success: function (resp) {
+                //alert("success");
+                $('#text').append($.isXMLDoc(resp));
+            },
+            error: function(err) { alert(err.statusText); }
+        });
+
+        //var url = "http://localhost:4627/ZEvent/EventSVC.svc?wsdl";
+        var mex = "Hello";
+        var ajax = new Ajax();
+      //  ajax.postRequest(url,'', function (data) { mex = data; });
+       // $('#product-list').append(mex);
+       // getProducts();
+
+    </script>
+</body>
+</html>
