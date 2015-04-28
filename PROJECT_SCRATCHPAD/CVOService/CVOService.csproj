@@ -84,7 +84,18 @@
     <Content Include="App_Data\Administratix_cursist_log.ldf">
       <DependentUpon>Administratix_cursist.mdf</DependentUpon>
     </Content>
+    <Content Include="App_Data\Instant.mdf" />
+    <Content Include="App_Data\Instant_log.ldf">
+      <DependentUpon>Instant.mdf</DependentUpon>
+    </Content>
     <Content Include="Prototype.aspx" />
+    <Content Include="WNotifcation\Event.asmx" />
+    <Content Include="Garbage\Messaging.asmx" />
+    <Content Include="Garbage\Service.asmx" />
+    <Content Include="WNotifcation\Notification.asmx" />
+    <Content Include="WNotifcation\Status.asmx" />
+    <Content Include="Garbage\Subscription.asmx" />
+    <Content Include="WNotifcation\User.asmx" />
     <Content Include="XCursist\CursistSVC.svc" />
     <Content Include="YModule\ModuleSVC.svc" />
     <Content Include="Web.config" />
@@ -97,6 +108,35 @@
     </Compile>
     <Compile Include="Prototype.aspx.designer.cs">
       <DependentUpon>Prototype.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Garbage\DAL.cs" />
+    <Compile Include="WNotifcation\Event.asmx.cs">
+      <DependentUpon>Event.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Garbage\Messaging.asmx.cs">
+      <DependentUpon>Messaging.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Garbage\Service.asmx.cs">
+      <DependentUpon>Service.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WNotifcation\Notification.asmx.cs">
+      <DependentUpon>Notification.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WNotifcation\Status.asmx.cs">
+      <DependentUpon>Status.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Garbage\Subscription.asmx.cs">
+      <DependentUpon>Subscription.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WNotifcation\User.asmx.cs">
+      <DependentUpon>User.asmx</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="XCursist\CursistBLL.cs" />
     <Compile Include="XCursist\CursistSVC.svc.cs">
