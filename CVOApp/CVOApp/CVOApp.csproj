@@ -277,12 +277,22 @@
     <Content Include="bower_components\webcomponentsjs\build.log" />
     <Content Include="bower_components\webcomponentsjs\package.json" />
     <Content Include="bower_components\webcomponentsjs\README.md" />
+    <Content Include="calendar\d-calendar-theme.html" />
+    <Content Include="calendar\d-calendar-weeks.html" />
+    <Content Include="calendar\d-calendar-years.html" />
+    <Content Include="calendar\d-calendar.html" />
+    <Content Include="calendar\d-date-utils.html" />
+    <Content Include="calendar\demo.html" />
+    <Content Include="calendar\index.html" />
     <Content Include="Services.asmx" />
     <Content Include="Source\DBM.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>DBM.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="calendar\.bowerrc" />
+    <Content Include="calendar\bower.json" />
+    <Content Include="calendar\README.md" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
