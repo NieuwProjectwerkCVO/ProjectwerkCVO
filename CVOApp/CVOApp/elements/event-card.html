@@ -3,7 +3,7 @@
 <link rel="import" href="../bower_components/paper-elements/paper-elements.html" />
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html" />
 
-<polymer-element name="cursist-card" attributes="url">
+<polymer-element name="event-card" attributes="url">
 
     <template>
         <style>
@@ -18,25 +18,7 @@
         </style>
 
         <paper-card z="1" horizontal layout flex style="height: 50px;">
-            <paper-input type="text" label="Cursistnummer" value="{{cursistnummer}}"></paper-input>
-            <paper-button on-click="{{submit}}">OPHALEN (vb. 43703)</paper-button>
-        </paper-card>
-        <paper-card vertical layout z="1" flex>
-
-            <div fit style="overflow:auto;">
-                <core-list data="{{set}}" class="mylist" style="height: 100%" flex multi>
-                    <template>
-                        <div layout vertical flex>
-                            <div data-index="{{index}}">
-                                <paper-item>
-                                    {{model.CursusNummer}}
-                                    {{model.Naam}}
-                                </paper-item>
-                            </div>
-                        </div>
-                    </template>
-                </core-list>
-            </div>
+            
         </paper-card>
 
         <core-ajax id="cursist_submit"
@@ -50,7 +32,7 @@
 
 
     <script>
-        Polymer('cursist-card', {
+        Polymer('event-card', {
             success: function (response) {
                 console.log("data!");
                 alert(this.response);
