@@ -1,0 +1,6 @@
+C:\Users\ARISTOCRAT\Desktop\Projectwerk\CVOApp\CVOApp\obj\Debug\CVOApp.csprojResolveAssemblyReference.cache
+C:\Users\ARISTOCRAT\Desktop\Projectwerk\CVOApp\CVOApp\bin\CVOApp.dll.config
+C:\Users\ARISTOCRAT\Desktop\Projectwerk\CVOApp\CVOApp\bin\CVOApp.dll
+C:\Users\ARISTOCRAT\Desktop\Projectwerk\CVOApp\CVOApp\bin\CVOApp.pdb
+C:\Users\ARISTOCRAT\Desktop\Projectwerk\CVOApp\CVOApp\obj\Debug\CVOApp.dll
+C:\Users\ARISTOCRAT\Desktop\Projectwerk\CVOApp\CVOApp\obj\Debug\CVOApp.pdb

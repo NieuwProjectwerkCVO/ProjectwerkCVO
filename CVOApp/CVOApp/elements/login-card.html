@@ -1,0 +1,59 @@
+﻿<link rel="import" href="../bower_components/polymer/polymer.html" /> 
+<link rel="import" href="../bower_components/core-elements/core-elements.html" />
+<link rel="import" href="../bower_components/paper-elements/paper-elements.html" />
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html" />
+
+<polymer-element name="login-card" attributes="url">
+   
+    <template>
+        <style>
+            paper-card {
+                font-family: RobotoDraft;
+                padding: 35px;
+                margin: 5px;
+                background-color: #2c3a40;
+                color: white;
+                /*height: 200px;
+                width: 600px;*/
+                /*background-image: url('../Picture/ngc6960_block_big.jpg');*/
+            }
+        </style>
+
+        <paper-card vertical layout z="1">
+            <paper-input type="text" label="username" value="{{username}}" ></paper-input>
+            <paper-input type="text" label="password" value="{{password}}" ></paper-input>
+            <paper-button on-click="{{login}}">login</paper-button>
+        </paper-card>
+
+        <core-ajax id="login_submit"
+                   url="{{url}}"
+                   params='{ "username": "{{username}}" , "password": "{{password}}"}'
+                   response="{{people}}"
+                   method="POST"
+                   handleas="json">
+        </core-ajax>
+    </template>
+    
+    
+    <script>
+        Polymer('login-card', {
+            success: function (response) {
+                console.log("data!");
+                alert(this.response);
+            },
+            login: function () {
+                this.$.login_submit.go();
+                console.log("button works!");
+            },
+            responseChanged: function (oldValue) {
+                console.log("data!");
+                console.log(this.response);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert(xhr.responseText);
+                alert(thrownError);
+            }
+        });
+    </script>
+</polymer-element>
