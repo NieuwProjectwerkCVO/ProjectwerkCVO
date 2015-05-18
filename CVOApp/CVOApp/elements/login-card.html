@@ -20,15 +20,18 @@
         </style>
 
         <paper-card vertical layout z="1">
-            <paper-input type="text" label="username" value="{{username}}" ></paper-input>
-            <paper-input type="text" label="password" value="{{password}}" ></paper-input>
-            <paper-button on-click="{{login}}">login</paper-button>
+            <paper-input type="text" label="cursistnummer" value="{{cursistnummer}}" ></paper-input>
+            <paper-input type="text" label="wachtwoord" value="{{wachtwoord}}" ></paper-input>
+            <div horizontal layout>
+                <paper-button raised on-click="{{login}}" z="1">login</paper-button>
+                <paper-item>{{data}}</paper-item>
+            </div>
         </paper-card>
 
         <core-ajax id="login_submit"
                    url="{{url}}"
-                   params='{ "username": "{{username}}" , "password": "{{password}}"}'
-                   response="{{people}}"
+                   params='{ "cursistnummer": "{{cursistnummer}}" , "wachtwoord": "{{password}}"}'
+                   response="{{data}}"
                    method="POST"
                    handleas="json">
         </core-ajax>

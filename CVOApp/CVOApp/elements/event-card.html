@@ -3,7 +3,7 @@
 <link rel="import" href="../bower_components/paper-elements/paper-elements.html" />
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html" />
 
-<polymer-element name="register-card" attributes="url">
+<polymer-element name="cursist-card" attributes="url">
 
     <template>
         <style>
@@ -13,41 +13,50 @@
                 margin: 5px;
                 background-color: #2c3a40;
                 color: white;
+                height: 500px;
             }
         </style>
 
-        <paper-card vertical layout z="1">
-            <paper-input label="Voornaam" value="{{voornaam}}"></paper-input>
-            <paper-input label="Familienaam" value="{{familienaam}}"></paper-input>
-            <paper-input label="Email" value="{{email}}"></paper-input>
-            <paper-radio-group onselect="male">
-                <paper-radio-button name="male" label="Male"></paper-radio-button>
-                <paper-radio-button name="female" label="Female"></paper-radio-button>
-            </paper-radio-group>
-            <div horizontal layout>
-                <paper-button on-click="{{register}}">INDIENEN</paper-button>
-                <paper-item>{{data}}</paper-item>
+        <paper-card z="1" horizontal layout flex style="height: 50px;">
+            <paper-input type="text" label="Cursistnummer" value="{{cursistnummer}}"></paper-input>
+            <paper-button on-click="{{submit}}">OPHALEN (vb. 43703)</paper-button>
+        </paper-card>
+        <paper-card vertical layout z="1" flex>
+
+            <div fit style="overflow:auto;">
+                <core-list data="{{set}}" class="mylist" style="height: 100%" flex multi>
+                    <template>
+                        <div layout vertical flex>
+                            <div data-index="{{index}}">
+                                <paper-item>
+                                    {{model.CursusNummer}}
+                                    {{model.Naam}}
+                                </paper-item>
+                            </div>
+                        </div>
+                    </template>
+                </core-list>
             </div>
         </paper-card>
 
-        <core-ajax id="register_submit"
+        <core-ajax id="cursist_submit"
                    url="{{url}}"
-                   params='{ "voornaam": "{{voornaam}}" , "familienaam": "{{familienaam}}"}'
-                   response="{{data}}"
+                   params='{ "cursistnummer": "{{cursistnummer}}" }'
+                   response="{{set}}"
                    method="POST"
                    handleas="json">
         </core-ajax>
     </template>
 
-    <script>
 
-        Polymer('register-card', {
+    <script>
+        Polymer('cursist-card', {
             success: function (response) {
                 console.log("data!");
                 alert(this.response);
             },
-            register: function () {
-                this.$.register_submit.go();
+            submit: function () {
+                this.$.cursist_submit.go();
                 console.log("button works!");
             },
             responseChanged: function (oldValue) {
@@ -62,3 +71,6 @@
         });
     </script>
 </polymer-element>
+
+
+

@@ -215,13 +215,13 @@ namespace CVOApp
         [WebMethod]
         public void cursist_registreer(string voornaam, string familienaam)
         {
-            export("Hello World");
+            export("Success, " + voornaam + "!");
         }
 
         [WebMethod]
-        public void cursist_login(string username, string password)
+        public void cursist_login(string cursistnummer, string wachtwoord)
         {
-            export("Hello World");
+            export("Success, " + cursistnummer + "!");
         }
 
         [WebMethod]
@@ -318,7 +318,7 @@ namespace CVOApp
 
 
         // EVENTS //////////////////////////////////////////////////////
-        // Specifiek | Lesmomenten - Deadlines - Exmanen - Herexamen - Deliberatie
+        // Specifiek | Lesmomenten - Deadlines - Examen - Herexamen - Deliberatie
 
         [WebMethod]
         public void cursist_lesmomenten(int cursist_nummer)
@@ -431,7 +431,7 @@ namespace CVOApp
             export(query);
         }
 
-        // NOTIFCATIES //////////////////////////////////////////////////
+        // NOTIFICATIES //////////////////////////////////////////////////
         [WebMethod]
         public void all_notificatie()
         {

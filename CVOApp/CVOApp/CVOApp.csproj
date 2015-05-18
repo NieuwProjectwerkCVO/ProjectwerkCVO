@@ -284,6 +284,7 @@
     <Content Include="calendar\d-date-utils.html" />
     <Content Include="calendar\demo.html" />
     <Content Include="calendar\index.html" />
+    <Content Include="elements\event-card.html" />
     <Content Include="Services.asmx" />
     <Content Include="Source\DBM.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
