@@ -284,7 +284,8 @@
     <Content Include="calendar\d-date-utils.html" />
     <Content Include="calendar\demo.html" />
     <Content Include="calendar\index.html" />
-    <Content Include="elements\event-card.html" />
+    <Content Include="custom_components\event-card.html" />
+    <Content Include="custom_components\search-card.html" />
     <Content Include="Services.asmx" />
     <Content Include="Source\DBM.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
@@ -1169,13 +1170,13 @@
     <Content Include="bower_components\webcomponentsjs\webcomponents-lite.min.js" />
     <Content Include="bower_components\webcomponentsjs\webcomponents.js" />
     <Content Include="bower_components\webcomponentsjs\webcomponents.min.js" />
-    <Content Include="elements\cursist-card.html" />
-    <Content Include="elements\image-card.html" />
-    <Content Include="elements\login-card.html" />
-    <Content Include="elements\module-card.html" />
-    <Content Include="elements\opleiding-card.html" />
-    <Content Include="elements\register-card.html" />
-    <Content Include="elements\tool-card.html" />
+    <Content Include="custom_components\cursist-card.html" />
+    <Content Include="custom_components\image-card.html" />
+    <Content Include="custom_components\login-card.html" />
+    <Content Include="custom_components\module-card.html" />
+    <Content Include="custom_components\opleiding-card.html" />
+    <Content Include="custom_components\register-card.html" />
+    <Content Include="custom_components\tool-card.html" />
     <Content Include="font\RobotoDraft.css" />
     <Content Include="index.html" />
     <Content Include="Picture\5mHDOao.jpg" />

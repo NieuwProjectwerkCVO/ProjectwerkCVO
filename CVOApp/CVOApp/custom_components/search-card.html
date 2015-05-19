@@ -1,0 +1,88 @@
+﻿<link rel="import" href="../bower_components/polymer/polymer.html" />
+<link rel="import" href="../bower_components/core-elements/core-elements.html" />
+<link rel="import" href="../bower_components/paper-elements/paper-elements.html" />
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html" />
+<link rel="import" href="../bower_components/core-icons/hardware-icons.html" />
+<polymer-element name="search-card" attributes="url category">
+
+    <template>
+        <style>
+            paper-card {
+                font-family: RobotoDraft;
+                padding: 35px;
+                margin: 5px;
+                background-color: #fff;
+                color: black;
+            }
+
+            paper-input {
+                
+            }
+
+            paper-item {
+                height: 80px;
+                padding: 7px;
+            }
+        </style>
+
+        <paper-card z="1" horizontal layout flex style="height: 600px;">
+            <div vertical layout style="width: 200px;">
+                <paper-input label="{{category}}" floatingLabel value="{{query}}" width="200px"></paper-input>
+                <div horizontal layout>
+                    <paper-icon-button on-click="{{decrement}}" icon="hardware:keyboard-arrow-left"></paper-icon-button>  
+                    <paper-icon style="margin-top: 10px;" id="index">{{index}}</paper-icon>
+                    <paper-icon-button on-click="{{increment}}" icon="hardware:keyboard-arrow-right"></paper-icon-button>
+                </div>
+            </div>
+            <div vertical layout>            
+                <template repeat="{{element in set}}">
+                    <paper-item on-select="{{selected}}">{{element.distance}} {{element.data}}</paper-item>
+                </template>
+            </div>
+        </paper-card>
+
+        <core-ajax auto
+                   id="cursist_submit"
+                   url="{{url}}"
+                   params='{ "query": "{{query}}", "index": {{index}} }'
+                   response="{{set}}"
+                   method="POST"
+                   handleas="json">
+        </core-ajax>
+    </template>
+
+
+    <script>
+
+     
+        Polymer('search-card', {
+            index: 1,
+            decrement: function(){
+                if (this.index != 1) this.index--;
+            },
+            increment: function(){
+                this.index++;
+            },
+            selected: function(){
+                console.log("selected");
+            },
+            success: function (response) {
+                console.log("data!");
+                alert(this.response);
+            },
+            submit: function () {
+                this.$.cursist_submit.go();
+                console.log("button works!");
+            },
+            responseChanged: function (oldValue) {
+                console.log("data!");
+                console.log(this.response);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert(xhr.responseText);
+                alert(thrownError);
+            }
+        });
+    </script>
+</polymer-element>

@@ -40,16 +40,121 @@ namespace CVOApp
     
         class Test { public int Id; public string Naam; }
 
+        class atom { public int type; public string data; }
+
+        // Zoekfuncties
+        class node
+        {
+            public int distance;
+            public string data;
+        }
+
+        static int edit_distance (string lexA, string lexB) {
+
+            // degenerate cases
+            if ( lexA.CompareTo(lexB) == 0 )  return 0;
+            if ( lexA.Length == 0 || lexB.Length == 0 ) return lexB.Length;
+
+            // 
+            int[] v0 = new int[lexB.Length + 1];
+            int[] v1 = new int[lexB.Length + 1];
+
+            for (int i = 0; i < v0.Length; i++) v0[i] = i;
+
+            // bereken afstand
+            for (int i = 0; i < lexA.Length; i++){
+                v1[0] = i + 1;
+                for (int j = 0; j < lexB.Length; j++)
+                {
+                    int cost = ( lexA[i] == lexB[j] ) ? 0 : 1; 
+
+                    bool cDELETE     = (v1[j] + 1) <= (v0[j + 1] + 1) && (v1[j] + 1) <= (v0[j] + cost);
+                    bool cINSERT     = (v0[j + 1] + 1) <= (v1[j] + 1) && (v0[j + 1] + 1) <= (v0[j] + cost);
+                    bool cSUBSTITUTE = (cDELETE != true && cINSERT != true);
+
+                    if ( cDELETE     ) v1[j + 1] = v1[j] + 1;
+                    if ( cINSERT     ) v1[j + 1] = v0[j + 1] + 0;
+                    if ( cSUBSTITUTE ) v1[j + 1] = v0[j] + cost;
+                }
+
+               Array.Copy(v1, 0, v0, 0, v0.Length);
+            }
+
+            return v1[lexB.Length];
+        }
+
+        static List<node> fuzzy(string query, List<string> Base)
+        {
+            // SQL query
+            List<node> set = new List<node>();
+
+            // Bereken Edit Distance
+            for (int dx = 0; dx < Base.Count; dx++)
+            {
+                node nx = new node();
+                nx.distance = Base[dx].Length - edit_distance(query, Base[dx]);
+                nx.data = Base[dx];
+                set.Add(nx);
+            }
+
+            // Sorteer Elementen
+            for (int dx = 0; dx < set.Count - 1; )
+            {
+                if (set[dx].distance < set[dx + 1].distance)
+                {
+                    node tmp = set[dx];
+                    set[dx] = set[dx + 1];
+                    set[dx + 1] = tmp;
+
+                    if (dx != 0) dx--;
+                    else dx++;
+                }
+                else dx++;
+            }
+
+            // Houdt geen rekening met of de letters naast elkaar staan
+
+
+            return set;
+        }
+
         [WebMethod]
-        public void test_functie()
+        public void test_opleidingen(string query, uint index)
         {
             DBMDataContext db = new DBMDataContext();
+            List<node> set = new List<node>();
+            
+            // SQL query
+            List<string> Base = (from opl in db.Opleidings
+                                 select opl.Naam)
+                                 .ToList<string>();
+            
+            int lx = 12;
+            export(fuzzy(query,Base).GetRange(Convert.ToInt32(((index-1)*lx)), lx));
+        }
 
-           
-            var data = new List<Test> {
-                new Test { Id=1, Naam="Irrelevant"}
-            };
-            export(data);
+        [WebMethod]
+        public void test_modules(string query, uint index)
+        {
+            DBMDataContext db = new DBMDataContext();
+            List<node> set = new List<node>();
+
+            // SQL query
+            List<string> Base = (from mdl in db.Modules
+                                 select mdl.Naam)
+                                 .ToList<string>();
+
+            int lx = 12;
+            export(fuzzy(query, Base).GetRange(Convert.ToInt32(((index - 1) * lx)), lx));
+        }
+
+        [WebMethod]
+        public void test_events(string query, uint index)
+        {
+            DBMDataContext db = new DBMDataContext();
+            List<node> set = new List<node>();
+
+
         }
 
         // PLAATSEN | Campussen ///////////////////////////////////////////////

@@ -16,13 +16,14 @@
      <link rel="stylesheet" type="text/css" href="font/RobotoDraft.css" />
     
     <link rel="import" href="calendar/d-calendar.html" />
-    <link rel="import" href="elements/login-card.html"/>
-    <link rel="import" href="elements/module-card.html" />
-    <link rel="import" href="elements/register-card.html" />
-    <link rel="import" href="elements/tool-card.html" />
-    <link rel="import" href="elements/image-card.html" />
-    <link rel="import" href="elements/opleiding-card.html" />
-    <link rel="import" href="elements/cursist-card.html" />
+    <link rel="import" href="custom_components/login-card.html"/>
+    <link rel="import" href="custom_components/module-card.html" />
+    <link rel="import" href="custom_components/register-card.html" />
+    <link rel="import" href="custom_components/tool-card.html" />
+    <link rel="import" href="custom_components/image-card.html" />
+    <link rel="import" href="custom_components/opleiding-card.html" />
+    <link rel="import" href="custom_components/cursist-card.html" />
+    <link rel="import" href="custom_components/search-card.html" />
 
 <style>
    body {
@@ -43,10 +44,13 @@
     <core-header-panel flex >
         <core-toolbar style="background-color: #0094ff; color:white;">
             <paper-icon-button icon="menu" z="0" ></paper-icon-button>
-            <span flex> CVO APP </span>   
+            <span flex> APP </span>   
             <paper-icon icon="plus"></paper-icon>    
         </core-toolbar>
         
+        <search-card url="http://localhost:57306/Services.asmx/test_opleidingen" category="OPLEIDINGEN"></search-card>
+        <search-card url="http://localhost:57306/Services.asmx/test_modules" category="MODULES"></search-card>
+
         <paper-card horizontal layout z="0" style="margin: 5px; background-color: transparent; ">
             <paper-card layout horizontal >
                 <d-calendar selecteddate="{{selectedDate}}"></d-calendar>
@@ -57,8 +61,6 @@
         <cursist-card   url="http://localhost:57306/Services.asmx/cursist_modules"></cursist-card>
         <login-card     url="http://localhost:57306/Services.asmx/cursist_login"></login-card>
         <register-card  url="http://localhost:57306/Services.asmx/cursist_registreer"></register-card>
-        <opleiding-card url="http://localhost:57306/Services.asmx/all_opleidingen"></opleiding-card>
-        <module-card    url="http://localhost:57306/Services.asmx/all_modules"></module-card>
     </core-header-panel>
               
 </body>
