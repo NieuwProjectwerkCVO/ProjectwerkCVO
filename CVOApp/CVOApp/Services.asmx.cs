@@ -413,7 +413,7 @@ namespace CVOApp
                             on plts.IdIngerichteModulevariant equals mdl.Id
                         join res in db.PlaatsingResultaats
                             on plts.IdPlaatsingResultaat equals res.Id
-                        //where rs.IdCursist == id_cursist
+                        where plts.IdCursist == id_cursist
                         select new
                         {
                             mdl.CursusNummer,
