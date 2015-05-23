@@ -3,43 +3,143 @@
 <link rel="import" href="../bower_components/paper-elements/paper-elements.html" />
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html" />
 <link rel="import" href="../bower_components/core-icons/hardware-icons.html" />
+
 <polymer-element name="search-card" attributes="url category">
 
     <template>
         <style>
+            :host {
+                display: block;
+                overflow: hidden;
+            }
             paper-card {
                 font-family: RobotoDraft;
-                padding: 35px;
-                margin: 5px;
                 background-color: #fff;
                 color: black;
             }
 
+            paper-card.base {
+                height: 100%;
+                margin: 10px;
+                background-color: transparent;
+                height: 610px;
+                max-width: 800px;
+            }
+
+            paper-card.top {
+                border-bottom: thin solid;
+                border-width: 1px;
+                border-color: lightgrey;
+                height: 100px;
+            }
+
+            paper-card.middle{
+
+            }
+
+            paper-card.bottom {
+                border-top: thin solid;
+                border-width: 1px;
+                border-color: lightgrey;
+                height: 100px;
+            }
+
+            paper-card.index{
+                border-left: thin solid;
+                border-left-color: lightgrey;
+                font-size: 60px;
+                padding-top: 10px;
+                text-align: center;
+                width: 100px;
+                height: 100px;
+                -webkit-user-select: none; 
+            }
+
+            core-icon.arrow {
+                border-left: thin solid; 
+                border-left-color: lightgrey; 
+                height: 100px;
+                width: 100px;
+                -webkit-user-select: none; 
+            }
+            
             paper-input {
-                
+                padding-left: 30px;
+                padding-right: 30px;
             }
 
             paper-item {
-                height: 80px;
-                padding: 7px;
+                height: 50px;
+                padding: 5px;
+                border-width: 0px;
+                border-color: white; 
+                border-left-style: solid;
+                transition: background-color 200ms ease-in-out;
             }
+
+            paper-item:hover {
+                border-left-width: 5px;
+                border-style: solid;
+                border-right-width: 5px;
+                padding-left: 0px;
+                border-color: #0094ff;
+            }
+            paper-item.selected {
+                background-color: #0094ff;
+                color: white;
+                transition: background-color 400ms ease-in-out;
+            }
+
+            paper-item.selected:hover {
+                border-left-width: 5px;
+                border-style: solid;
+                border-right-width: 5px;
+                padding-left: 0px;
+                border-color: #0094ff;
+            }
+
+
         </style>
 
-        <paper-card z="1" horizontal layout flex style="height: 600px;">
-            <div vertical layout style="width: 200px;">
-                <paper-input label="{{category}}" floatingLabel value="{{query}}" width="200px"></paper-input>
-                <div horizontal layout>
-                    <paper-icon-button on-click="{{decrement}}" icon="hardware:keyboard-arrow-left"></paper-icon-button>  
-                    <paper-icon style="margin-top: 10px;" id="index">{{index}}</paper-icon>
-                    <paper-icon-button on-click="{{increment}}" icon="hardware:keyboard-arrow-right"></paper-icon-button>
-                </div>
-            </div>
-            <div vertical layout>            
-                <template repeat="{{element in set}}">
-                    <paper-item on-select="{{selected}}">{{element.distance}} {{element.data}}</paper-item>
-                </template>
-            </div>
-        </paper-card>
+        <paper-card class="base" vertical layout flex >
+            <paper-card class="top" horizontal layout z="0">
+                <paper-input label="{{category}}" floatinglabel value="{{query}}" flex z="0"> 
+                </paper-input>
+                <paper-card  z="0">
+                    <core-icon class="arrow" icon="chevron-left"></core-icon>
+                    <paper-ripple fit on-click="{{decrement}}" style="color: #0094ff"> </paper-ripple>
+                </paper-card>
+                <paper-card  z="0">
+                    <core-icon class="arrow"  icon="chevron-right"></core-icon>
+                    <paper-ripple fit on-click="{{increment}}" style="color: #0094ff"> </paper-ripple>
+                </paper-card>
+                <paper-card class="index" z="0" style="user-select: none;">{{index}}</paper-card>           
+            </paper-card>
+            <paper-card class="middle" vertical layout flex z="0">
+                <core-list id="datalist"
+                           selectionenabled="true"
+                           data="{{set}}"
+                           style="height: 100%"
+                           selection="{{selection}}"
+                           flex>
+                    <template>  
+                        <paper-item class="{{ {selected: selected } | tokenList }}">
+                            {{model.data}}
+                        </paper-item>
+                    </template>
+                </core-list>
+            </paper-card>
+            <!--<paper-card horizontal layout z="0" class="bottom">
+                <paper-card z="0">
+                    <core-icon class="arrow" icon="add"></core-icon>
+                    <paper-ripple fit on-click="{{schedule}}" style="color: #0094ff"> </paper-ripple>
+                </paper-card>
+                <paper-card z="0">
+                    <core-icon class="arrow" icon="clear"></core-icon>
+                    <paper-ripple fit on-click="{{cancel}}" style="color: #0094ff"> </paper-ripple>
+                </paper-card>
+            </paper-card>-->
+       </paper-card>
 
         <core-ajax auto
                    id="cursist_submit"
@@ -63,8 +163,14 @@
             increment: function(){
                 this.index++;
             },
-            selected: function(){
-                console.log("selected");
+            schedule: function(){
+
+            },
+            cancel: function(){
+
+            },
+            selectionChanged: function () {
+                console.log(this.$.datalist.selection.data);
             },
             success: function (response) {
                 console.log("data!");

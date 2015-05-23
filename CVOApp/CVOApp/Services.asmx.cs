@@ -431,14 +431,17 @@ namespace CVOApp
         {
             DBMDataContext db = new DBMDataContext();
 
-            var query = from rs in db.Studiebewijs
-                        join mdl in db.Modulevariants
-                            on rs.IdModuleVariant equals mdl.Id
-                        //where rs.IdCursist == id_cursist
+            var query = from plts in db.Plaatsings
+                        join mdl in db.IngerichteModulevariants
+                            on plts.IdIngerichteModulevariant equals mdl.Id
+                        join res in db.PlaatsingResultaats
+                            on plts.IdPlaatsingResultaat equals res.Id
+                        where plts.IdCursist == id_cursist
                         select new
                         {
+                            mdl.CursusNummer,
                             mdl.Naam,
-                            rs.Percentage
+                            res.PuntenTotaal
                         };
 
             export(query);
