@@ -3,7 +3,7 @@
 <link rel="import" href="../bower_components/paper-elements/paper-elements.html" />
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html" />
 
-<polymer-element name="opleiding-card" attributes="url">
+<polymer-element name="base-card" attributes="url">
 
     <template>
         <style>
@@ -13,31 +13,14 @@
                 margin: 5px;
                 background-color: #2c3a40;
                 color: white;
-                height: 500px;
-            } 
+            }
         </style>
 
-        <paper-card vertical layout z="1" flex>
-            <div fit style="overflow:auto;">
-                <core-list data="{{set}}" class="mylist" style="height: 100%" flex multi>
-                    <template>
-                        <div layout vertical flex>
-                            <div data-index="{{index}}">
-                                <paper-item>
-                                    {{model.Id}}
-                                    {{model.Naam}}
-                                </paper-item>
-                            </div>
-                        </div>
-                    </template>
-                </core-list>
-            </div>
-        </paper-card>
 
-        <core-ajax auto
-                   id="opleiding_submit"
+        <core-ajax id="register_submit"
                    url="{{url}}"
-                   response="{{set}}"
+                   params='{ "voornaam": "{{voornaam}}" , "familienaam": "{{familienaam}}"}'
+                   response="{{data}}"
                    method="POST"
                    handleas="json">
         </core-ajax>
@@ -45,13 +28,13 @@
 
     <script>
 
-        Polymer('opleiding-card', {
+        Polymer('base-card', {
             success: function (response) {
                 console.log("data!");
                 alert(this.response);
             },
             register: function () {
-                this.$.ajaxSubmit.go();
+                this.$.register_submit.go();
                 console.log("button works!");
             },
             responseChanged: function (oldValue) {
@@ -66,4 +49,3 @@
         });
     </script>
 </polymer-element>
-

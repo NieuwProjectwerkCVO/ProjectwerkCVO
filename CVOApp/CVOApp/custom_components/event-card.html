@@ -2,22 +2,69 @@
 <link rel="import" href="../bower_components/core-elements/core-elements.html" />
 <link rel="import" href="../bower_components/paper-elements/paper-elements.html" />
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html" />
+<link rel="import" href="../calendar/d-calendar.html" />
 
 <polymer-element name="event-card" attributes="url">
 
     <template>
         <style>
-            paper-card {
+            paper-card.base {
                 font-family: RobotoDraft;
-                padding: 35px;
-                margin: 5px;
-                background-color: #2c3a40;
+    
+                margin: 10px;
+                background-color: transparent;
+                width: 600px;
+                height: 600px;
+            }
+
+            paper-card.element {
+                width: 50px;
+                height: 50px;
+                background-color: black;
+                opacity: 0.8;
                 color: white;
-                height: 500px;
+            }
+            
+            paper-card.element:hover {
+                background-color: #0094ff;
+                transition: background-color 200ms ease-in-out;
+            }
+
+            paper-item.selected {
+                background-color: #0094ff;
+                transition: background-color 200ms ease-in-out;
             }
         </style>
 
-        <paper-card z="1" horizontal layout flex style="height: 50px;"></paper-card>
+        <paper-card class="base" vertical layout z="0">
+            <template></template>
+            <core-list id="datalist"
+                       selectionenabled="true"
+                       data="{{dayNames}}"
+                       style="height: 100%"
+                       selection="{{selection}}"
+                       flex>
+                <template>
+                    <paper-item class="{{ {selected: selected } | tokenList }}">
+                        {{model.data}}
+                    </paper-item>
+                </template>
+            </core-list>
+
+            <template   repeat="{{ sy in dayNames}}">
+                <div horizontal layout>
+                    <template repeat="{{ sx in dayNames }}">
+                        <paper-card class="element" z="0">{{sx}}</paper-card>
+                    </template>
+                </div>
+            </template>
+        </paper-card>
+        <paper-card horizontal layout z="0" style="margin: 5px; background-color: transparent; ">
+            <paper-card layout horizontal>
+                <d-calendar selecteddate="{{selectedDate}}"></d-calendar>
+            </paper-card>
+            <paper-card style=" background-color: #2c3a40; margin-left: 5px;" flex></paper-card>
+        </paper-card>
 
         <core-ajax id="cursist_submit"
                    url="{{url}}"
@@ -31,6 +78,15 @@
 
     <script>
         Polymer('event-card', {
+            dayNames: [
+                'M',
+                'D',
+                'W',
+                'D',
+                'V',
+                'Z',
+                'Z'
+            ],
             success: function (response) {
                 console.log("data!");
                 alert(this.response);

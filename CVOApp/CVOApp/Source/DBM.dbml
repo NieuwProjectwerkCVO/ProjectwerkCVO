@@ -32,9 +32,9 @@
       <Association Name="Aanmelding_Plaatsing" Member="Plaatsings" ThisKey="Id" OtherKey="IdAanmelding" Type="Plaatsing" />
       <Association Name="Land_Aanmelding" Member="Land" ThisKey="IdLandDiplomaUitgereikt" OtherKey="Id" Type="Land" IsForeignKey="true" />
       <Association Name="Centrum_Aanmelding" Member="Centrum" ThisKey="IdCentrumAanmeldend" OtherKey="Id" Type="Centrum" IsForeignKey="true" />
-      <Association Name="Cursist_Aanmelding" Member="Cursist" ThisKey="IdCursist" OtherKey="Id" Type="Cursist" IsForeignKey="true" />
       <Association Name="Modulevariant_Aanmelding" Member="Modulevariant" ThisKey="IdModulevariant" OtherKey="Id" Type="Modulevariant" IsForeignKey="true" />
       <Association Name="Opleidingsvariant_Aanmelding" Member="Opleidingsvariant" ThisKey="IdOpleidingsvariant" OtherKey="Id" Type="Opleidingsvariant" IsForeignKey="true" />
+      <Association Name="Cursist_Aanmelding" Member="Cursist" ThisKey="IdCursist" OtherKey="Id" Type="Cursist" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Land" Member="Lands">
@@ -51,12 +51,12 @@
       <Column Name="ToegelatenAlsDomicilieland" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="Geannuleerd" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="Land_Aanmelding" Member="Aanmeldings" ThisKey="Id" OtherKey="IdLandDiplomaUitgereikt" Type="Aanmelding" />
+      <Association Name="Land_NationaliteitType" Member="NationaliteitTypes" ThisKey="Id" OtherKey="IdLand" Type="NationaliteitType" />
+      <Association Name="Land_Postcode" Member="Postcodes" ThisKey="Id" OtherKey="IdLand" Type="Postcode" />
       <Association Name="Land_Cursist" Member="Cursists" ThisKey="Id" OtherKey="IdGeboorteLand" Type="Cursist" />
       <Association Name="Land_Cursist1" Member="Cursists1" ThisKey="Id" OtherKey="IdDiplomaLand" Type="Cursist" />
       <Association Name="Land_Cursist2" Member="Cursists2" ThisKey="Id" OtherKey="IdDomicilieLand" Type="Cursist" />
       <Association Name="Land_Cursist3" Member="Cursists3" ThisKey="Id" OtherKey="ContactIdDomicilieland" Type="Cursist" />
-      <Association Name="Land_NationaliteitType" Member="NationaliteitTypes" ThisKey="Id" OtherKey="IdLand" Type="NationaliteitType" />
-      <Association Name="Land_Postcode" Member="Postcodes" ThisKey="Id" OtherKey="IdLand" Type="Postcode" />
     </Type>
   </Table>
   <Table Name="dbo.AanmeldingGewenstLesmoment" Member="AanmeldingGewenstLesmoments">
@@ -97,78 +97,6 @@
       <Association Name="Centrum_Plaatsing" Member="Plaatsings" ThisKey="Id" OtherKey="IdCentrumPlaatsing" Type="Plaatsing" />
       <Association Name="Centrum_Studiebewij" Member="Studiebewijs" ThisKey="Id" OtherKey="IdCentrumUitreiking" Type="Studiebewij" />
       <Association Name="Lesplaat_Centrum" Member="Lesplaat" ThisKey="IdHoofdLesplaats" OtherKey="Id" Type="Lesplaat" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Cursist" Member="Cursists">
-    <Type Name="Cursist">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="CursistNummer" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="INSZ" Type="System.String" DbType="NVarChar(11)" CanBeNull="true" />
-      <Column Name="Geslacht" Type="System.String" DbType="NVarChar(1) NOT NULL" CanBeNull="false" />
-      <Column Name="Familienaam" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="Voornaam" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="Straat" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="HuisNr" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="Bus" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="GeboorteDatum" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Column Name="GeboortePlaats" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="IdGeboorteLand" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="IdDomicilieLand" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="IdPostcode" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="IdNationaliteitType" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="IdWervingskanaal" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Email" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="GSM" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="Tel1" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="Tel2" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="NummerPlaat" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="GeboorteJaar" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="GeboorteMaand" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="GeboorteDag" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Opmerking" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="IsBlokkering" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsAdresOngeldig" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IdDavinciExternObject" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
-      <Column Name="IdStatusOpzoekingscyclustype" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Photo" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" CanBeNull="true" UpdateCheck="Never" />
-      <Column Name="IdWerksituatie" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="IdHoogstBehaaldeDiploma" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="IsSynchroCursadminix" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="PersoonIDMatrix" Type="System.String" DbType="NVarChar(36)" CanBeNull="true" />
-      <Column Name="IdDiplomaLand" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="IsKBI" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsGeannuleerd" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="ModifDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="ModifUser" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="Iban" Type="System.String" DbType="NVarChar(34)" CanBeNull="true" />
-      <Column Name="OmschrijvingDiploma" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="DatumMoodleCSV" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Column Name="StamNr" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
-      <Column Name="IdVoorrang" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="IdAndereBeperkingen" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="IBIS" Type="System.String" DbType="NVarChar(9)" CanBeNull="true" />
-      <Column Name="ContactStraat" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="ContactHuisNr" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="ContactBus" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="ContactIdPostcode" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="ContactIdDomicilieland" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="TyperingTelefoon1" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="TyperingTelefoon2" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="UniekPersoonGekoppeld" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="Cursist_Aanmelding" Member="Aanmeldings" ThisKey="Id" OtherKey="IdCursist" Type="Aanmelding" />
-      <Association Name="Cursist_EidKaart" Member="EidKaarts" ThisKey="Id" OtherKey="IdCursist" Type="EidKaart" />
-      <Association Name="Cursist_grp2_EvenementInschrijving" Member="grp2_EvenementInschrijvings" ThisKey="Id" OtherKey="IdCursist" Type="grp2_EvenementInschrijving" />
-      <Association Name="Cursist_ParticipatieDavinci" Member="ParticipatieDavincis" ThisKey="Id" OtherKey="IdCursist" Type="ParticipatieDavinci" />
-      <Association Name="Cursist_Plaatsing" Member="Plaatsings" ThisKey="Id" OtherKey="IdCursist" Type="Plaatsing" />
-      <Association Name="Cursist_PlaatsingHistoriek" Member="PlaatsingHistorieks" ThisKey="Id" OtherKey="IdCursist" Type="PlaatsingHistoriek" />
-      <Association Name="Cursist_Studiebewij" Member="Studiebewijs" ThisKey="Id" OtherKey="IdCursist" Type="Studiebewij" />
-      <Association Name="Land_Cursist" Member="Land" ThisKey="IdGeboorteLand" OtherKey="Id" Type="Land" IsForeignKey="true" />
-      <Association Name="Land_Cursist1" Member="Land1" ThisKey="IdDiplomaLand" OtherKey="Id" Type="Land" IsForeignKey="true" />
-      <Association Name="Land_Cursist2" Member="Land2" ThisKey="IdDomicilieLand" OtherKey="Id" Type="Land" IsForeignKey="true" />
-      <Association Name="Land_Cursist3" Member="Land3" ThisKey="ContactIdDomicilieland" OtherKey="Id" Type="Land" IsForeignKey="true" />
-      <Association Name="NationaliteitType_Cursist" Member="NationaliteitType" ThisKey="IdNationaliteitType" OtherKey="Id" Type="NationaliteitType" IsForeignKey="true" />
-      <Association Name="Postcode_Cursist" Member="Postcode" ThisKey="IdPostcode" OtherKey="Id" Type="Postcode" IsForeignKey="true" />
-      <Association Name="Postcode_Cursist1" Member="Postcode1" ThisKey="ContactIdPostcode" OtherKey="Id" Type="Postcode" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.EidKaart" Member="EidKaarts">
@@ -243,8 +171,8 @@
       <Column Name="IdCursist" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="IdEvenement" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Opmerkingen" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Association Name="Cursist_grp2_EvenementInschrijving" Member="Cursist" ThisKey="IdCursist" OtherKey="Id" Type="Cursist" IsForeignKey="true" />
       <Association Name="Evenement_grp2_EvenementInschrijving" Member="Evenement" ThisKey="IdEvenement" OtherKey="Id" Type="Evenement" IsForeignKey="true" />
+      <Association Name="Cursist_grp2_EvenementInschrijving" Member="Cursist" ThisKey="IdCursist" OtherKey="Id" Type="Cursist" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.IngerichteModulevariant" Member="IngerichteModulevariants">
@@ -650,9 +578,9 @@
       <Column Name="ModifUser" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Association Name="ParticipatieDavinci_ParticipatieDavinci" Member="ParticipatieDavincis" ThisKey="Id" OtherKey="IdParticipatieParent" Type="ParticipatieDavinci" />
       <Association Name="ParticipatieDavinci_ParticipatieDavinci" Member="ParticipatieDavinci1" ThisKey="IdParticipatieParent" OtherKey="Id" Type="ParticipatieDavinci" IsForeignKey="true" />
-      <Association Name="Cursist_ParticipatieDavinci" Member="Cursist" ThisKey="IdCursist" OtherKey="Id" Type="Cursist" IsForeignKey="true" />
       <Association Name="LesDavinci_ParticipatieDavinci" Member="LesDavinci" ThisKey="IdLesDavinci" OtherKey="Id" Type="LesDavinci" IsForeignKey="true" />
       <Association Name="ParticipatiestatusCVO_ParticipatieDavinci" Member="ParticipatiestatusCVO" ThisKey="IdParticipatieStatus" OtherKey="Id" Type="ParticipatiestatusCVO" IsForeignKey="true" />
+      <Association Name="Cursist_ParticipatieDavinci" Member="Cursist" ThisKey="IdCursist" OtherKey="Id" Type="Cursist" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Personeel" Member="Personeels">
@@ -767,7 +695,6 @@
       <Association Name="Plaatsing_Studiebewij" Member="Studiebewijs" ThisKey="Id" OtherKey="IdPlaatsing" Type="Studiebewij" />
       <Association Name="Aanmelding_Plaatsing" Member="Aanmelding" ThisKey="IdAanmelding" OtherKey="Id" Type="Aanmelding" IsForeignKey="true" />
       <Association Name="Centrum_Plaatsing" Member="Centrum" ThisKey="IdCentrumPlaatsing" OtherKey="Id" Type="Centrum" IsForeignKey="true" />
-      <Association Name="Cursist_Plaatsing" Member="Cursist" ThisKey="IdCursist" OtherKey="Id" Type="Cursist" IsForeignKey="true" />
       <Association Name="EvaluatieresultaattypeCVO_Plaatsing" Member="EvaluatieresultaattypeCVO" ThisKey="IdEvaluatieresultaat" OtherKey="Id" Type="EvaluatieresultaattypeCVO" IsForeignKey="true" />
       <Association Name="IngerichteModulevariant_Plaatsing" Member="IngerichteModulevariant" ThisKey="IdIngerichteModulevariant" OtherKey="Id" Type="IngerichteModulevariant" IsForeignKey="true" />
       <Association Name="IngerichteModulevariant_Plaatsing1" Member="IngerichteModulevariant1" ThisKey="IdVorigeImv" OtherKey="Id" Type="IngerichteModulevariant" IsForeignKey="true" />
@@ -776,6 +703,7 @@
       <Association Name="Plaatsing_Plaatsing" Member="Plaatsing1" ThisKey="IdPlaatsingParent" OtherKey="Id" Type="Plaatsing" IsForeignKey="true" />
       <Association Name="PlaatsingResultaat_Plaatsing" Member="PlaatsingResultaat" ThisKey="IdPlaatsingResultaat" OtherKey="Id" Type="PlaatsingResultaat" IsForeignKey="true" />
       <Association Name="PlaatsingsStatusType_Plaatsing" Member="PlaatsingsStatusType" ThisKey="IdPlaatsingsstatus" OtherKey="Id" Type="PlaatsingsStatusType" IsForeignKey="true" />
+      <Association Name="Cursist_Plaatsing" Member="Cursist" ThisKey="IdCursist" OtherKey="Id" Type="Cursist" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.PlaatsingHistoriek" Member="PlaatsingHistorieks">
@@ -799,10 +727,10 @@
       <Column Name="Opmerking" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="MaxScore" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
       <Column Name="Punten" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
-      <Association Name="Cursist_PlaatsingHistoriek" Member="Cursist" ThisKey="IdCursist" OtherKey="Id" Type="Cursist" IsForeignKey="true" />
       <Association Name="Modulevariant_PlaatsingHistoriek" Member="Modulevariant" ThisKey="IdModulevariant" OtherKey="Id" Type="Modulevariant" IsForeignKey="true" />
       <Association Name="Opleidingsvariant_PlaatsingHistoriek" Member="Opleidingsvariant" ThisKey="IdOpleidingsvariant" OtherKey="Id" Type="Opleidingsvariant" IsForeignKey="true" />
       <Association Name="StudiebewijsType_PlaatsingHistoriek" Member="StudiebewijsType" ThisKey="IdStudiebewijsType" OtherKey="Id" Type="StudiebewijsType" IsForeignKey="true" />
+      <Association Name="Cursist_PlaatsingHistoriek" Member="Cursist" ThisKey="IdCursist" OtherKey="Id" Type="Cursist" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.PlaatsingResultaat" Member="PlaatsingResultaats">
@@ -853,10 +781,10 @@
       <Column Name="IdLand" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="IdCRABPostkanton" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="DeelgemeenteExt" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Association Name="Postcode_Cursist" Member="Cursists" ThisKey="Id" OtherKey="IdPostcode" Type="Cursist" />
-      <Association Name="Postcode_Cursist1" Member="Cursists1" ThisKey="Id" OtherKey="ContactIdPostcode" Type="Cursist" />
       <Association Name="Postcode_Lesplaat" Member="Lesplaats" ThisKey="Id" OtherKey="IdPostcode" Type="Lesplaat" />
       <Association Name="Postcode_Personeel" Member="Personeels" ThisKey="Id" OtherKey="IdPostcode" Type="Personeel" />
+      <Association Name="Postcode_Cursist" Member="Cursists" ThisKey="Id" OtherKey="IdPostcode" Type="Cursist" />
+      <Association Name="Postcode_Cursist1" Member="Cursists1" ThisKey="Id" OtherKey="ContactIdPostcode" Type="Cursist" />
       <Association Name="Land_Postcode" Member="Land" ThisKey="IdLand" OtherKey="Id" Type="Land" IsForeignKey="true" />
     </Type>
   </Table>
@@ -901,7 +829,6 @@
       <Column Name="PuntenTotaal" Type="System.Double" DbType="Float" CanBeNull="true" />
       <Column Name="MaxScore" Type="System.Double" DbType="Float" CanBeNull="true" />
       <Association Name="Centrum_Studiebewij" Member="Centrum" ThisKey="IdCentrumUitreiking" OtherKey="Id" Type="Centrum" IsForeignKey="true" />
-      <Association Name="Cursist_Studiebewij" Member="Cursist" ThisKey="IdCursist" OtherKey="Id" Type="Cursist" IsForeignKey="true" />
       <Association Name="Modulevariant_Studiebewij" Member="Modulevariant" ThisKey="IdModuleVariant" OtherKey="Id" Type="Modulevariant" IsForeignKey="true" />
       <Association Name="Opleidingsvariant_Studiebewij" Member="Opleidingsvariant" ThisKey="IdOpleidingsVariant" OtherKey="Id" Type="Opleidingsvariant" IsForeignKey="true" />
       <Association Name="Opleidingsvariant_Studiebewij1" Member="Opleidingsvariant1" ThisKey="IdOpleidingsVariant2" OtherKey="Id" Type="Opleidingsvariant" IsForeignKey="true" />
@@ -909,6 +836,7 @@
       <Association Name="StudiebewijsGraadType_Studiebewij" Member="StudiebewijsGraadType" ThisKey="IdStudiebewijsGraad" OtherKey="Id" Type="StudiebewijsGraadType" IsForeignKey="true" />
       <Association Name="StudiebewijsOpleiding_Studiebewij" Member="StudiebewijsOpleiding" ThisKey="IdStudiebewijsOpleiding" OtherKey="Id" Type="StudiebewijsOpleiding" IsForeignKey="true" />
       <Association Name="StudiebewijsType_Studiebewij" Member="StudiebewijsType" ThisKey="IdStudiebewijsType" OtherKey="Id" Type="StudiebewijsType" IsForeignKey="true" />
+      <Association Name="Cursist_Studiebewij" Member="Cursist" ThisKey="IdCursist" OtherKey="Id" Type="Cursist" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.StudiebewijsGraadType" Member="StudiebewijsGraadTypes">
@@ -980,6 +908,79 @@
       <Column Name="EindUur" Type="System.DateTime" DbType="Date" CanBeNull="true" />
       <Column Name="Ingeschreven" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="IdLokaal" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Cursist" Member="Cursists">
+    <Type Name="Cursist">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CursistNummer" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="INSZ" Type="System.String" DbType="NVarChar(11)" CanBeNull="true" />
+      <Column Name="Geslacht" Type="System.String" DbType="NVarChar(1) NOT NULL" CanBeNull="false" />
+      <Column Name="Familienaam" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Voornaam" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Straat" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="HuisNr" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Bus" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="GeboorteDatum" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="GeboortePlaats" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="IdGeboorteLand" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdDomicilieLand" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdPostcode" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdNationaliteitType" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdWervingskanaal" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="GSM" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Tel1" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Tel2" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="NummerPlaat" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="GeboorteJaar" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="GeboorteMaand" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="GeboorteDag" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Opmerking" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="IsBlokkering" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsAdresOngeldig" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IdDavinciExternObject" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="IdStatusOpzoekingscyclustype" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Photo" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="IdWerksituatie" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdHoogstBehaaldeDiploma" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsSynchroCursadminix" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="PersoonIDMatrix" Type="System.String" DbType="NVarChar(36)" CanBeNull="true" />
+      <Column Name="IdDiplomaLand" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IsKBI" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsGeannuleerd" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ModifDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ModifUser" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Iban" Type="System.String" DbType="NVarChar(34)" CanBeNull="true" />
+      <Column Name="OmschrijvingDiploma" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="DatumMoodleCSV" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="StamNr" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="IdVoorrang" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IdAndereBeperkingen" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IBIS" Type="System.String" DbType="NVarChar(9)" CanBeNull="true" />
+      <Column Name="ContactStraat" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ContactHuisNr" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ContactBus" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ContactIdPostcode" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ContactIdDomicilieland" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TyperingTelefoon1" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="TyperingTelefoon2" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="UniekPersoonGekoppeld" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Wachtwoord" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Association Name="Cursist_Aanmelding" Member="Aanmeldings" ThisKey="Id" OtherKey="IdCursist" Type="Aanmelding" />
+      <Association Name="Cursist_EidKaart" Member="EidKaarts" ThisKey="Id" OtherKey="IdCursist" Type="EidKaart" />
+      <Association Name="Cursist_grp2_EvenementInschrijving" Member="grp2_EvenementInschrijvings" ThisKey="Id" OtherKey="IdCursist" Type="grp2_EvenementInschrijving" />
+      <Association Name="Cursist_ParticipatieDavinci" Member="ParticipatieDavincis" ThisKey="Id" OtherKey="IdCursist" Type="ParticipatieDavinci" />
+      <Association Name="Cursist_Plaatsing" Member="Plaatsings" ThisKey="Id" OtherKey="IdCursist" Type="Plaatsing" />
+      <Association Name="Cursist_PlaatsingHistoriek" Member="PlaatsingHistorieks" ThisKey="Id" OtherKey="IdCursist" Type="PlaatsingHistoriek" />
+      <Association Name="Cursist_Studiebewij" Member="Studiebewijs" ThisKey="Id" OtherKey="IdCursist" Type="Studiebewij" />
+      <Association Name="Land_Cursist" Member="Land" ThisKey="IdGeboorteLand" OtherKey="Id" Type="Land" IsForeignKey="true" />
+      <Association Name="Land_Cursist1" Member="Land1" ThisKey="IdDiplomaLand" OtherKey="Id" Type="Land" IsForeignKey="true" />
+      <Association Name="Land_Cursist2" Member="Land2" ThisKey="IdDomicilieLand" OtherKey="Id" Type="Land" IsForeignKey="true" />
+      <Association Name="Land_Cursist3" Member="Land3" ThisKey="ContactIdDomicilieland" OtherKey="Id" Type="Land" IsForeignKey="true" />
+      <Association Name="NationaliteitType_Cursist" Member="NationaliteitType" ThisKey="IdNationaliteitType" OtherKey="Id" Type="NationaliteitType" IsForeignKey="true" />
+      <Association Name="Postcode_Cursist" Member="Postcode" ThisKey="IdPostcode" OtherKey="Id" Type="Postcode" IsForeignKey="true" />
+      <Association Name="Postcode_Cursist1" Member="Postcode1" ThisKey="ContactIdPostcode" OtherKey="Id" Type="Postcode" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

@@ -45,9 +45,6 @@ namespace CVOApp
     partial void InsertCentrum(Centrum instance);
     partial void UpdateCentrum(Centrum instance);
     partial void DeleteCentrum(Centrum instance);
-    partial void InsertCursist(Cursist instance);
-    partial void UpdateCursist(Cursist instance);
-    partial void DeleteCursist(Cursist instance);
     partial void InsertEidKaart(EidKaart instance);
     partial void UpdateEidKaart(EidKaart instance);
     partial void DeleteEidKaart(EidKaart instance);
@@ -165,6 +162,9 @@ namespace CVOApp
     partial void InsertTweedeZit(TweedeZit instance);
     partial void UpdateTweedeZit(TweedeZit instance);
     partial void DeleteTweedeZit(TweedeZit instance);
+    partial void InsertCursist(Cursist instance);
+    partial void UpdateCursist(Cursist instance);
+    partial void DeleteCursist(Cursist instance);
     #endregion
 		
 		public DBMDataContext() : 
@@ -234,14 +234,6 @@ namespace CVOApp
 			get
 			{
 				return this.GetTable<Centrum>();
-			}
-		}
-		
-		public System.Data.Linq.Table<Cursist> Cursists
-		{
-			get
-			{
-				return this.GetTable<Cursist>();
 			}
 		}
 		
@@ -564,6 +556,14 @@ namespace CVOApp
 				return this.GetTable<TweedeZit>();
 			}
 		}
+		
+		public System.Data.Linq.Table<Cursist> Cursists
+		{
+			get
+			{
+				return this.GetTable<Cursist>();
+			}
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Aanmelding")]
@@ -632,11 +632,11 @@ namespace CVOApp
 		
 		private EntityRef<Centrum> _Centrum;
 		
-		private EntityRef<Cursist> _Cursist;
-		
 		private EntityRef<Modulevariant> _Modulevariant;
 		
 		private EntityRef<Opleidingsvariant> _Opleidingsvariant;
+		
+		private EntityRef<Cursist> _Cursist;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -702,9 +702,9 @@ namespace CVOApp
 			this._Plaatsings = new EntitySet<Plaatsing>(new Action<Plaatsing>(this.attach_Plaatsings), new Action<Plaatsing>(this.detach_Plaatsings));
 			this._Land = default(EntityRef<Land>);
 			this._Centrum = default(EntityRef<Centrum>);
-			this._Cursist = default(EntityRef<Cursist>);
 			this._Modulevariant = default(EntityRef<Modulevariant>);
 			this._Opleidingsvariant = default(EntityRef<Opleidingsvariant>);
+			this._Cursist = default(EntityRef<Cursist>);
 			OnCreated();
 		}
 		
@@ -1342,40 +1342,6 @@ namespace CVOApp
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_Aanmelding", Storage="_Cursist", ThisKey="IdCursist", OtherKey="Id", IsForeignKey=true)]
-		public Cursist Cursist
-		{
-			get
-			{
-				return this._Cursist.Entity;
-			}
-			set
-			{
-				Cursist previousValue = this._Cursist.Entity;
-				if (((previousValue != value) 
-							|| (this._Cursist.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Cursist.Entity = null;
-						previousValue.Aanmeldings.Remove(this);
-					}
-					this._Cursist.Entity = value;
-					if ((value != null))
-					{
-						value.Aanmeldings.Add(this);
-						this._IdCursist = value.Id;
-					}
-					else
-					{
-						this._IdCursist = default(int);
-					}
-					this.SendPropertyChanged("Cursist");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Modulevariant_Aanmelding", Storage="_Modulevariant", ThisKey="IdModulevariant", OtherKey="Id", IsForeignKey=true)]
 		public Modulevariant Modulevariant
 		{
@@ -1440,6 +1406,40 @@ namespace CVOApp
 						this._IdOpleidingsvariant = default(int);
 					}
 					this.SendPropertyChanged("Opleidingsvariant");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_Aanmelding", Storage="_Cursist", ThisKey="IdCursist", OtherKey="Id", IsForeignKey=true)]
+		public Cursist Cursist
+		{
+			get
+			{
+				return this._Cursist.Entity;
+			}
+			set
+			{
+				Cursist previousValue = this._Cursist.Entity;
+				if (((previousValue != value) 
+							|| (this._Cursist.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Cursist.Entity = null;
+						previousValue.Aanmeldings.Remove(this);
+					}
+					this._Cursist.Entity = value;
+					if ((value != null))
+					{
+						value.Aanmeldings.Add(this);
+						this._IdCursist = value.Id;
+					}
+					else
+					{
+						this._IdCursist = default(int);
+					}
+					this.SendPropertyChanged("Cursist");
 				}
 			}
 		}
@@ -1519,6 +1519,10 @@ namespace CVOApp
 		
 		private EntitySet<Aanmelding> _Aanmeldings;
 		
+		private EntitySet<NationaliteitType> _NationaliteitTypes;
+		
+		private EntitySet<Postcode> _Postcodes;
+		
 		private EntitySet<Cursist> _Cursists;
 		
 		private EntitySet<Cursist> _Cursists1;
@@ -1526,10 +1530,6 @@ namespace CVOApp
 		private EntitySet<Cursist> _Cursists2;
 		
 		private EntitySet<Cursist> _Cursists3;
-		
-		private EntitySet<NationaliteitType> _NationaliteitTypes;
-		
-		private EntitySet<Postcode> _Postcodes;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1562,12 +1562,12 @@ namespace CVOApp
 		public Land()
 		{
 			this._Aanmeldings = new EntitySet<Aanmelding>(new Action<Aanmelding>(this.attach_Aanmeldings), new Action<Aanmelding>(this.detach_Aanmeldings));
+			this._NationaliteitTypes = new EntitySet<NationaliteitType>(new Action<NationaliteitType>(this.attach_NationaliteitTypes), new Action<NationaliteitType>(this.detach_NationaliteitTypes));
+			this._Postcodes = new EntitySet<Postcode>(new Action<Postcode>(this.attach_Postcodes), new Action<Postcode>(this.detach_Postcodes));
 			this._Cursists = new EntitySet<Cursist>(new Action<Cursist>(this.attach_Cursists), new Action<Cursist>(this.detach_Cursists));
 			this._Cursists1 = new EntitySet<Cursist>(new Action<Cursist>(this.attach_Cursists1), new Action<Cursist>(this.detach_Cursists1));
 			this._Cursists2 = new EntitySet<Cursist>(new Action<Cursist>(this.attach_Cursists2), new Action<Cursist>(this.detach_Cursists2));
 			this._Cursists3 = new EntitySet<Cursist>(new Action<Cursist>(this.attach_Cursists3), new Action<Cursist>(this.detach_Cursists3));
-			this._NationaliteitTypes = new EntitySet<NationaliteitType>(new Action<NationaliteitType>(this.attach_NationaliteitTypes), new Action<NationaliteitType>(this.detach_NationaliteitTypes));
-			this._Postcodes = new EntitySet<Postcode>(new Action<Postcode>(this.attach_Postcodes), new Action<Postcode>(this.detach_Postcodes));
 			OnCreated();
 		}
 		
@@ -1804,6 +1804,32 @@ namespace CVOApp
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Land_NationaliteitType", Storage="_NationaliteitTypes", ThisKey="Id", OtherKey="IdLand")]
+		public EntitySet<NationaliteitType> NationaliteitTypes
+		{
+			get
+			{
+				return this._NationaliteitTypes;
+			}
+			set
+			{
+				this._NationaliteitTypes.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Land_Postcode", Storage="_Postcodes", ThisKey="Id", OtherKey="IdLand")]
+		public EntitySet<Postcode> Postcodes
+		{
+			get
+			{
+				return this._Postcodes;
+			}
+			set
+			{
+				this._Postcodes.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Land_Cursist", Storage="_Cursists", ThisKey="Id", OtherKey="IdGeboorteLand")]
 		public EntitySet<Cursist> Cursists
 		{
@@ -1856,32 +1882,6 @@ namespace CVOApp
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Land_NationaliteitType", Storage="_NationaliteitTypes", ThisKey="Id", OtherKey="IdLand")]
-		public EntitySet<NationaliteitType> NationaliteitTypes
-		{
-			get
-			{
-				return this._NationaliteitTypes;
-			}
-			set
-			{
-				this._NationaliteitTypes.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Land_Postcode", Storage="_Postcodes", ThisKey="Id", OtherKey="IdLand")]
-		public EntitySet<Postcode> Postcodes
-		{
-			get
-			{
-				return this._Postcodes;
-			}
-			set
-			{
-				this._Postcodes.Assign(value);
-			}
-		}
-		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -1909,6 +1909,30 @@ namespace CVOApp
 		}
 		
 		private void detach_Aanmeldings(Aanmelding entity)
+		{
+			this.SendPropertyChanging();
+			entity.Land = null;
+		}
+		
+		private void attach_NationaliteitTypes(NationaliteitType entity)
+		{
+			this.SendPropertyChanging();
+			entity.Land = this;
+		}
+		
+		private void detach_NationaliteitTypes(NationaliteitType entity)
+		{
+			this.SendPropertyChanging();
+			entity.Land = null;
+		}
+		
+		private void attach_Postcodes(Postcode entity)
+		{
+			this.SendPropertyChanging();
+			entity.Land = this;
+		}
+		
+		private void detach_Postcodes(Postcode entity)
 		{
 			this.SendPropertyChanging();
 			entity.Land = null;
@@ -1960,30 +1984,6 @@ namespace CVOApp
 		{
 			this.SendPropertyChanging();
 			entity.Land3 = null;
-		}
-		
-		private void attach_NationaliteitTypes(NationaliteitType entity)
-		{
-			this.SendPropertyChanging();
-			entity.Land = this;
-		}
-		
-		private void detach_NationaliteitTypes(NationaliteitType entity)
-		{
-			this.SendPropertyChanging();
-			entity.Land = null;
-		}
-		
-		private void attach_Postcodes(Postcode entity)
-		{
-			this.SendPropertyChanging();
-			entity.Land = this;
-		}
-		
-		private void detach_Postcodes(Postcode entity)
-		{
-			this.SendPropertyChanging();
-			entity.Land = null;
 		}
 	}
 	
@@ -2837,1823 +2837,6 @@ namespace CVOApp
 		{
 			this.SendPropertyChanging();
 			entity.Centrum = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Cursist")]
-	public partial class Cursist : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private string _CursistNummer;
-		
-		private string _INSZ;
-		
-		private string _Geslacht;
-		
-		private string _Familienaam;
-		
-		private string _Voornaam;
-		
-		private string _Straat;
-		
-		private string _HuisNr;
-		
-		private string _Bus;
-		
-		private System.Nullable<System.DateTime> _GeboorteDatum;
-		
-		private string _GeboortePlaats;
-		
-		private int _IdGeboorteLand;
-		
-		private int _IdDomicilieLand;
-		
-		private int _IdPostcode;
-		
-		private int _IdNationaliteitType;
-		
-		private System.Nullable<int> _IdWervingskanaal;
-		
-		private string _Email;
-		
-		private string _GSM;
-		
-		private string _Tel1;
-		
-		private string _Tel2;
-		
-		private string _NummerPlaat;
-		
-		private int _GeboorteJaar;
-		
-		private System.Nullable<int> _GeboorteMaand;
-		
-		private System.Nullable<int> _GeboorteDag;
-		
-		private string _Opmerking;
-		
-		private bool _IsBlokkering;
-		
-		private bool _IsAdresOngeldig;
-		
-		private System.Nullable<System.Guid> _IdDavinciExternObject;
-		
-		private System.Nullable<int> _IdStatusOpzoekingscyclustype;
-		
-		private System.Data.Linq.Binary _Photo;
-		
-		private int _IdWerksituatie;
-		
-		private int _IdHoogstBehaaldeDiploma;
-		
-		private bool _IsSynchroCursadminix;
-		
-		private string _PersoonIDMatrix;
-		
-		private System.Nullable<int> _IdDiplomaLand;
-		
-		private bool _IsKBI;
-		
-		private bool _IsGeannuleerd;
-		
-		private System.Nullable<System.DateTime> _ModifDate;
-		
-		private string _ModifUser;
-		
-		private string _Iban;
-		
-		private string _OmschrijvingDiploma;
-		
-		private System.Nullable<System.DateTime> _DatumMoodleCSV;
-		
-		private string _StamNr;
-		
-		private System.Nullable<int> _IdVoorrang;
-		
-		private System.Nullable<int> _IdAndereBeperkingen;
-		
-		private string _IBIS;
-		
-		private string _ContactStraat;
-		
-		private string _ContactHuisNr;
-		
-		private string _ContactBus;
-		
-		private System.Nullable<int> _ContactIdPostcode;
-		
-		private System.Nullable<int> _ContactIdDomicilieland;
-		
-		private string _TyperingTelefoon1;
-		
-		private string _TyperingTelefoon2;
-		
-		private bool _UniekPersoonGekoppeld;
-		
-		private EntitySet<Aanmelding> _Aanmeldings;
-		
-		private EntitySet<EidKaart> _EidKaarts;
-		
-		private EntitySet<grp2_EvenementInschrijving> _grp2_EvenementInschrijvings;
-		
-		private EntitySet<ParticipatieDavinci> _ParticipatieDavincis;
-		
-		private EntitySet<Plaatsing> _Plaatsings;
-		
-		private EntitySet<PlaatsingHistoriek> _PlaatsingHistorieks;
-		
-		private EntitySet<Studiebewij> _Studiebewijs;
-		
-		private EntityRef<Land> _Land;
-		
-		private EntityRef<Land> _Land1;
-		
-		private EntityRef<Land> _Land2;
-		
-		private EntityRef<Land> _Land3;
-		
-		private EntityRef<NationaliteitType> _NationaliteitType;
-		
-		private EntityRef<Postcode> _Postcode;
-		
-		private EntityRef<Postcode> _Postcode1;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnCursistNummerChanging(string value);
-    partial void OnCursistNummerChanged();
-    partial void OnINSZChanging(string value);
-    partial void OnINSZChanged();
-    partial void OnGeslachtChanging(string value);
-    partial void OnGeslachtChanged();
-    partial void OnFamilienaamChanging(string value);
-    partial void OnFamilienaamChanged();
-    partial void OnVoornaamChanging(string value);
-    partial void OnVoornaamChanged();
-    partial void OnStraatChanging(string value);
-    partial void OnStraatChanged();
-    partial void OnHuisNrChanging(string value);
-    partial void OnHuisNrChanged();
-    partial void OnBusChanging(string value);
-    partial void OnBusChanged();
-    partial void OnGeboorteDatumChanging(System.Nullable<System.DateTime> value);
-    partial void OnGeboorteDatumChanged();
-    partial void OnGeboortePlaatsChanging(string value);
-    partial void OnGeboortePlaatsChanged();
-    partial void OnIdGeboorteLandChanging(int value);
-    partial void OnIdGeboorteLandChanged();
-    partial void OnIdDomicilieLandChanging(int value);
-    partial void OnIdDomicilieLandChanged();
-    partial void OnIdPostcodeChanging(int value);
-    partial void OnIdPostcodeChanged();
-    partial void OnIdNationaliteitTypeChanging(int value);
-    partial void OnIdNationaliteitTypeChanged();
-    partial void OnIdWervingskanaalChanging(System.Nullable<int> value);
-    partial void OnIdWervingskanaalChanged();
-    partial void OnEmailChanging(string value);
-    partial void OnEmailChanged();
-    partial void OnGSMChanging(string value);
-    partial void OnGSMChanged();
-    partial void OnTel1Changing(string value);
-    partial void OnTel1Changed();
-    partial void OnTel2Changing(string value);
-    partial void OnTel2Changed();
-    partial void OnNummerPlaatChanging(string value);
-    partial void OnNummerPlaatChanged();
-    partial void OnGeboorteJaarChanging(int value);
-    partial void OnGeboorteJaarChanged();
-    partial void OnGeboorteMaandChanging(System.Nullable<int> value);
-    partial void OnGeboorteMaandChanged();
-    partial void OnGeboorteDagChanging(System.Nullable<int> value);
-    partial void OnGeboorteDagChanged();
-    partial void OnOpmerkingChanging(string value);
-    partial void OnOpmerkingChanged();
-    partial void OnIsBlokkeringChanging(bool value);
-    partial void OnIsBlokkeringChanged();
-    partial void OnIsAdresOngeldigChanging(bool value);
-    partial void OnIsAdresOngeldigChanged();
-    partial void OnIdDavinciExternObjectChanging(System.Nullable<System.Guid> value);
-    partial void OnIdDavinciExternObjectChanged();
-    partial void OnIdStatusOpzoekingscyclustypeChanging(System.Nullable<int> value);
-    partial void OnIdStatusOpzoekingscyclustypeChanged();
-    partial void OnPhotoChanging(System.Data.Linq.Binary value);
-    partial void OnPhotoChanged();
-    partial void OnIdWerksituatieChanging(int value);
-    partial void OnIdWerksituatieChanged();
-    partial void OnIdHoogstBehaaldeDiplomaChanging(int value);
-    partial void OnIdHoogstBehaaldeDiplomaChanged();
-    partial void OnIsSynchroCursadminixChanging(bool value);
-    partial void OnIsSynchroCursadminixChanged();
-    partial void OnPersoonIDMatrixChanging(string value);
-    partial void OnPersoonIDMatrixChanged();
-    partial void OnIdDiplomaLandChanging(System.Nullable<int> value);
-    partial void OnIdDiplomaLandChanged();
-    partial void OnIsKBIChanging(bool value);
-    partial void OnIsKBIChanged();
-    partial void OnIsGeannuleerdChanging(bool value);
-    partial void OnIsGeannuleerdChanged();
-    partial void OnModifDateChanging(System.Nullable<System.DateTime> value);
-    partial void OnModifDateChanged();
-    partial void OnModifUserChanging(string value);
-    partial void OnModifUserChanged();
-    partial void OnIbanChanging(string value);
-    partial void OnIbanChanged();
-    partial void OnOmschrijvingDiplomaChanging(string value);
-    partial void OnOmschrijvingDiplomaChanged();
-    partial void OnDatumMoodleCSVChanging(System.Nullable<System.DateTime> value);
-    partial void OnDatumMoodleCSVChanged();
-    partial void OnStamNrChanging(string value);
-    partial void OnStamNrChanged();
-    partial void OnIdVoorrangChanging(System.Nullable<int> value);
-    partial void OnIdVoorrangChanged();
-    partial void OnIdAndereBeperkingenChanging(System.Nullable<int> value);
-    partial void OnIdAndereBeperkingenChanged();
-    partial void OnIBISChanging(string value);
-    partial void OnIBISChanged();
-    partial void OnContactStraatChanging(string value);
-    partial void OnContactStraatChanged();
-    partial void OnContactHuisNrChanging(string value);
-    partial void OnContactHuisNrChanged();
-    partial void OnContactBusChanging(string value);
-    partial void OnContactBusChanged();
-    partial void OnContactIdPostcodeChanging(System.Nullable<int> value);
-    partial void OnContactIdPostcodeChanged();
-    partial void OnContactIdDomicilielandChanging(System.Nullable<int> value);
-    partial void OnContactIdDomicilielandChanged();
-    partial void OnTyperingTelefoon1Changing(string value);
-    partial void OnTyperingTelefoon1Changed();
-    partial void OnTyperingTelefoon2Changing(string value);
-    partial void OnTyperingTelefoon2Changed();
-    partial void OnUniekPersoonGekoppeldChanging(bool value);
-    partial void OnUniekPersoonGekoppeldChanged();
-    #endregion
-		
-		public Cursist()
-		{
-			this._Aanmeldings = new EntitySet<Aanmelding>(new Action<Aanmelding>(this.attach_Aanmeldings), new Action<Aanmelding>(this.detach_Aanmeldings));
-			this._EidKaarts = new EntitySet<EidKaart>(new Action<EidKaart>(this.attach_EidKaarts), new Action<EidKaart>(this.detach_EidKaarts));
-			this._grp2_EvenementInschrijvings = new EntitySet<grp2_EvenementInschrijving>(new Action<grp2_EvenementInschrijving>(this.attach_grp2_EvenementInschrijvings), new Action<grp2_EvenementInschrijving>(this.detach_grp2_EvenementInschrijvings));
-			this._ParticipatieDavincis = new EntitySet<ParticipatieDavinci>(new Action<ParticipatieDavinci>(this.attach_ParticipatieDavincis), new Action<ParticipatieDavinci>(this.detach_ParticipatieDavincis));
-			this._Plaatsings = new EntitySet<Plaatsing>(new Action<Plaatsing>(this.attach_Plaatsings), new Action<Plaatsing>(this.detach_Plaatsings));
-			this._PlaatsingHistorieks = new EntitySet<PlaatsingHistoriek>(new Action<PlaatsingHistoriek>(this.attach_PlaatsingHistorieks), new Action<PlaatsingHistoriek>(this.detach_PlaatsingHistorieks));
-			this._Studiebewijs = new EntitySet<Studiebewij>(new Action<Studiebewij>(this.attach_Studiebewijs), new Action<Studiebewij>(this.detach_Studiebewijs));
-			this._Land = default(EntityRef<Land>);
-			this._Land1 = default(EntityRef<Land>);
-			this._Land2 = default(EntityRef<Land>);
-			this._Land3 = default(EntityRef<Land>);
-			this._NationaliteitType = default(EntityRef<NationaliteitType>);
-			this._Postcode = default(EntityRef<Postcode>);
-			this._Postcode1 = default(EntityRef<Postcode>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CursistNummer", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string CursistNummer
-		{
-			get
-			{
-				return this._CursistNummer;
-			}
-			set
-			{
-				if ((this._CursistNummer != value))
-				{
-					this.OnCursistNummerChanging(value);
-					this.SendPropertyChanging();
-					this._CursistNummer = value;
-					this.SendPropertyChanged("CursistNummer");
-					this.OnCursistNummerChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_INSZ", DbType="NVarChar(11)")]
-		public string INSZ
-		{
-			get
-			{
-				return this._INSZ;
-			}
-			set
-			{
-				if ((this._INSZ != value))
-				{
-					this.OnINSZChanging(value);
-					this.SendPropertyChanging();
-					this._INSZ = value;
-					this.SendPropertyChanged("INSZ");
-					this.OnINSZChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Geslacht", DbType="NVarChar(1) NOT NULL", CanBeNull=false)]
-		public string Geslacht
-		{
-			get
-			{
-				return this._Geslacht;
-			}
-			set
-			{
-				if ((this._Geslacht != value))
-				{
-					this.OnGeslachtChanging(value);
-					this.SendPropertyChanging();
-					this._Geslacht = value;
-					this.SendPropertyChanged("Geslacht");
-					this.OnGeslachtChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Familienaam", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Familienaam
-		{
-			get
-			{
-				return this._Familienaam;
-			}
-			set
-			{
-				if ((this._Familienaam != value))
-				{
-					this.OnFamilienaamChanging(value);
-					this.SendPropertyChanging();
-					this._Familienaam = value;
-					this.SendPropertyChanged("Familienaam");
-					this.OnFamilienaamChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Voornaam", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Voornaam
-		{
-			get
-			{
-				return this._Voornaam;
-			}
-			set
-			{
-				if ((this._Voornaam != value))
-				{
-					this.OnVoornaamChanging(value);
-					this.SendPropertyChanging();
-					this._Voornaam = value;
-					this.SendPropertyChanged("Voornaam");
-					this.OnVoornaamChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Straat", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Straat
-		{
-			get
-			{
-				return this._Straat;
-			}
-			set
-			{
-				if ((this._Straat != value))
-				{
-					this.OnStraatChanging(value);
-					this.SendPropertyChanging();
-					this._Straat = value;
-					this.SendPropertyChanged("Straat");
-					this.OnStraatChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HuisNr", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string HuisNr
-		{
-			get
-			{
-				return this._HuisNr;
-			}
-			set
-			{
-				if ((this._HuisNr != value))
-				{
-					this.OnHuisNrChanging(value);
-					this.SendPropertyChanging();
-					this._HuisNr = value;
-					this.SendPropertyChanged("HuisNr");
-					this.OnHuisNrChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Bus", DbType="NVarChar(MAX)")]
-		public string Bus
-		{
-			get
-			{
-				return this._Bus;
-			}
-			set
-			{
-				if ((this._Bus != value))
-				{
-					this.OnBusChanging(value);
-					this.SendPropertyChanging();
-					this._Bus = value;
-					this.SendPropertyChanged("Bus");
-					this.OnBusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GeboorteDatum", DbType="Date")]
-		public System.Nullable<System.DateTime> GeboorteDatum
-		{
-			get
-			{
-				return this._GeboorteDatum;
-			}
-			set
-			{
-				if ((this._GeboorteDatum != value))
-				{
-					this.OnGeboorteDatumChanging(value);
-					this.SendPropertyChanging();
-					this._GeboorteDatum = value;
-					this.SendPropertyChanged("GeboorteDatum");
-					this.OnGeboorteDatumChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GeboortePlaats", DbType="NVarChar(MAX)")]
-		public string GeboortePlaats
-		{
-			get
-			{
-				return this._GeboortePlaats;
-			}
-			set
-			{
-				if ((this._GeboortePlaats != value))
-				{
-					this.OnGeboortePlaatsChanging(value);
-					this.SendPropertyChanging();
-					this._GeboortePlaats = value;
-					this.SendPropertyChanged("GeboortePlaats");
-					this.OnGeboortePlaatsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdGeboorteLand", DbType="Int NOT NULL")]
-		public int IdGeboorteLand
-		{
-			get
-			{
-				return this._IdGeboorteLand;
-			}
-			set
-			{
-				if ((this._IdGeboorteLand != value))
-				{
-					if (this._Land.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnIdGeboorteLandChanging(value);
-					this.SendPropertyChanging();
-					this._IdGeboorteLand = value;
-					this.SendPropertyChanged("IdGeboorteLand");
-					this.OnIdGeboorteLandChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdDomicilieLand", DbType="Int NOT NULL")]
-		public int IdDomicilieLand
-		{
-			get
-			{
-				return this._IdDomicilieLand;
-			}
-			set
-			{
-				if ((this._IdDomicilieLand != value))
-				{
-					if (this._Land2.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnIdDomicilieLandChanging(value);
-					this.SendPropertyChanging();
-					this._IdDomicilieLand = value;
-					this.SendPropertyChanged("IdDomicilieLand");
-					this.OnIdDomicilieLandChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdPostcode", DbType="Int NOT NULL")]
-		public int IdPostcode
-		{
-			get
-			{
-				return this._IdPostcode;
-			}
-			set
-			{
-				if ((this._IdPostcode != value))
-				{
-					if (this._Postcode.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnIdPostcodeChanging(value);
-					this.SendPropertyChanging();
-					this._IdPostcode = value;
-					this.SendPropertyChanged("IdPostcode");
-					this.OnIdPostcodeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdNationaliteitType", DbType="Int NOT NULL")]
-		public int IdNationaliteitType
-		{
-			get
-			{
-				return this._IdNationaliteitType;
-			}
-			set
-			{
-				if ((this._IdNationaliteitType != value))
-				{
-					if (this._NationaliteitType.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnIdNationaliteitTypeChanging(value);
-					this.SendPropertyChanging();
-					this._IdNationaliteitType = value;
-					this.SendPropertyChanged("IdNationaliteitType");
-					this.OnIdNationaliteitTypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdWervingskanaal", DbType="Int")]
-		public System.Nullable<int> IdWervingskanaal
-		{
-			get
-			{
-				return this._IdWervingskanaal;
-			}
-			set
-			{
-				if ((this._IdWervingskanaal != value))
-				{
-					this.OnIdWervingskanaalChanging(value);
-					this.SendPropertyChanging();
-					this._IdWervingskanaal = value;
-					this.SendPropertyChanged("IdWervingskanaal");
-					this.OnIdWervingskanaalChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="NVarChar(MAX)")]
-		public string Email
-		{
-			get
-			{
-				return this._Email;
-			}
-			set
-			{
-				if ((this._Email != value))
-				{
-					this.OnEmailChanging(value);
-					this.SendPropertyChanging();
-					this._Email = value;
-					this.SendPropertyChanged("Email");
-					this.OnEmailChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GSM", DbType="NVarChar(50)")]
-		public string GSM
-		{
-			get
-			{
-				return this._GSM;
-			}
-			set
-			{
-				if ((this._GSM != value))
-				{
-					this.OnGSMChanging(value);
-					this.SendPropertyChanging();
-					this._GSM = value;
-					this.SendPropertyChanged("GSM");
-					this.OnGSMChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Tel1", DbType="NVarChar(50)")]
-		public string Tel1
-		{
-			get
-			{
-				return this._Tel1;
-			}
-			set
-			{
-				if ((this._Tel1 != value))
-				{
-					this.OnTel1Changing(value);
-					this.SendPropertyChanging();
-					this._Tel1 = value;
-					this.SendPropertyChanged("Tel1");
-					this.OnTel1Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Tel2", DbType="NVarChar(50)")]
-		public string Tel2
-		{
-			get
-			{
-				return this._Tel2;
-			}
-			set
-			{
-				if ((this._Tel2 != value))
-				{
-					this.OnTel2Changing(value);
-					this.SendPropertyChanging();
-					this._Tel2 = value;
-					this.SendPropertyChanged("Tel2");
-					this.OnTel2Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NummerPlaat", DbType="NVarChar(50)")]
-		public string NummerPlaat
-		{
-			get
-			{
-				return this._NummerPlaat;
-			}
-			set
-			{
-				if ((this._NummerPlaat != value))
-				{
-					this.OnNummerPlaatChanging(value);
-					this.SendPropertyChanging();
-					this._NummerPlaat = value;
-					this.SendPropertyChanged("NummerPlaat");
-					this.OnNummerPlaatChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GeboorteJaar", DbType="Int NOT NULL")]
-		public int GeboorteJaar
-		{
-			get
-			{
-				return this._GeboorteJaar;
-			}
-			set
-			{
-				if ((this._GeboorteJaar != value))
-				{
-					this.OnGeboorteJaarChanging(value);
-					this.SendPropertyChanging();
-					this._GeboorteJaar = value;
-					this.SendPropertyChanged("GeboorteJaar");
-					this.OnGeboorteJaarChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GeboorteMaand", DbType="Int")]
-		public System.Nullable<int> GeboorteMaand
-		{
-			get
-			{
-				return this._GeboorteMaand;
-			}
-			set
-			{
-				if ((this._GeboorteMaand != value))
-				{
-					this.OnGeboorteMaandChanging(value);
-					this.SendPropertyChanging();
-					this._GeboorteMaand = value;
-					this.SendPropertyChanged("GeboorteMaand");
-					this.OnGeboorteMaandChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GeboorteDag", DbType="Int")]
-		public System.Nullable<int> GeboorteDag
-		{
-			get
-			{
-				return this._GeboorteDag;
-			}
-			set
-			{
-				if ((this._GeboorteDag != value))
-				{
-					this.OnGeboorteDagChanging(value);
-					this.SendPropertyChanging();
-					this._GeboorteDag = value;
-					this.SendPropertyChanged("GeboorteDag");
-					this.OnGeboorteDagChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Opmerking", DbType="NVarChar(MAX)")]
-		public string Opmerking
-		{
-			get
-			{
-				return this._Opmerking;
-			}
-			set
-			{
-				if ((this._Opmerking != value))
-				{
-					this.OnOpmerkingChanging(value);
-					this.SendPropertyChanging();
-					this._Opmerking = value;
-					this.SendPropertyChanged("Opmerking");
-					this.OnOpmerkingChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsBlokkering", DbType="Bit NOT NULL")]
-		public bool IsBlokkering
-		{
-			get
-			{
-				return this._IsBlokkering;
-			}
-			set
-			{
-				if ((this._IsBlokkering != value))
-				{
-					this.OnIsBlokkeringChanging(value);
-					this.SendPropertyChanging();
-					this._IsBlokkering = value;
-					this.SendPropertyChanged("IsBlokkering");
-					this.OnIsBlokkeringChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsAdresOngeldig", DbType="Bit NOT NULL")]
-		public bool IsAdresOngeldig
-		{
-			get
-			{
-				return this._IsAdresOngeldig;
-			}
-			set
-			{
-				if ((this._IsAdresOngeldig != value))
-				{
-					this.OnIsAdresOngeldigChanging(value);
-					this.SendPropertyChanging();
-					this._IsAdresOngeldig = value;
-					this.SendPropertyChanged("IsAdresOngeldig");
-					this.OnIsAdresOngeldigChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdDavinciExternObject", DbType="UniqueIdentifier")]
-		public System.Nullable<System.Guid> IdDavinciExternObject
-		{
-			get
-			{
-				return this._IdDavinciExternObject;
-			}
-			set
-			{
-				if ((this._IdDavinciExternObject != value))
-				{
-					this.OnIdDavinciExternObjectChanging(value);
-					this.SendPropertyChanging();
-					this._IdDavinciExternObject = value;
-					this.SendPropertyChanged("IdDavinciExternObject");
-					this.OnIdDavinciExternObjectChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdStatusOpzoekingscyclustype", DbType="Int")]
-		public System.Nullable<int> IdStatusOpzoekingscyclustype
-		{
-			get
-			{
-				return this._IdStatusOpzoekingscyclustype;
-			}
-			set
-			{
-				if ((this._IdStatusOpzoekingscyclustype != value))
-				{
-					this.OnIdStatusOpzoekingscyclustypeChanging(value);
-					this.SendPropertyChanging();
-					this._IdStatusOpzoekingscyclustype = value;
-					this.SendPropertyChanged("IdStatusOpzoekingscyclustype");
-					this.OnIdStatusOpzoekingscyclustypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Photo", DbType="VarBinary(MAX)", UpdateCheck=UpdateCheck.Never)]
-		public System.Data.Linq.Binary Photo
-		{
-			get
-			{
-				return this._Photo;
-			}
-			set
-			{
-				if ((this._Photo != value))
-				{
-					this.OnPhotoChanging(value);
-					this.SendPropertyChanging();
-					this._Photo = value;
-					this.SendPropertyChanged("Photo");
-					this.OnPhotoChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdWerksituatie", DbType="Int NOT NULL")]
-		public int IdWerksituatie
-		{
-			get
-			{
-				return this._IdWerksituatie;
-			}
-			set
-			{
-				if ((this._IdWerksituatie != value))
-				{
-					this.OnIdWerksituatieChanging(value);
-					this.SendPropertyChanging();
-					this._IdWerksituatie = value;
-					this.SendPropertyChanged("IdWerksituatie");
-					this.OnIdWerksituatieChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdHoogstBehaaldeDiploma", DbType="Int NOT NULL")]
-		public int IdHoogstBehaaldeDiploma
-		{
-			get
-			{
-				return this._IdHoogstBehaaldeDiploma;
-			}
-			set
-			{
-				if ((this._IdHoogstBehaaldeDiploma != value))
-				{
-					this.OnIdHoogstBehaaldeDiplomaChanging(value);
-					this.SendPropertyChanging();
-					this._IdHoogstBehaaldeDiploma = value;
-					this.SendPropertyChanged("IdHoogstBehaaldeDiploma");
-					this.OnIdHoogstBehaaldeDiplomaChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsSynchroCursadminix", DbType="Bit NOT NULL")]
-		public bool IsSynchroCursadminix
-		{
-			get
-			{
-				return this._IsSynchroCursadminix;
-			}
-			set
-			{
-				if ((this._IsSynchroCursadminix != value))
-				{
-					this.OnIsSynchroCursadminixChanging(value);
-					this.SendPropertyChanging();
-					this._IsSynchroCursadminix = value;
-					this.SendPropertyChanged("IsSynchroCursadminix");
-					this.OnIsSynchroCursadminixChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PersoonIDMatrix", DbType="NVarChar(36)")]
-		public string PersoonIDMatrix
-		{
-			get
-			{
-				return this._PersoonIDMatrix;
-			}
-			set
-			{
-				if ((this._PersoonIDMatrix != value))
-				{
-					this.OnPersoonIDMatrixChanging(value);
-					this.SendPropertyChanging();
-					this._PersoonIDMatrix = value;
-					this.SendPropertyChanged("PersoonIDMatrix");
-					this.OnPersoonIDMatrixChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdDiplomaLand", DbType="Int")]
-		public System.Nullable<int> IdDiplomaLand
-		{
-			get
-			{
-				return this._IdDiplomaLand;
-			}
-			set
-			{
-				if ((this._IdDiplomaLand != value))
-				{
-					if (this._Land1.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnIdDiplomaLandChanging(value);
-					this.SendPropertyChanging();
-					this._IdDiplomaLand = value;
-					this.SendPropertyChanged("IdDiplomaLand");
-					this.OnIdDiplomaLandChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsKBI", DbType="Bit NOT NULL")]
-		public bool IsKBI
-		{
-			get
-			{
-				return this._IsKBI;
-			}
-			set
-			{
-				if ((this._IsKBI != value))
-				{
-					this.OnIsKBIChanging(value);
-					this.SendPropertyChanging();
-					this._IsKBI = value;
-					this.SendPropertyChanged("IsKBI");
-					this.OnIsKBIChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsGeannuleerd", DbType="Bit NOT NULL")]
-		public bool IsGeannuleerd
-		{
-			get
-			{
-				return this._IsGeannuleerd;
-			}
-			set
-			{
-				if ((this._IsGeannuleerd != value))
-				{
-					this.OnIsGeannuleerdChanging(value);
-					this.SendPropertyChanging();
-					this._IsGeannuleerd = value;
-					this.SendPropertyChanged("IsGeannuleerd");
-					this.OnIsGeannuleerdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifDate", DbType="DateTime")]
-		public System.Nullable<System.DateTime> ModifDate
-		{
-			get
-			{
-				return this._ModifDate;
-			}
-			set
-			{
-				if ((this._ModifDate != value))
-				{
-					this.OnModifDateChanging(value);
-					this.SendPropertyChanging();
-					this._ModifDate = value;
-					this.SendPropertyChanged("ModifDate");
-					this.OnModifDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifUser", DbType="NVarChar(MAX)")]
-		public string ModifUser
-		{
-			get
-			{
-				return this._ModifUser;
-			}
-			set
-			{
-				if ((this._ModifUser != value))
-				{
-					this.OnModifUserChanging(value);
-					this.SendPropertyChanging();
-					this._ModifUser = value;
-					this.SendPropertyChanged("ModifUser");
-					this.OnModifUserChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Iban", DbType="NVarChar(34)")]
-		public string Iban
-		{
-			get
-			{
-				return this._Iban;
-			}
-			set
-			{
-				if ((this._Iban != value))
-				{
-					this.OnIbanChanging(value);
-					this.SendPropertyChanging();
-					this._Iban = value;
-					this.SendPropertyChanged("Iban");
-					this.OnIbanChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OmschrijvingDiploma", DbType="NVarChar(MAX)")]
-		public string OmschrijvingDiploma
-		{
-			get
-			{
-				return this._OmschrijvingDiploma;
-			}
-			set
-			{
-				if ((this._OmschrijvingDiploma != value))
-				{
-					this.OnOmschrijvingDiplomaChanging(value);
-					this.SendPropertyChanging();
-					this._OmschrijvingDiploma = value;
-					this.SendPropertyChanged("OmschrijvingDiploma");
-					this.OnOmschrijvingDiplomaChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DatumMoodleCSV", DbType="Date")]
-		public System.Nullable<System.DateTime> DatumMoodleCSV
-		{
-			get
-			{
-				return this._DatumMoodleCSV;
-			}
-			set
-			{
-				if ((this._DatumMoodleCSV != value))
-				{
-					this.OnDatumMoodleCSVChanging(value);
-					this.SendPropertyChanging();
-					this._DatumMoodleCSV = value;
-					this.SendPropertyChanged("DatumMoodleCSV");
-					this.OnDatumMoodleCSVChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StamNr", DbType="VarChar(30)")]
-		public string StamNr
-		{
-			get
-			{
-				return this._StamNr;
-			}
-			set
-			{
-				if ((this._StamNr != value))
-				{
-					this.OnStamNrChanging(value);
-					this.SendPropertyChanging();
-					this._StamNr = value;
-					this.SendPropertyChanged("StamNr");
-					this.OnStamNrChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdVoorrang", DbType="Int")]
-		public System.Nullable<int> IdVoorrang
-		{
-			get
-			{
-				return this._IdVoorrang;
-			}
-			set
-			{
-				if ((this._IdVoorrang != value))
-				{
-					this.OnIdVoorrangChanging(value);
-					this.SendPropertyChanging();
-					this._IdVoorrang = value;
-					this.SendPropertyChanged("IdVoorrang");
-					this.OnIdVoorrangChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdAndereBeperkingen", DbType="Int")]
-		public System.Nullable<int> IdAndereBeperkingen
-		{
-			get
-			{
-				return this._IdAndereBeperkingen;
-			}
-			set
-			{
-				if ((this._IdAndereBeperkingen != value))
-				{
-					this.OnIdAndereBeperkingenChanging(value);
-					this.SendPropertyChanging();
-					this._IdAndereBeperkingen = value;
-					this.SendPropertyChanged("IdAndereBeperkingen");
-					this.OnIdAndereBeperkingenChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IBIS", DbType="NVarChar(9)")]
-		public string IBIS
-		{
-			get
-			{
-				return this._IBIS;
-			}
-			set
-			{
-				if ((this._IBIS != value))
-				{
-					this.OnIBISChanging(value);
-					this.SendPropertyChanging();
-					this._IBIS = value;
-					this.SendPropertyChanged("IBIS");
-					this.OnIBISChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactStraat", DbType="NVarChar(MAX)")]
-		public string ContactStraat
-		{
-			get
-			{
-				return this._ContactStraat;
-			}
-			set
-			{
-				if ((this._ContactStraat != value))
-				{
-					this.OnContactStraatChanging(value);
-					this.SendPropertyChanging();
-					this._ContactStraat = value;
-					this.SendPropertyChanged("ContactStraat");
-					this.OnContactStraatChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactHuisNr", DbType="NVarChar(MAX)")]
-		public string ContactHuisNr
-		{
-			get
-			{
-				return this._ContactHuisNr;
-			}
-			set
-			{
-				if ((this._ContactHuisNr != value))
-				{
-					this.OnContactHuisNrChanging(value);
-					this.SendPropertyChanging();
-					this._ContactHuisNr = value;
-					this.SendPropertyChanged("ContactHuisNr");
-					this.OnContactHuisNrChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactBus", DbType="NVarChar(MAX)")]
-		public string ContactBus
-		{
-			get
-			{
-				return this._ContactBus;
-			}
-			set
-			{
-				if ((this._ContactBus != value))
-				{
-					this.OnContactBusChanging(value);
-					this.SendPropertyChanging();
-					this._ContactBus = value;
-					this.SendPropertyChanged("ContactBus");
-					this.OnContactBusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactIdPostcode", DbType="Int")]
-		public System.Nullable<int> ContactIdPostcode
-		{
-			get
-			{
-				return this._ContactIdPostcode;
-			}
-			set
-			{
-				if ((this._ContactIdPostcode != value))
-				{
-					if (this._Postcode1.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnContactIdPostcodeChanging(value);
-					this.SendPropertyChanging();
-					this._ContactIdPostcode = value;
-					this.SendPropertyChanged("ContactIdPostcode");
-					this.OnContactIdPostcodeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactIdDomicilieland", DbType="Int")]
-		public System.Nullable<int> ContactIdDomicilieland
-		{
-			get
-			{
-				return this._ContactIdDomicilieland;
-			}
-			set
-			{
-				if ((this._ContactIdDomicilieland != value))
-				{
-					if (this._Land3.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnContactIdDomicilielandChanging(value);
-					this.SendPropertyChanging();
-					this._ContactIdDomicilieland = value;
-					this.SendPropertyChanged("ContactIdDomicilieland");
-					this.OnContactIdDomicilielandChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TyperingTelefoon1", DbType="NVarChar(MAX)")]
-		public string TyperingTelefoon1
-		{
-			get
-			{
-				return this._TyperingTelefoon1;
-			}
-			set
-			{
-				if ((this._TyperingTelefoon1 != value))
-				{
-					this.OnTyperingTelefoon1Changing(value);
-					this.SendPropertyChanging();
-					this._TyperingTelefoon1 = value;
-					this.SendPropertyChanged("TyperingTelefoon1");
-					this.OnTyperingTelefoon1Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TyperingTelefoon2", DbType="NVarChar(MAX)")]
-		public string TyperingTelefoon2
-		{
-			get
-			{
-				return this._TyperingTelefoon2;
-			}
-			set
-			{
-				if ((this._TyperingTelefoon2 != value))
-				{
-					this.OnTyperingTelefoon2Changing(value);
-					this.SendPropertyChanging();
-					this._TyperingTelefoon2 = value;
-					this.SendPropertyChanged("TyperingTelefoon2");
-					this.OnTyperingTelefoon2Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UniekPersoonGekoppeld", DbType="Bit NOT NULL")]
-		public bool UniekPersoonGekoppeld
-		{
-			get
-			{
-				return this._UniekPersoonGekoppeld;
-			}
-			set
-			{
-				if ((this._UniekPersoonGekoppeld != value))
-				{
-					this.OnUniekPersoonGekoppeldChanging(value);
-					this.SendPropertyChanging();
-					this._UniekPersoonGekoppeld = value;
-					this.SendPropertyChanged("UniekPersoonGekoppeld");
-					this.OnUniekPersoonGekoppeldChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_Aanmelding", Storage="_Aanmeldings", ThisKey="Id", OtherKey="IdCursist")]
-		public EntitySet<Aanmelding> Aanmeldings
-		{
-			get
-			{
-				return this._Aanmeldings;
-			}
-			set
-			{
-				this._Aanmeldings.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_EidKaart", Storage="_EidKaarts", ThisKey="Id", OtherKey="IdCursist")]
-		public EntitySet<EidKaart> EidKaarts
-		{
-			get
-			{
-				return this._EidKaarts;
-			}
-			set
-			{
-				this._EidKaarts.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_grp2_EvenementInschrijving", Storage="_grp2_EvenementInschrijvings", ThisKey="Id", OtherKey="IdCursist")]
-		public EntitySet<grp2_EvenementInschrijving> grp2_EvenementInschrijvings
-		{
-			get
-			{
-				return this._grp2_EvenementInschrijvings;
-			}
-			set
-			{
-				this._grp2_EvenementInschrijvings.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_ParticipatieDavinci", Storage="_ParticipatieDavincis", ThisKey="Id", OtherKey="IdCursist")]
-		public EntitySet<ParticipatieDavinci> ParticipatieDavincis
-		{
-			get
-			{
-				return this._ParticipatieDavincis;
-			}
-			set
-			{
-				this._ParticipatieDavincis.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_Plaatsing", Storage="_Plaatsings", ThisKey="Id", OtherKey="IdCursist")]
-		public EntitySet<Plaatsing> Plaatsings
-		{
-			get
-			{
-				return this._Plaatsings;
-			}
-			set
-			{
-				this._Plaatsings.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_PlaatsingHistoriek", Storage="_PlaatsingHistorieks", ThisKey="Id", OtherKey="IdCursist")]
-		public EntitySet<PlaatsingHistoriek> PlaatsingHistorieks
-		{
-			get
-			{
-				return this._PlaatsingHistorieks;
-			}
-			set
-			{
-				this._PlaatsingHistorieks.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_Studiebewij", Storage="_Studiebewijs", ThisKey="Id", OtherKey="IdCursist")]
-		public EntitySet<Studiebewij> Studiebewijs
-		{
-			get
-			{
-				return this._Studiebewijs;
-			}
-			set
-			{
-				this._Studiebewijs.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Land_Cursist", Storage="_Land", ThisKey="IdGeboorteLand", OtherKey="Id", IsForeignKey=true)]
-		public Land Land
-		{
-			get
-			{
-				return this._Land.Entity;
-			}
-			set
-			{
-				Land previousValue = this._Land.Entity;
-				if (((previousValue != value) 
-							|| (this._Land.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Land.Entity = null;
-						previousValue.Cursists.Remove(this);
-					}
-					this._Land.Entity = value;
-					if ((value != null))
-					{
-						value.Cursists.Add(this);
-						this._IdGeboorteLand = value.Id;
-					}
-					else
-					{
-						this._IdGeboorteLand = default(int);
-					}
-					this.SendPropertyChanged("Land");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Land_Cursist1", Storage="_Land1", ThisKey="IdDiplomaLand", OtherKey="Id", IsForeignKey=true)]
-		public Land Land1
-		{
-			get
-			{
-				return this._Land1.Entity;
-			}
-			set
-			{
-				Land previousValue = this._Land1.Entity;
-				if (((previousValue != value) 
-							|| (this._Land1.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Land1.Entity = null;
-						previousValue.Cursists1.Remove(this);
-					}
-					this._Land1.Entity = value;
-					if ((value != null))
-					{
-						value.Cursists1.Add(this);
-						this._IdDiplomaLand = value.Id;
-					}
-					else
-					{
-						this._IdDiplomaLand = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("Land1");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Land_Cursist2", Storage="_Land2", ThisKey="IdDomicilieLand", OtherKey="Id", IsForeignKey=true)]
-		public Land Land2
-		{
-			get
-			{
-				return this._Land2.Entity;
-			}
-			set
-			{
-				Land previousValue = this._Land2.Entity;
-				if (((previousValue != value) 
-							|| (this._Land2.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Land2.Entity = null;
-						previousValue.Cursists2.Remove(this);
-					}
-					this._Land2.Entity = value;
-					if ((value != null))
-					{
-						value.Cursists2.Add(this);
-						this._IdDomicilieLand = value.Id;
-					}
-					else
-					{
-						this._IdDomicilieLand = default(int);
-					}
-					this.SendPropertyChanged("Land2");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Land_Cursist3", Storage="_Land3", ThisKey="ContactIdDomicilieland", OtherKey="Id", IsForeignKey=true)]
-		public Land Land3
-		{
-			get
-			{
-				return this._Land3.Entity;
-			}
-			set
-			{
-				Land previousValue = this._Land3.Entity;
-				if (((previousValue != value) 
-							|| (this._Land3.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Land3.Entity = null;
-						previousValue.Cursists3.Remove(this);
-					}
-					this._Land3.Entity = value;
-					if ((value != null))
-					{
-						value.Cursists3.Add(this);
-						this._ContactIdDomicilieland = value.Id;
-					}
-					else
-					{
-						this._ContactIdDomicilieland = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("Land3");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="NationaliteitType_Cursist", Storage="_NationaliteitType", ThisKey="IdNationaliteitType", OtherKey="Id", IsForeignKey=true)]
-		public NationaliteitType NationaliteitType
-		{
-			get
-			{
-				return this._NationaliteitType.Entity;
-			}
-			set
-			{
-				NationaliteitType previousValue = this._NationaliteitType.Entity;
-				if (((previousValue != value) 
-							|| (this._NationaliteitType.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._NationaliteitType.Entity = null;
-						previousValue.Cursists.Remove(this);
-					}
-					this._NationaliteitType.Entity = value;
-					if ((value != null))
-					{
-						value.Cursists.Add(this);
-						this._IdNationaliteitType = value.Id;
-					}
-					else
-					{
-						this._IdNationaliteitType = default(int);
-					}
-					this.SendPropertyChanged("NationaliteitType");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Postcode_Cursist", Storage="_Postcode", ThisKey="IdPostcode", OtherKey="Id", IsForeignKey=true)]
-		public Postcode Postcode
-		{
-			get
-			{
-				return this._Postcode.Entity;
-			}
-			set
-			{
-				Postcode previousValue = this._Postcode.Entity;
-				if (((previousValue != value) 
-							|| (this._Postcode.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Postcode.Entity = null;
-						previousValue.Cursists.Remove(this);
-					}
-					this._Postcode.Entity = value;
-					if ((value != null))
-					{
-						value.Cursists.Add(this);
-						this._IdPostcode = value.Id;
-					}
-					else
-					{
-						this._IdPostcode = default(int);
-					}
-					this.SendPropertyChanged("Postcode");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Postcode_Cursist1", Storage="_Postcode1", ThisKey="ContactIdPostcode", OtherKey="Id", IsForeignKey=true)]
-		public Postcode Postcode1
-		{
-			get
-			{
-				return this._Postcode1.Entity;
-			}
-			set
-			{
-				Postcode previousValue = this._Postcode1.Entity;
-				if (((previousValue != value) 
-							|| (this._Postcode1.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Postcode1.Entity = null;
-						previousValue.Cursists1.Remove(this);
-					}
-					this._Postcode1.Entity = value;
-					if ((value != null))
-					{
-						value.Cursists1.Add(this);
-						this._ContactIdPostcode = value.Id;
-					}
-					else
-					{
-						this._ContactIdPostcode = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("Postcode1");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_Aanmeldings(Aanmelding entity)
-		{
-			this.SendPropertyChanging();
-			entity.Cursist = this;
-		}
-		
-		private void detach_Aanmeldings(Aanmelding entity)
-		{
-			this.SendPropertyChanging();
-			entity.Cursist = null;
-		}
-		
-		private void attach_EidKaarts(EidKaart entity)
-		{
-			this.SendPropertyChanging();
-			entity.Cursist = this;
-		}
-		
-		private void detach_EidKaarts(EidKaart entity)
-		{
-			this.SendPropertyChanging();
-			entity.Cursist = null;
-		}
-		
-		private void attach_grp2_EvenementInschrijvings(grp2_EvenementInschrijving entity)
-		{
-			this.SendPropertyChanging();
-			entity.Cursist = this;
-		}
-		
-		private void detach_grp2_EvenementInschrijvings(grp2_EvenementInschrijving entity)
-		{
-			this.SendPropertyChanging();
-			entity.Cursist = null;
-		}
-		
-		private void attach_ParticipatieDavincis(ParticipatieDavinci entity)
-		{
-			this.SendPropertyChanging();
-			entity.Cursist = this;
-		}
-		
-		private void detach_ParticipatieDavincis(ParticipatieDavinci entity)
-		{
-			this.SendPropertyChanging();
-			entity.Cursist = null;
-		}
-		
-		private void attach_Plaatsings(Plaatsing entity)
-		{
-			this.SendPropertyChanging();
-			entity.Cursist = this;
-		}
-		
-		private void detach_Plaatsings(Plaatsing entity)
-		{
-			this.SendPropertyChanging();
-			entity.Cursist = null;
-		}
-		
-		private void attach_PlaatsingHistorieks(PlaatsingHistoriek entity)
-		{
-			this.SendPropertyChanging();
-			entity.Cursist = this;
-		}
-		
-		private void detach_PlaatsingHistorieks(PlaatsingHistoriek entity)
-		{
-			this.SendPropertyChanging();
-			entity.Cursist = null;
-		}
-		
-		private void attach_Studiebewijs(Studiebewij entity)
-		{
-			this.SendPropertyChanging();
-			entity.Cursist = this;
-		}
-		
-		private void detach_Studiebewijs(Studiebewij entity)
-		{
-			this.SendPropertyChanging();
-			entity.Cursist = null;
 		}
 	}
 	
@@ -6034,9 +4217,9 @@ namespace CVOApp
 		
 		private string _Opmerkingen;
 		
-		private EntityRef<Cursist> _Cursist;
-		
 		private EntityRef<Evenement> _Evenement;
+		
+		private EntityRef<Cursist> _Cursist;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -6056,8 +4239,8 @@ namespace CVOApp
 		
 		public grp2_EvenementInschrijving()
 		{
-			this._Cursist = default(EntityRef<Cursist>);
 			this._Evenement = default(EntityRef<Evenement>);
+			this._Cursist = default(EntityRef<Cursist>);
 			OnCreated();
 		}
 		
@@ -6169,40 +4352,6 @@ namespace CVOApp
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_grp2_EvenementInschrijving", Storage="_Cursist", ThisKey="IdCursist", OtherKey="Id", IsForeignKey=true)]
-		public Cursist Cursist
-		{
-			get
-			{
-				return this._Cursist.Entity;
-			}
-			set
-			{
-				Cursist previousValue = this._Cursist.Entity;
-				if (((previousValue != value) 
-							|| (this._Cursist.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Cursist.Entity = null;
-						previousValue.grp2_EvenementInschrijvings.Remove(this);
-					}
-					this._Cursist.Entity = value;
-					if ((value != null))
-					{
-						value.grp2_EvenementInschrijvings.Add(this);
-						this._IdCursist = value.Id;
-					}
-					else
-					{
-						this._IdCursist = default(int);
-					}
-					this.SendPropertyChanged("Cursist");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Evenement_grp2_EvenementInschrijving", Storage="_Evenement", ThisKey="IdEvenement", OtherKey="Id", IsForeignKey=true)]
 		public Evenement Evenement
 		{
@@ -6233,6 +4382,40 @@ namespace CVOApp
 						this._IdEvenement = default(int);
 					}
 					this.SendPropertyChanged("Evenement");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_grp2_EvenementInschrijving", Storage="_Cursist", ThisKey="IdCursist", OtherKey="Id", IsForeignKey=true)]
+		public Cursist Cursist
+		{
+			get
+			{
+				return this._Cursist.Entity;
+			}
+			set
+			{
+				Cursist previousValue = this._Cursist.Entity;
+				if (((previousValue != value) 
+							|| (this._Cursist.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Cursist.Entity = null;
+						previousValue.grp2_EvenementInschrijvings.Remove(this);
+					}
+					this._Cursist.Entity = value;
+					if ((value != null))
+					{
+						value.grp2_EvenementInschrijvings.Add(this);
+						this._IdCursist = value.Id;
+					}
+					else
+					{
+						this._IdCursist = default(int);
+					}
+					this.SendPropertyChanged("Cursist");
 				}
 			}
 		}
@@ -15291,11 +13474,11 @@ namespace CVOApp
 		
 		private EntityRef<ParticipatieDavinci> _ParticipatieDavinci1;
 		
-		private EntityRef<Cursist> _Cursist;
-		
 		private EntityRef<LesDavinci> _LesDavinci;
 		
 		private EntityRef<ParticipatiestatusCVO> _ParticipatiestatusCVO;
+		
+		private EntityRef<Cursist> _Cursist;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -15331,9 +13514,9 @@ namespace CVOApp
 		{
 			this._ParticipatieDavincis = new EntitySet<ParticipatieDavinci>(new Action<ParticipatieDavinci>(this.attach_ParticipatieDavincis), new Action<ParticipatieDavinci>(this.detach_ParticipatieDavincis));
 			this._ParticipatieDavinci1 = default(EntityRef<ParticipatieDavinci>);
-			this._Cursist = default(EntityRef<Cursist>);
 			this._LesDavinci = default(EntityRef<LesDavinci>);
 			this._ParticipatiestatusCVO = default(EntityRef<ParticipatiestatusCVO>);
+			this._Cursist = default(EntityRef<Cursist>);
 			OnCreated();
 		}
 		
@@ -15640,40 +13823,6 @@ namespace CVOApp
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_ParticipatieDavinci", Storage="_Cursist", ThisKey="IdCursist", OtherKey="Id", IsForeignKey=true)]
-		public Cursist Cursist
-		{
-			get
-			{
-				return this._Cursist.Entity;
-			}
-			set
-			{
-				Cursist previousValue = this._Cursist.Entity;
-				if (((previousValue != value) 
-							|| (this._Cursist.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Cursist.Entity = null;
-						previousValue.ParticipatieDavincis.Remove(this);
-					}
-					this._Cursist.Entity = value;
-					if ((value != null))
-					{
-						value.ParticipatieDavincis.Add(this);
-						this._IdCursist = value.Id;
-					}
-					else
-					{
-						this._IdCursist = default(int);
-					}
-					this.SendPropertyChanged("Cursist");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LesDavinci_ParticipatieDavinci", Storage="_LesDavinci", ThisKey="IdLesDavinci", OtherKey="Id", IsForeignKey=true)]
 		public LesDavinci LesDavinci
 		{
@@ -15738,6 +13887,40 @@ namespace CVOApp
 						this._IdParticipatieStatus = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("ParticipatiestatusCVO");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_ParticipatieDavinci", Storage="_Cursist", ThisKey="IdCursist", OtherKey="Id", IsForeignKey=true)]
+		public Cursist Cursist
+		{
+			get
+			{
+				return this._Cursist.Entity;
+			}
+			set
+			{
+				Cursist previousValue = this._Cursist.Entity;
+				if (((previousValue != value) 
+							|| (this._Cursist.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Cursist.Entity = null;
+						previousValue.ParticipatieDavincis.Remove(this);
+					}
+					this._Cursist.Entity = value;
+					if ((value != null))
+					{
+						value.ParticipatieDavincis.Add(this);
+						this._IdCursist = value.Id;
+					}
+					else
+					{
+						this._IdCursist = default(int);
+					}
+					this.SendPropertyChanged("Cursist");
 				}
 			}
 		}
@@ -16965,8 +15148,6 @@ namespace CVOApp
 		
 		private EntityRef<Centrum> _Centrum;
 		
-		private EntityRef<Cursist> _Cursist;
-		
 		private EntityRef<EvaluatieresultaattypeCVO> _EvaluatieresultaattypeCVO;
 		
 		private EntityRef<IngerichteModulevariant> _IngerichteModulevariant;
@@ -16982,6 +15163,8 @@ namespace CVOApp
 		private EntityRef<PlaatsingResultaat> _PlaatsingResultaat;
 		
 		private EntityRef<PlaatsingsStatusType> _PlaatsingsStatusType;
+		
+		private EntityRef<Cursist> _Cursist;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -17107,7 +15290,6 @@ namespace CVOApp
 			this._Studiebewijs = new EntitySet<Studiebewij>(new Action<Studiebewij>(this.attach_Studiebewijs), new Action<Studiebewij>(this.detach_Studiebewijs));
 			this._Aanmelding = default(EntityRef<Aanmelding>);
 			this._Centrum = default(EntityRef<Centrum>);
-			this._Cursist = default(EntityRef<Cursist>);
 			this._EvaluatieresultaattypeCVO = default(EntityRef<EvaluatieresultaattypeCVO>);
 			this._IngerichteModulevariant = default(EntityRef<IngerichteModulevariant>);
 			this._IngerichteModulevariant1 = default(EntityRef<IngerichteModulevariant>);
@@ -17116,6 +15298,7 @@ namespace CVOApp
 			this._Plaatsing1 = default(EntityRef<Plaatsing>);
 			this._PlaatsingResultaat = default(EntityRef<PlaatsingResultaat>);
 			this._PlaatsingsStatusType = default(EntityRef<PlaatsingsStatusType>);
+			this._Cursist = default(EntityRef<Cursist>);
 			OnCreated();
 		}
 		
@@ -18377,40 +16560,6 @@ namespace CVOApp
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_Plaatsing", Storage="_Cursist", ThisKey="IdCursist", OtherKey="Id", IsForeignKey=true)]
-		public Cursist Cursist
-		{
-			get
-			{
-				return this._Cursist.Entity;
-			}
-			set
-			{
-				Cursist previousValue = this._Cursist.Entity;
-				if (((previousValue != value) 
-							|| (this._Cursist.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Cursist.Entity = null;
-						previousValue.Plaatsings.Remove(this);
-					}
-					this._Cursist.Entity = value;
-					if ((value != null))
-					{
-						value.Plaatsings.Add(this);
-						this._IdCursist = value.Id;
-					}
-					else
-					{
-						this._IdCursist = default(int);
-					}
-					this.SendPropertyChanged("Cursist");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="EvaluatieresultaattypeCVO_Plaatsing", Storage="_EvaluatieresultaattypeCVO", ThisKey="IdEvaluatieresultaat", OtherKey="Id", IsForeignKey=true)]
 		public EvaluatieresultaattypeCVO EvaluatieresultaattypeCVO
 		{
@@ -18683,6 +16832,40 @@ namespace CVOApp
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_Plaatsing", Storage="_Cursist", ThisKey="IdCursist", OtherKey="Id", IsForeignKey=true)]
+		public Cursist Cursist
+		{
+			get
+			{
+				return this._Cursist.Entity;
+			}
+			set
+			{
+				Cursist previousValue = this._Cursist.Entity;
+				if (((previousValue != value) 
+							|| (this._Cursist.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Cursist.Entity = null;
+						previousValue.Plaatsings.Remove(this);
+					}
+					this._Cursist.Entity = value;
+					if ((value != null))
+					{
+						value.Plaatsings.Add(this);
+						this._IdCursist = value.Id;
+					}
+					else
+					{
+						this._IdCursist = default(int);
+					}
+					this.SendPropertyChanged("Cursist");
+				}
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -18772,13 +16955,13 @@ namespace CVOApp
 		
 		private System.Nullable<decimal> _Punten;
 		
-		private EntityRef<Cursist> _Cursist;
-		
 		private EntityRef<Modulevariant> _Modulevariant;
 		
 		private EntityRef<Opleidingsvariant> _Opleidingsvariant;
 		
 		private EntityRef<StudiebewijsType> _StudiebewijsType;
+		
+		private EntityRef<Cursist> _Cursist;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -18826,10 +17009,10 @@ namespace CVOApp
 		
 		public PlaatsingHistoriek()
 		{
-			this._Cursist = default(EntityRef<Cursist>);
 			this._Modulevariant = default(EntityRef<Modulevariant>);
 			this._Opleidingsvariant = default(EntityRef<Opleidingsvariant>);
 			this._StudiebewijsType = default(EntityRef<StudiebewijsType>);
+			this._Cursist = default(EntityRef<Cursist>);
 			OnCreated();
 		}
 		
@@ -19229,40 +17412,6 @@ namespace CVOApp
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_PlaatsingHistoriek", Storage="_Cursist", ThisKey="IdCursist", OtherKey="Id", IsForeignKey=true)]
-		public Cursist Cursist
-		{
-			get
-			{
-				return this._Cursist.Entity;
-			}
-			set
-			{
-				Cursist previousValue = this._Cursist.Entity;
-				if (((previousValue != value) 
-							|| (this._Cursist.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Cursist.Entity = null;
-						previousValue.PlaatsingHistorieks.Remove(this);
-					}
-					this._Cursist.Entity = value;
-					if ((value != null))
-					{
-						value.PlaatsingHistorieks.Add(this);
-						this._IdCursist = value.Id;
-					}
-					else
-					{
-						this._IdCursist = default(int);
-					}
-					this.SendPropertyChanged("Cursist");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Modulevariant_PlaatsingHistoriek", Storage="_Modulevariant", ThisKey="IdModulevariant", OtherKey="Id", IsForeignKey=true)]
 		public Modulevariant Modulevariant
 		{
@@ -19361,6 +17510,40 @@ namespace CVOApp
 						this._IdStudiebewijsType = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("StudiebewijsType");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_PlaatsingHistoriek", Storage="_Cursist", ThisKey="IdCursist", OtherKey="Id", IsForeignKey=true)]
+		public Cursist Cursist
+		{
+			get
+			{
+				return this._Cursist.Entity;
+			}
+			set
+			{
+				Cursist previousValue = this._Cursist.Entity;
+				if (((previousValue != value) 
+							|| (this._Cursist.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Cursist.Entity = null;
+						previousValue.PlaatsingHistorieks.Remove(this);
+					}
+					this._Cursist.Entity = value;
+					if ((value != null))
+					{
+						value.PlaatsingHistorieks.Add(this);
+						this._IdCursist = value.Id;
+					}
+					else
+					{
+						this._IdCursist = default(int);
+					}
+					this.SendPropertyChanged("Cursist");
 				}
 			}
 		}
@@ -20273,13 +18456,13 @@ namespace CVOApp
 		
 		private string _DeelgemeenteExt;
 		
-		private EntitySet<Cursist> _Cursists;
-		
-		private EntitySet<Cursist> _Cursists1;
-		
 		private EntitySet<Lesplaat> _Lesplaats;
 		
 		private EntitySet<Personeel> _Personeels;
+		
+		private EntitySet<Cursist> _Cursists;
+		
+		private EntitySet<Cursist> _Cursists1;
 		
 		private EntityRef<Land> _Land;
 		
@@ -20303,10 +18486,10 @@ namespace CVOApp
 		
 		public Postcode()
 		{
-			this._Cursists = new EntitySet<Cursist>(new Action<Cursist>(this.attach_Cursists), new Action<Cursist>(this.detach_Cursists));
-			this._Cursists1 = new EntitySet<Cursist>(new Action<Cursist>(this.attach_Cursists1), new Action<Cursist>(this.detach_Cursists1));
 			this._Lesplaats = new EntitySet<Lesplaat>(new Action<Lesplaat>(this.attach_Lesplaats), new Action<Lesplaat>(this.detach_Lesplaats));
 			this._Personeels = new EntitySet<Personeel>(new Action<Personeel>(this.attach_Personeels), new Action<Personeel>(this.detach_Personeels));
+			this._Cursists = new EntitySet<Cursist>(new Action<Cursist>(this.attach_Cursists), new Action<Cursist>(this.detach_Cursists));
+			this._Cursists1 = new EntitySet<Cursist>(new Action<Cursist>(this.attach_Cursists1), new Action<Cursist>(this.detach_Cursists1));
 			this._Land = default(EntityRef<Land>);
 			OnCreated();
 		}
@@ -20435,32 +18618,6 @@ namespace CVOApp
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Postcode_Cursist", Storage="_Cursists", ThisKey="Id", OtherKey="IdPostcode")]
-		public EntitySet<Cursist> Cursists
-		{
-			get
-			{
-				return this._Cursists;
-			}
-			set
-			{
-				this._Cursists.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Postcode_Cursist1", Storage="_Cursists1", ThisKey="Id", OtherKey="ContactIdPostcode")]
-		public EntitySet<Cursist> Cursists1
-		{
-			get
-			{
-				return this._Cursists1;
-			}
-			set
-			{
-				this._Cursists1.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Postcode_Lesplaat", Storage="_Lesplaats", ThisKey="Id", OtherKey="IdPostcode")]
 		public EntitySet<Lesplaat> Lesplaats
 		{
@@ -20484,6 +18641,32 @@ namespace CVOApp
 			set
 			{
 				this._Personeels.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Postcode_Cursist", Storage="_Cursists", ThisKey="Id", OtherKey="IdPostcode")]
+		public EntitySet<Cursist> Cursists
+		{
+			get
+			{
+				return this._Cursists;
+			}
+			set
+			{
+				this._Cursists.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Postcode_Cursist1", Storage="_Cursists1", ThisKey="Id", OtherKey="ContactIdPostcode")]
+		public EntitySet<Cursist> Cursists1
+		{
+			get
+			{
+				return this._Cursists1;
+			}
+			set
+			{
+				this._Cursists1.Assign(value);
 			}
 		}
 		
@@ -20541,30 +18724,6 @@ namespace CVOApp
 			}
 		}
 		
-		private void attach_Cursists(Cursist entity)
-		{
-			this.SendPropertyChanging();
-			entity.Postcode = this;
-		}
-		
-		private void detach_Cursists(Cursist entity)
-		{
-			this.SendPropertyChanging();
-			entity.Postcode = null;
-		}
-		
-		private void attach_Cursists1(Cursist entity)
-		{
-			this.SendPropertyChanging();
-			entity.Postcode1 = this;
-		}
-		
-		private void detach_Cursists1(Cursist entity)
-		{
-			this.SendPropertyChanging();
-			entity.Postcode1 = null;
-		}
-		
 		private void attach_Lesplaats(Lesplaat entity)
 		{
 			this.SendPropertyChanging();
@@ -20587,6 +18746,30 @@ namespace CVOApp
 		{
 			this.SendPropertyChanging();
 			entity.Postcode = null;
+		}
+		
+		private void attach_Cursists(Cursist entity)
+		{
+			this.SendPropertyChanging();
+			entity.Postcode = this;
+		}
+		
+		private void detach_Cursists(Cursist entity)
+		{
+			this.SendPropertyChanging();
+			entity.Postcode = null;
+		}
+		
+		private void attach_Cursists1(Cursist entity)
+		{
+			this.SendPropertyChanging();
+			entity.Postcode1 = this;
+		}
+		
+		private void detach_Cursists1(Cursist entity)
+		{
+			this.SendPropertyChanging();
+			entity.Postcode1 = null;
 		}
 	}
 	
@@ -20866,8 +19049,6 @@ namespace CVOApp
 		
 		private EntityRef<Centrum> _Centrum;
 		
-		private EntityRef<Cursist> _Cursist;
-		
 		private EntityRef<Modulevariant> _Modulevariant;
 		
 		private EntityRef<Opleidingsvariant> _Opleidingsvariant;
@@ -20881,6 +19062,8 @@ namespace CVOApp
 		private EntityRef<StudiebewijsOpleiding> _StudiebewijsOpleiding;
 		
 		private EntityRef<StudiebewijsType> _StudiebewijsType;
+		
+		private EntityRef<Cursist> _Cursist;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -20945,7 +19128,6 @@ namespace CVOApp
 		public Studiebewij()
 		{
 			this._Centrum = default(EntityRef<Centrum>);
-			this._Cursist = default(EntityRef<Cursist>);
 			this._Modulevariant = default(EntityRef<Modulevariant>);
 			this._Opleidingsvariant = default(EntityRef<Opleidingsvariant>);
 			this._Opleidingsvariant1 = default(EntityRef<Opleidingsvariant>);
@@ -20953,6 +19135,7 @@ namespace CVOApp
 			this._StudiebewijsGraadType = default(EntityRef<StudiebewijsGraadType>);
 			this._StudiebewijsOpleiding = default(EntityRef<StudiebewijsOpleiding>);
 			this._StudiebewijsType = default(EntityRef<StudiebewijsType>);
+			this._Cursist = default(EntityRef<Cursist>);
 			OnCreated();
 		}
 		
@@ -21566,40 +19749,6 @@ namespace CVOApp
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_Studiebewij", Storage="_Cursist", ThisKey="IdCursist", OtherKey="Id", IsForeignKey=true)]
-		public Cursist Cursist
-		{
-			get
-			{
-				return this._Cursist.Entity;
-			}
-			set
-			{
-				Cursist previousValue = this._Cursist.Entity;
-				if (((previousValue != value) 
-							|| (this._Cursist.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Cursist.Entity = null;
-						previousValue.Studiebewijs.Remove(this);
-					}
-					this._Cursist.Entity = value;
-					if ((value != null))
-					{
-						value.Studiebewijs.Add(this);
-						this._IdCursist = value.Id;
-					}
-					else
-					{
-						this._IdCursist = default(int);
-					}
-					this.SendPropertyChanged("Cursist");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Modulevariant_Studiebewij", Storage="_Modulevariant", ThisKey="IdModuleVariant", OtherKey="Id", IsForeignKey=true)]
 		public Modulevariant Modulevariant
 		{
@@ -21834,6 +19983,40 @@ namespace CVOApp
 						this._IdStudiebewijsType = default(int);
 					}
 					this.SendPropertyChanged("StudiebewijsType");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_Studiebewij", Storage="_Cursist", ThisKey="IdCursist", OtherKey="Id", IsForeignKey=true)]
+		public Cursist Cursist
+		{
+			get
+			{
+				return this._Cursist.Entity;
+			}
+			set
+			{
+				Cursist previousValue = this._Cursist.Entity;
+				if (((previousValue != value) 
+							|| (this._Cursist.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Cursist.Entity = null;
+						previousValue.Studiebewijs.Remove(this);
+					}
+					this._Cursist.Entity = value;
+					if ((value != null))
+					{
+						value.Studiebewijs.Add(this);
+						this._IdCursist = value.Id;
+					}
+					else
+					{
+						this._IdCursist = default(int);
+					}
+					this.SendPropertyChanged("Cursist");
 				}
 			}
 		}
@@ -23295,6 +21478,1847 @@ namespace CVOApp
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Cursist")]
+	public partial class Cursist : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _CursistNummer;
+		
+		private string _INSZ;
+		
+		private string _Geslacht;
+		
+		private string _Familienaam;
+		
+		private string _Voornaam;
+		
+		private string _Straat;
+		
+		private string _HuisNr;
+		
+		private string _Bus;
+		
+		private System.Nullable<System.DateTime> _GeboorteDatum;
+		
+		private string _GeboortePlaats;
+		
+		private int _IdGeboorteLand;
+		
+		private int _IdDomicilieLand;
+		
+		private int _IdPostcode;
+		
+		private int _IdNationaliteitType;
+		
+		private System.Nullable<int> _IdWervingskanaal;
+		
+		private string _Email;
+		
+		private string _GSM;
+		
+		private string _Tel1;
+		
+		private string _Tel2;
+		
+		private string _NummerPlaat;
+		
+		private int _GeboorteJaar;
+		
+		private System.Nullable<int> _GeboorteMaand;
+		
+		private System.Nullable<int> _GeboorteDag;
+		
+		private string _Opmerking;
+		
+		private bool _IsBlokkering;
+		
+		private bool _IsAdresOngeldig;
+		
+		private System.Nullable<System.Guid> _IdDavinciExternObject;
+		
+		private System.Nullable<int> _IdStatusOpzoekingscyclustype;
+		
+		private System.Data.Linq.Binary _Photo;
+		
+		private int _IdWerksituatie;
+		
+		private int _IdHoogstBehaaldeDiploma;
+		
+		private bool _IsSynchroCursadminix;
+		
+		private string _PersoonIDMatrix;
+		
+		private System.Nullable<int> _IdDiplomaLand;
+		
+		private bool _IsKBI;
+		
+		private bool _IsGeannuleerd;
+		
+		private System.Nullable<System.DateTime> _ModifDate;
+		
+		private string _ModifUser;
+		
+		private string _Iban;
+		
+		private string _OmschrijvingDiploma;
+		
+		private System.Nullable<System.DateTime> _DatumMoodleCSV;
+		
+		private string _StamNr;
+		
+		private System.Nullable<int> _IdVoorrang;
+		
+		private System.Nullable<int> _IdAndereBeperkingen;
+		
+		private string _IBIS;
+		
+		private string _ContactStraat;
+		
+		private string _ContactHuisNr;
+		
+		private string _ContactBus;
+		
+		private System.Nullable<int> _ContactIdPostcode;
+		
+		private System.Nullable<int> _ContactIdDomicilieland;
+		
+		private string _TyperingTelefoon1;
+		
+		private string _TyperingTelefoon2;
+		
+		private bool _UniekPersoonGekoppeld;
+		
+		private string _Wachtwoord;
+		
+		private EntitySet<Aanmelding> _Aanmeldings;
+		
+		private EntitySet<EidKaart> _EidKaarts;
+		
+		private EntitySet<grp2_EvenementInschrijving> _grp2_EvenementInschrijvings;
+		
+		private EntitySet<ParticipatieDavinci> _ParticipatieDavincis;
+		
+		private EntitySet<Plaatsing> _Plaatsings;
+		
+		private EntitySet<PlaatsingHistoriek> _PlaatsingHistorieks;
+		
+		private EntitySet<Studiebewij> _Studiebewijs;
+		
+		private EntityRef<Land> _Land;
+		
+		private EntityRef<Land> _Land1;
+		
+		private EntityRef<Land> _Land2;
+		
+		private EntityRef<Land> _Land3;
+		
+		private EntityRef<NationaliteitType> _NationaliteitType;
+		
+		private EntityRef<Postcode> _Postcode;
+		
+		private EntityRef<Postcode> _Postcode1;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnCursistNummerChanging(string value);
+    partial void OnCursistNummerChanged();
+    partial void OnINSZChanging(string value);
+    partial void OnINSZChanged();
+    partial void OnGeslachtChanging(string value);
+    partial void OnGeslachtChanged();
+    partial void OnFamilienaamChanging(string value);
+    partial void OnFamilienaamChanged();
+    partial void OnVoornaamChanging(string value);
+    partial void OnVoornaamChanged();
+    partial void OnStraatChanging(string value);
+    partial void OnStraatChanged();
+    partial void OnHuisNrChanging(string value);
+    partial void OnHuisNrChanged();
+    partial void OnBusChanging(string value);
+    partial void OnBusChanged();
+    partial void OnGeboorteDatumChanging(System.Nullable<System.DateTime> value);
+    partial void OnGeboorteDatumChanged();
+    partial void OnGeboortePlaatsChanging(string value);
+    partial void OnGeboortePlaatsChanged();
+    partial void OnIdGeboorteLandChanging(int value);
+    partial void OnIdGeboorteLandChanged();
+    partial void OnIdDomicilieLandChanging(int value);
+    partial void OnIdDomicilieLandChanged();
+    partial void OnIdPostcodeChanging(int value);
+    partial void OnIdPostcodeChanged();
+    partial void OnIdNationaliteitTypeChanging(int value);
+    partial void OnIdNationaliteitTypeChanged();
+    partial void OnIdWervingskanaalChanging(System.Nullable<int> value);
+    partial void OnIdWervingskanaalChanged();
+    partial void OnEmailChanging(string value);
+    partial void OnEmailChanged();
+    partial void OnGSMChanging(string value);
+    partial void OnGSMChanged();
+    partial void OnTel1Changing(string value);
+    partial void OnTel1Changed();
+    partial void OnTel2Changing(string value);
+    partial void OnTel2Changed();
+    partial void OnNummerPlaatChanging(string value);
+    partial void OnNummerPlaatChanged();
+    partial void OnGeboorteJaarChanging(int value);
+    partial void OnGeboorteJaarChanged();
+    partial void OnGeboorteMaandChanging(System.Nullable<int> value);
+    partial void OnGeboorteMaandChanged();
+    partial void OnGeboorteDagChanging(System.Nullable<int> value);
+    partial void OnGeboorteDagChanged();
+    partial void OnOpmerkingChanging(string value);
+    partial void OnOpmerkingChanged();
+    partial void OnIsBlokkeringChanging(bool value);
+    partial void OnIsBlokkeringChanged();
+    partial void OnIsAdresOngeldigChanging(bool value);
+    partial void OnIsAdresOngeldigChanged();
+    partial void OnIdDavinciExternObjectChanging(System.Nullable<System.Guid> value);
+    partial void OnIdDavinciExternObjectChanged();
+    partial void OnIdStatusOpzoekingscyclustypeChanging(System.Nullable<int> value);
+    partial void OnIdStatusOpzoekingscyclustypeChanged();
+    partial void OnPhotoChanging(System.Data.Linq.Binary value);
+    partial void OnPhotoChanged();
+    partial void OnIdWerksituatieChanging(int value);
+    partial void OnIdWerksituatieChanged();
+    partial void OnIdHoogstBehaaldeDiplomaChanging(int value);
+    partial void OnIdHoogstBehaaldeDiplomaChanged();
+    partial void OnIsSynchroCursadminixChanging(bool value);
+    partial void OnIsSynchroCursadminixChanged();
+    partial void OnPersoonIDMatrixChanging(string value);
+    partial void OnPersoonIDMatrixChanged();
+    partial void OnIdDiplomaLandChanging(System.Nullable<int> value);
+    partial void OnIdDiplomaLandChanged();
+    partial void OnIsKBIChanging(bool value);
+    partial void OnIsKBIChanged();
+    partial void OnIsGeannuleerdChanging(bool value);
+    partial void OnIsGeannuleerdChanged();
+    partial void OnModifDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnModifDateChanged();
+    partial void OnModifUserChanging(string value);
+    partial void OnModifUserChanged();
+    partial void OnIbanChanging(string value);
+    partial void OnIbanChanged();
+    partial void OnOmschrijvingDiplomaChanging(string value);
+    partial void OnOmschrijvingDiplomaChanged();
+    partial void OnDatumMoodleCSVChanging(System.Nullable<System.DateTime> value);
+    partial void OnDatumMoodleCSVChanged();
+    partial void OnStamNrChanging(string value);
+    partial void OnStamNrChanged();
+    partial void OnIdVoorrangChanging(System.Nullable<int> value);
+    partial void OnIdVoorrangChanged();
+    partial void OnIdAndereBeperkingenChanging(System.Nullable<int> value);
+    partial void OnIdAndereBeperkingenChanged();
+    partial void OnIBISChanging(string value);
+    partial void OnIBISChanged();
+    partial void OnContactStraatChanging(string value);
+    partial void OnContactStraatChanged();
+    partial void OnContactHuisNrChanging(string value);
+    partial void OnContactHuisNrChanged();
+    partial void OnContactBusChanging(string value);
+    partial void OnContactBusChanged();
+    partial void OnContactIdPostcodeChanging(System.Nullable<int> value);
+    partial void OnContactIdPostcodeChanged();
+    partial void OnContactIdDomicilielandChanging(System.Nullable<int> value);
+    partial void OnContactIdDomicilielandChanged();
+    partial void OnTyperingTelefoon1Changing(string value);
+    partial void OnTyperingTelefoon1Changed();
+    partial void OnTyperingTelefoon2Changing(string value);
+    partial void OnTyperingTelefoon2Changed();
+    partial void OnUniekPersoonGekoppeldChanging(bool value);
+    partial void OnUniekPersoonGekoppeldChanged();
+    partial void OnWachtwoordChanging(string value);
+    partial void OnWachtwoordChanged();
+    #endregion
+		
+		public Cursist()
+		{
+			this._Aanmeldings = new EntitySet<Aanmelding>(new Action<Aanmelding>(this.attach_Aanmeldings), new Action<Aanmelding>(this.detach_Aanmeldings));
+			this._EidKaarts = new EntitySet<EidKaart>(new Action<EidKaart>(this.attach_EidKaarts), new Action<EidKaart>(this.detach_EidKaarts));
+			this._grp2_EvenementInschrijvings = new EntitySet<grp2_EvenementInschrijving>(new Action<grp2_EvenementInschrijving>(this.attach_grp2_EvenementInschrijvings), new Action<grp2_EvenementInschrijving>(this.detach_grp2_EvenementInschrijvings));
+			this._ParticipatieDavincis = new EntitySet<ParticipatieDavinci>(new Action<ParticipatieDavinci>(this.attach_ParticipatieDavincis), new Action<ParticipatieDavinci>(this.detach_ParticipatieDavincis));
+			this._Plaatsings = new EntitySet<Plaatsing>(new Action<Plaatsing>(this.attach_Plaatsings), new Action<Plaatsing>(this.detach_Plaatsings));
+			this._PlaatsingHistorieks = new EntitySet<PlaatsingHistoriek>(new Action<PlaatsingHistoriek>(this.attach_PlaatsingHistorieks), new Action<PlaatsingHistoriek>(this.detach_PlaatsingHistorieks));
+			this._Studiebewijs = new EntitySet<Studiebewij>(new Action<Studiebewij>(this.attach_Studiebewijs), new Action<Studiebewij>(this.detach_Studiebewijs));
+			this._Land = default(EntityRef<Land>);
+			this._Land1 = default(EntityRef<Land>);
+			this._Land2 = default(EntityRef<Land>);
+			this._Land3 = default(EntityRef<Land>);
+			this._NationaliteitType = default(EntityRef<NationaliteitType>);
+			this._Postcode = default(EntityRef<Postcode>);
+			this._Postcode1 = default(EntityRef<Postcode>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CursistNummer", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string CursistNummer
+		{
+			get
+			{
+				return this._CursistNummer;
+			}
+			set
+			{
+				if ((this._CursistNummer != value))
+				{
+					this.OnCursistNummerChanging(value);
+					this.SendPropertyChanging();
+					this._CursistNummer = value;
+					this.SendPropertyChanged("CursistNummer");
+					this.OnCursistNummerChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_INSZ", DbType="NVarChar(11)")]
+		public string INSZ
+		{
+			get
+			{
+				return this._INSZ;
+			}
+			set
+			{
+				if ((this._INSZ != value))
+				{
+					this.OnINSZChanging(value);
+					this.SendPropertyChanging();
+					this._INSZ = value;
+					this.SendPropertyChanged("INSZ");
+					this.OnINSZChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Geslacht", DbType="NVarChar(1) NOT NULL", CanBeNull=false)]
+		public string Geslacht
+		{
+			get
+			{
+				return this._Geslacht;
+			}
+			set
+			{
+				if ((this._Geslacht != value))
+				{
+					this.OnGeslachtChanging(value);
+					this.SendPropertyChanging();
+					this._Geslacht = value;
+					this.SendPropertyChanged("Geslacht");
+					this.OnGeslachtChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Familienaam", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Familienaam
+		{
+			get
+			{
+				return this._Familienaam;
+			}
+			set
+			{
+				if ((this._Familienaam != value))
+				{
+					this.OnFamilienaamChanging(value);
+					this.SendPropertyChanging();
+					this._Familienaam = value;
+					this.SendPropertyChanged("Familienaam");
+					this.OnFamilienaamChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Voornaam", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Voornaam
+		{
+			get
+			{
+				return this._Voornaam;
+			}
+			set
+			{
+				if ((this._Voornaam != value))
+				{
+					this.OnVoornaamChanging(value);
+					this.SendPropertyChanging();
+					this._Voornaam = value;
+					this.SendPropertyChanged("Voornaam");
+					this.OnVoornaamChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Straat", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Straat
+		{
+			get
+			{
+				return this._Straat;
+			}
+			set
+			{
+				if ((this._Straat != value))
+				{
+					this.OnStraatChanging(value);
+					this.SendPropertyChanging();
+					this._Straat = value;
+					this.SendPropertyChanged("Straat");
+					this.OnStraatChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HuisNr", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string HuisNr
+		{
+			get
+			{
+				return this._HuisNr;
+			}
+			set
+			{
+				if ((this._HuisNr != value))
+				{
+					this.OnHuisNrChanging(value);
+					this.SendPropertyChanging();
+					this._HuisNr = value;
+					this.SendPropertyChanged("HuisNr");
+					this.OnHuisNrChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Bus", DbType="NVarChar(MAX)")]
+		public string Bus
+		{
+			get
+			{
+				return this._Bus;
+			}
+			set
+			{
+				if ((this._Bus != value))
+				{
+					this.OnBusChanging(value);
+					this.SendPropertyChanging();
+					this._Bus = value;
+					this.SendPropertyChanged("Bus");
+					this.OnBusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GeboorteDatum", DbType="Date")]
+		public System.Nullable<System.DateTime> GeboorteDatum
+		{
+			get
+			{
+				return this._GeboorteDatum;
+			}
+			set
+			{
+				if ((this._GeboorteDatum != value))
+				{
+					this.OnGeboorteDatumChanging(value);
+					this.SendPropertyChanging();
+					this._GeboorteDatum = value;
+					this.SendPropertyChanged("GeboorteDatum");
+					this.OnGeboorteDatumChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GeboortePlaats", DbType="NVarChar(MAX)")]
+		public string GeboortePlaats
+		{
+			get
+			{
+				return this._GeboortePlaats;
+			}
+			set
+			{
+				if ((this._GeboortePlaats != value))
+				{
+					this.OnGeboortePlaatsChanging(value);
+					this.SendPropertyChanging();
+					this._GeboortePlaats = value;
+					this.SendPropertyChanged("GeboortePlaats");
+					this.OnGeboortePlaatsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdGeboorteLand", DbType="Int NOT NULL")]
+		public int IdGeboorteLand
+		{
+			get
+			{
+				return this._IdGeboorteLand;
+			}
+			set
+			{
+				if ((this._IdGeboorteLand != value))
+				{
+					if (this._Land.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnIdGeboorteLandChanging(value);
+					this.SendPropertyChanging();
+					this._IdGeboorteLand = value;
+					this.SendPropertyChanged("IdGeboorteLand");
+					this.OnIdGeboorteLandChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdDomicilieLand", DbType="Int NOT NULL")]
+		public int IdDomicilieLand
+		{
+			get
+			{
+				return this._IdDomicilieLand;
+			}
+			set
+			{
+				if ((this._IdDomicilieLand != value))
+				{
+					if (this._Land2.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnIdDomicilieLandChanging(value);
+					this.SendPropertyChanging();
+					this._IdDomicilieLand = value;
+					this.SendPropertyChanged("IdDomicilieLand");
+					this.OnIdDomicilieLandChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdPostcode", DbType="Int NOT NULL")]
+		public int IdPostcode
+		{
+			get
+			{
+				return this._IdPostcode;
+			}
+			set
+			{
+				if ((this._IdPostcode != value))
+				{
+					if (this._Postcode.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnIdPostcodeChanging(value);
+					this.SendPropertyChanging();
+					this._IdPostcode = value;
+					this.SendPropertyChanged("IdPostcode");
+					this.OnIdPostcodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdNationaliteitType", DbType="Int NOT NULL")]
+		public int IdNationaliteitType
+		{
+			get
+			{
+				return this._IdNationaliteitType;
+			}
+			set
+			{
+				if ((this._IdNationaliteitType != value))
+				{
+					if (this._NationaliteitType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnIdNationaliteitTypeChanging(value);
+					this.SendPropertyChanging();
+					this._IdNationaliteitType = value;
+					this.SendPropertyChanged("IdNationaliteitType");
+					this.OnIdNationaliteitTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdWervingskanaal", DbType="Int")]
+		public System.Nullable<int> IdWervingskanaal
+		{
+			get
+			{
+				return this._IdWervingskanaal;
+			}
+			set
+			{
+				if ((this._IdWervingskanaal != value))
+				{
+					this.OnIdWervingskanaalChanging(value);
+					this.SendPropertyChanging();
+					this._IdWervingskanaal = value;
+					this.SendPropertyChanged("IdWervingskanaal");
+					this.OnIdWervingskanaalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="NVarChar(MAX)")]
+		public string Email
+		{
+			get
+			{
+				return this._Email;
+			}
+			set
+			{
+				if ((this._Email != value))
+				{
+					this.OnEmailChanging(value);
+					this.SendPropertyChanging();
+					this._Email = value;
+					this.SendPropertyChanged("Email");
+					this.OnEmailChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GSM", DbType="NVarChar(50)")]
+		public string GSM
+		{
+			get
+			{
+				return this._GSM;
+			}
+			set
+			{
+				if ((this._GSM != value))
+				{
+					this.OnGSMChanging(value);
+					this.SendPropertyChanging();
+					this._GSM = value;
+					this.SendPropertyChanged("GSM");
+					this.OnGSMChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Tel1", DbType="NVarChar(50)")]
+		public string Tel1
+		{
+			get
+			{
+				return this._Tel1;
+			}
+			set
+			{
+				if ((this._Tel1 != value))
+				{
+					this.OnTel1Changing(value);
+					this.SendPropertyChanging();
+					this._Tel1 = value;
+					this.SendPropertyChanged("Tel1");
+					this.OnTel1Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Tel2", DbType="NVarChar(50)")]
+		public string Tel2
+		{
+			get
+			{
+				return this._Tel2;
+			}
+			set
+			{
+				if ((this._Tel2 != value))
+				{
+					this.OnTel2Changing(value);
+					this.SendPropertyChanging();
+					this._Tel2 = value;
+					this.SendPropertyChanged("Tel2");
+					this.OnTel2Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NummerPlaat", DbType="NVarChar(50)")]
+		public string NummerPlaat
+		{
+			get
+			{
+				return this._NummerPlaat;
+			}
+			set
+			{
+				if ((this._NummerPlaat != value))
+				{
+					this.OnNummerPlaatChanging(value);
+					this.SendPropertyChanging();
+					this._NummerPlaat = value;
+					this.SendPropertyChanged("NummerPlaat");
+					this.OnNummerPlaatChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GeboorteJaar", DbType="Int NOT NULL")]
+		public int GeboorteJaar
+		{
+			get
+			{
+				return this._GeboorteJaar;
+			}
+			set
+			{
+				if ((this._GeboorteJaar != value))
+				{
+					this.OnGeboorteJaarChanging(value);
+					this.SendPropertyChanging();
+					this._GeboorteJaar = value;
+					this.SendPropertyChanged("GeboorteJaar");
+					this.OnGeboorteJaarChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GeboorteMaand", DbType="Int")]
+		public System.Nullable<int> GeboorteMaand
+		{
+			get
+			{
+				return this._GeboorteMaand;
+			}
+			set
+			{
+				if ((this._GeboorteMaand != value))
+				{
+					this.OnGeboorteMaandChanging(value);
+					this.SendPropertyChanging();
+					this._GeboorteMaand = value;
+					this.SendPropertyChanged("GeboorteMaand");
+					this.OnGeboorteMaandChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GeboorteDag", DbType="Int")]
+		public System.Nullable<int> GeboorteDag
+		{
+			get
+			{
+				return this._GeboorteDag;
+			}
+			set
+			{
+				if ((this._GeboorteDag != value))
+				{
+					this.OnGeboorteDagChanging(value);
+					this.SendPropertyChanging();
+					this._GeboorteDag = value;
+					this.SendPropertyChanged("GeboorteDag");
+					this.OnGeboorteDagChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Opmerking", DbType="NVarChar(MAX)")]
+		public string Opmerking
+		{
+			get
+			{
+				return this._Opmerking;
+			}
+			set
+			{
+				if ((this._Opmerking != value))
+				{
+					this.OnOpmerkingChanging(value);
+					this.SendPropertyChanging();
+					this._Opmerking = value;
+					this.SendPropertyChanged("Opmerking");
+					this.OnOpmerkingChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsBlokkering", DbType="Bit NOT NULL")]
+		public bool IsBlokkering
+		{
+			get
+			{
+				return this._IsBlokkering;
+			}
+			set
+			{
+				if ((this._IsBlokkering != value))
+				{
+					this.OnIsBlokkeringChanging(value);
+					this.SendPropertyChanging();
+					this._IsBlokkering = value;
+					this.SendPropertyChanged("IsBlokkering");
+					this.OnIsBlokkeringChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsAdresOngeldig", DbType="Bit NOT NULL")]
+		public bool IsAdresOngeldig
+		{
+			get
+			{
+				return this._IsAdresOngeldig;
+			}
+			set
+			{
+				if ((this._IsAdresOngeldig != value))
+				{
+					this.OnIsAdresOngeldigChanging(value);
+					this.SendPropertyChanging();
+					this._IsAdresOngeldig = value;
+					this.SendPropertyChanged("IsAdresOngeldig");
+					this.OnIsAdresOngeldigChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdDavinciExternObject", DbType="UniqueIdentifier")]
+		public System.Nullable<System.Guid> IdDavinciExternObject
+		{
+			get
+			{
+				return this._IdDavinciExternObject;
+			}
+			set
+			{
+				if ((this._IdDavinciExternObject != value))
+				{
+					this.OnIdDavinciExternObjectChanging(value);
+					this.SendPropertyChanging();
+					this._IdDavinciExternObject = value;
+					this.SendPropertyChanged("IdDavinciExternObject");
+					this.OnIdDavinciExternObjectChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdStatusOpzoekingscyclustype", DbType="Int")]
+		public System.Nullable<int> IdStatusOpzoekingscyclustype
+		{
+			get
+			{
+				return this._IdStatusOpzoekingscyclustype;
+			}
+			set
+			{
+				if ((this._IdStatusOpzoekingscyclustype != value))
+				{
+					this.OnIdStatusOpzoekingscyclustypeChanging(value);
+					this.SendPropertyChanging();
+					this._IdStatusOpzoekingscyclustype = value;
+					this.SendPropertyChanged("IdStatusOpzoekingscyclustype");
+					this.OnIdStatusOpzoekingscyclustypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Photo", DbType="VarBinary(MAX)", UpdateCheck=UpdateCheck.Never)]
+		public System.Data.Linq.Binary Photo
+		{
+			get
+			{
+				return this._Photo;
+			}
+			set
+			{
+				if ((this._Photo != value))
+				{
+					this.OnPhotoChanging(value);
+					this.SendPropertyChanging();
+					this._Photo = value;
+					this.SendPropertyChanged("Photo");
+					this.OnPhotoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdWerksituatie", DbType="Int NOT NULL")]
+		public int IdWerksituatie
+		{
+			get
+			{
+				return this._IdWerksituatie;
+			}
+			set
+			{
+				if ((this._IdWerksituatie != value))
+				{
+					this.OnIdWerksituatieChanging(value);
+					this.SendPropertyChanging();
+					this._IdWerksituatie = value;
+					this.SendPropertyChanged("IdWerksituatie");
+					this.OnIdWerksituatieChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdHoogstBehaaldeDiploma", DbType="Int NOT NULL")]
+		public int IdHoogstBehaaldeDiploma
+		{
+			get
+			{
+				return this._IdHoogstBehaaldeDiploma;
+			}
+			set
+			{
+				if ((this._IdHoogstBehaaldeDiploma != value))
+				{
+					this.OnIdHoogstBehaaldeDiplomaChanging(value);
+					this.SendPropertyChanging();
+					this._IdHoogstBehaaldeDiploma = value;
+					this.SendPropertyChanged("IdHoogstBehaaldeDiploma");
+					this.OnIdHoogstBehaaldeDiplomaChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsSynchroCursadminix", DbType="Bit NOT NULL")]
+		public bool IsSynchroCursadminix
+		{
+			get
+			{
+				return this._IsSynchroCursadminix;
+			}
+			set
+			{
+				if ((this._IsSynchroCursadminix != value))
+				{
+					this.OnIsSynchroCursadminixChanging(value);
+					this.SendPropertyChanging();
+					this._IsSynchroCursadminix = value;
+					this.SendPropertyChanged("IsSynchroCursadminix");
+					this.OnIsSynchroCursadminixChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PersoonIDMatrix", DbType="NVarChar(36)")]
+		public string PersoonIDMatrix
+		{
+			get
+			{
+				return this._PersoonIDMatrix;
+			}
+			set
+			{
+				if ((this._PersoonIDMatrix != value))
+				{
+					this.OnPersoonIDMatrixChanging(value);
+					this.SendPropertyChanging();
+					this._PersoonIDMatrix = value;
+					this.SendPropertyChanged("PersoonIDMatrix");
+					this.OnPersoonIDMatrixChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdDiplomaLand", DbType="Int")]
+		public System.Nullable<int> IdDiplomaLand
+		{
+			get
+			{
+				return this._IdDiplomaLand;
+			}
+			set
+			{
+				if ((this._IdDiplomaLand != value))
+				{
+					if (this._Land1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnIdDiplomaLandChanging(value);
+					this.SendPropertyChanging();
+					this._IdDiplomaLand = value;
+					this.SendPropertyChanged("IdDiplomaLand");
+					this.OnIdDiplomaLandChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsKBI", DbType="Bit NOT NULL")]
+		public bool IsKBI
+		{
+			get
+			{
+				return this._IsKBI;
+			}
+			set
+			{
+				if ((this._IsKBI != value))
+				{
+					this.OnIsKBIChanging(value);
+					this.SendPropertyChanging();
+					this._IsKBI = value;
+					this.SendPropertyChanged("IsKBI");
+					this.OnIsKBIChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsGeannuleerd", DbType="Bit NOT NULL")]
+		public bool IsGeannuleerd
+		{
+			get
+			{
+				return this._IsGeannuleerd;
+			}
+			set
+			{
+				if ((this._IsGeannuleerd != value))
+				{
+					this.OnIsGeannuleerdChanging(value);
+					this.SendPropertyChanging();
+					this._IsGeannuleerd = value;
+					this.SendPropertyChanged("IsGeannuleerd");
+					this.OnIsGeannuleerdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> ModifDate
+		{
+			get
+			{
+				return this._ModifDate;
+			}
+			set
+			{
+				if ((this._ModifDate != value))
+				{
+					this.OnModifDateChanging(value);
+					this.SendPropertyChanging();
+					this._ModifDate = value;
+					this.SendPropertyChanged("ModifDate");
+					this.OnModifDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifUser", DbType="NVarChar(MAX)")]
+		public string ModifUser
+		{
+			get
+			{
+				return this._ModifUser;
+			}
+			set
+			{
+				if ((this._ModifUser != value))
+				{
+					this.OnModifUserChanging(value);
+					this.SendPropertyChanging();
+					this._ModifUser = value;
+					this.SendPropertyChanged("ModifUser");
+					this.OnModifUserChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Iban", DbType="NVarChar(34)")]
+		public string Iban
+		{
+			get
+			{
+				return this._Iban;
+			}
+			set
+			{
+				if ((this._Iban != value))
+				{
+					this.OnIbanChanging(value);
+					this.SendPropertyChanging();
+					this._Iban = value;
+					this.SendPropertyChanged("Iban");
+					this.OnIbanChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OmschrijvingDiploma", DbType="NVarChar(MAX)")]
+		public string OmschrijvingDiploma
+		{
+			get
+			{
+				return this._OmschrijvingDiploma;
+			}
+			set
+			{
+				if ((this._OmschrijvingDiploma != value))
+				{
+					this.OnOmschrijvingDiplomaChanging(value);
+					this.SendPropertyChanging();
+					this._OmschrijvingDiploma = value;
+					this.SendPropertyChanged("OmschrijvingDiploma");
+					this.OnOmschrijvingDiplomaChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DatumMoodleCSV", DbType="Date")]
+		public System.Nullable<System.DateTime> DatumMoodleCSV
+		{
+			get
+			{
+				return this._DatumMoodleCSV;
+			}
+			set
+			{
+				if ((this._DatumMoodleCSV != value))
+				{
+					this.OnDatumMoodleCSVChanging(value);
+					this.SendPropertyChanging();
+					this._DatumMoodleCSV = value;
+					this.SendPropertyChanged("DatumMoodleCSV");
+					this.OnDatumMoodleCSVChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StamNr", DbType="VarChar(30)")]
+		public string StamNr
+		{
+			get
+			{
+				return this._StamNr;
+			}
+			set
+			{
+				if ((this._StamNr != value))
+				{
+					this.OnStamNrChanging(value);
+					this.SendPropertyChanging();
+					this._StamNr = value;
+					this.SendPropertyChanged("StamNr");
+					this.OnStamNrChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdVoorrang", DbType="Int")]
+		public System.Nullable<int> IdVoorrang
+		{
+			get
+			{
+				return this._IdVoorrang;
+			}
+			set
+			{
+				if ((this._IdVoorrang != value))
+				{
+					this.OnIdVoorrangChanging(value);
+					this.SendPropertyChanging();
+					this._IdVoorrang = value;
+					this.SendPropertyChanged("IdVoorrang");
+					this.OnIdVoorrangChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdAndereBeperkingen", DbType="Int")]
+		public System.Nullable<int> IdAndereBeperkingen
+		{
+			get
+			{
+				return this._IdAndereBeperkingen;
+			}
+			set
+			{
+				if ((this._IdAndereBeperkingen != value))
+				{
+					this.OnIdAndereBeperkingenChanging(value);
+					this.SendPropertyChanging();
+					this._IdAndereBeperkingen = value;
+					this.SendPropertyChanged("IdAndereBeperkingen");
+					this.OnIdAndereBeperkingenChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IBIS", DbType="NVarChar(9)")]
+		public string IBIS
+		{
+			get
+			{
+				return this._IBIS;
+			}
+			set
+			{
+				if ((this._IBIS != value))
+				{
+					this.OnIBISChanging(value);
+					this.SendPropertyChanging();
+					this._IBIS = value;
+					this.SendPropertyChanged("IBIS");
+					this.OnIBISChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactStraat", DbType="NVarChar(MAX)")]
+		public string ContactStraat
+		{
+			get
+			{
+				return this._ContactStraat;
+			}
+			set
+			{
+				if ((this._ContactStraat != value))
+				{
+					this.OnContactStraatChanging(value);
+					this.SendPropertyChanging();
+					this._ContactStraat = value;
+					this.SendPropertyChanged("ContactStraat");
+					this.OnContactStraatChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactHuisNr", DbType="NVarChar(MAX)")]
+		public string ContactHuisNr
+		{
+			get
+			{
+				return this._ContactHuisNr;
+			}
+			set
+			{
+				if ((this._ContactHuisNr != value))
+				{
+					this.OnContactHuisNrChanging(value);
+					this.SendPropertyChanging();
+					this._ContactHuisNr = value;
+					this.SendPropertyChanged("ContactHuisNr");
+					this.OnContactHuisNrChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactBus", DbType="NVarChar(MAX)")]
+		public string ContactBus
+		{
+			get
+			{
+				return this._ContactBus;
+			}
+			set
+			{
+				if ((this._ContactBus != value))
+				{
+					this.OnContactBusChanging(value);
+					this.SendPropertyChanging();
+					this._ContactBus = value;
+					this.SendPropertyChanged("ContactBus");
+					this.OnContactBusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactIdPostcode", DbType="Int")]
+		public System.Nullable<int> ContactIdPostcode
+		{
+			get
+			{
+				return this._ContactIdPostcode;
+			}
+			set
+			{
+				if ((this._ContactIdPostcode != value))
+				{
+					if (this._Postcode1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnContactIdPostcodeChanging(value);
+					this.SendPropertyChanging();
+					this._ContactIdPostcode = value;
+					this.SendPropertyChanged("ContactIdPostcode");
+					this.OnContactIdPostcodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactIdDomicilieland", DbType="Int")]
+		public System.Nullable<int> ContactIdDomicilieland
+		{
+			get
+			{
+				return this._ContactIdDomicilieland;
+			}
+			set
+			{
+				if ((this._ContactIdDomicilieland != value))
+				{
+					if (this._Land3.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnContactIdDomicilielandChanging(value);
+					this.SendPropertyChanging();
+					this._ContactIdDomicilieland = value;
+					this.SendPropertyChanged("ContactIdDomicilieland");
+					this.OnContactIdDomicilielandChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TyperingTelefoon1", DbType="NVarChar(MAX)")]
+		public string TyperingTelefoon1
+		{
+			get
+			{
+				return this._TyperingTelefoon1;
+			}
+			set
+			{
+				if ((this._TyperingTelefoon1 != value))
+				{
+					this.OnTyperingTelefoon1Changing(value);
+					this.SendPropertyChanging();
+					this._TyperingTelefoon1 = value;
+					this.SendPropertyChanged("TyperingTelefoon1");
+					this.OnTyperingTelefoon1Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TyperingTelefoon2", DbType="NVarChar(MAX)")]
+		public string TyperingTelefoon2
+		{
+			get
+			{
+				return this._TyperingTelefoon2;
+			}
+			set
+			{
+				if ((this._TyperingTelefoon2 != value))
+				{
+					this.OnTyperingTelefoon2Changing(value);
+					this.SendPropertyChanging();
+					this._TyperingTelefoon2 = value;
+					this.SendPropertyChanged("TyperingTelefoon2");
+					this.OnTyperingTelefoon2Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UniekPersoonGekoppeld", DbType="Bit NOT NULL")]
+		public bool UniekPersoonGekoppeld
+		{
+			get
+			{
+				return this._UniekPersoonGekoppeld;
+			}
+			set
+			{
+				if ((this._UniekPersoonGekoppeld != value))
+				{
+					this.OnUniekPersoonGekoppeldChanging(value);
+					this.SendPropertyChanging();
+					this._UniekPersoonGekoppeld = value;
+					this.SendPropertyChanged("UniekPersoonGekoppeld");
+					this.OnUniekPersoonGekoppeldChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Wachtwoord", DbType="NVarChar(255)")]
+		public string Wachtwoord
+		{
+			get
+			{
+				return this._Wachtwoord;
+			}
+			set
+			{
+				if ((this._Wachtwoord != value))
+				{
+					this.OnWachtwoordChanging(value);
+					this.SendPropertyChanging();
+					this._Wachtwoord = value;
+					this.SendPropertyChanged("Wachtwoord");
+					this.OnWachtwoordChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_Aanmelding", Storage="_Aanmeldings", ThisKey="Id", OtherKey="IdCursist")]
+		public EntitySet<Aanmelding> Aanmeldings
+		{
+			get
+			{
+				return this._Aanmeldings;
+			}
+			set
+			{
+				this._Aanmeldings.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_EidKaart", Storage="_EidKaarts", ThisKey="Id", OtherKey="IdCursist")]
+		public EntitySet<EidKaart> EidKaarts
+		{
+			get
+			{
+				return this._EidKaarts;
+			}
+			set
+			{
+				this._EidKaarts.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_grp2_EvenementInschrijving", Storage="_grp2_EvenementInschrijvings", ThisKey="Id", OtherKey="IdCursist")]
+		public EntitySet<grp2_EvenementInschrijving> grp2_EvenementInschrijvings
+		{
+			get
+			{
+				return this._grp2_EvenementInschrijvings;
+			}
+			set
+			{
+				this._grp2_EvenementInschrijvings.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_ParticipatieDavinci", Storage="_ParticipatieDavincis", ThisKey="Id", OtherKey="IdCursist")]
+		public EntitySet<ParticipatieDavinci> ParticipatieDavincis
+		{
+			get
+			{
+				return this._ParticipatieDavincis;
+			}
+			set
+			{
+				this._ParticipatieDavincis.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_Plaatsing", Storage="_Plaatsings", ThisKey="Id", OtherKey="IdCursist")]
+		public EntitySet<Plaatsing> Plaatsings
+		{
+			get
+			{
+				return this._Plaatsings;
+			}
+			set
+			{
+				this._Plaatsings.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_PlaatsingHistoriek", Storage="_PlaatsingHistorieks", ThisKey="Id", OtherKey="IdCursist")]
+		public EntitySet<PlaatsingHistoriek> PlaatsingHistorieks
+		{
+			get
+			{
+				return this._PlaatsingHistorieks;
+			}
+			set
+			{
+				this._PlaatsingHistorieks.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_Studiebewij", Storage="_Studiebewijs", ThisKey="Id", OtherKey="IdCursist")]
+		public EntitySet<Studiebewij> Studiebewijs
+		{
+			get
+			{
+				return this._Studiebewijs;
+			}
+			set
+			{
+				this._Studiebewijs.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Land_Cursist", Storage="_Land", ThisKey="IdGeboorteLand", OtherKey="Id", IsForeignKey=true)]
+		public Land Land
+		{
+			get
+			{
+				return this._Land.Entity;
+			}
+			set
+			{
+				Land previousValue = this._Land.Entity;
+				if (((previousValue != value) 
+							|| (this._Land.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Land.Entity = null;
+						previousValue.Cursists.Remove(this);
+					}
+					this._Land.Entity = value;
+					if ((value != null))
+					{
+						value.Cursists.Add(this);
+						this._IdGeboorteLand = value.Id;
+					}
+					else
+					{
+						this._IdGeboorteLand = default(int);
+					}
+					this.SendPropertyChanged("Land");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Land_Cursist1", Storage="_Land1", ThisKey="IdDiplomaLand", OtherKey="Id", IsForeignKey=true)]
+		public Land Land1
+		{
+			get
+			{
+				return this._Land1.Entity;
+			}
+			set
+			{
+				Land previousValue = this._Land1.Entity;
+				if (((previousValue != value) 
+							|| (this._Land1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Land1.Entity = null;
+						previousValue.Cursists1.Remove(this);
+					}
+					this._Land1.Entity = value;
+					if ((value != null))
+					{
+						value.Cursists1.Add(this);
+						this._IdDiplomaLand = value.Id;
+					}
+					else
+					{
+						this._IdDiplomaLand = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Land1");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Land_Cursist2", Storage="_Land2", ThisKey="IdDomicilieLand", OtherKey="Id", IsForeignKey=true)]
+		public Land Land2
+		{
+			get
+			{
+				return this._Land2.Entity;
+			}
+			set
+			{
+				Land previousValue = this._Land2.Entity;
+				if (((previousValue != value) 
+							|| (this._Land2.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Land2.Entity = null;
+						previousValue.Cursists2.Remove(this);
+					}
+					this._Land2.Entity = value;
+					if ((value != null))
+					{
+						value.Cursists2.Add(this);
+						this._IdDomicilieLand = value.Id;
+					}
+					else
+					{
+						this._IdDomicilieLand = default(int);
+					}
+					this.SendPropertyChanged("Land2");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Land_Cursist3", Storage="_Land3", ThisKey="ContactIdDomicilieland", OtherKey="Id", IsForeignKey=true)]
+		public Land Land3
+		{
+			get
+			{
+				return this._Land3.Entity;
+			}
+			set
+			{
+				Land previousValue = this._Land3.Entity;
+				if (((previousValue != value) 
+							|| (this._Land3.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Land3.Entity = null;
+						previousValue.Cursists3.Remove(this);
+					}
+					this._Land3.Entity = value;
+					if ((value != null))
+					{
+						value.Cursists3.Add(this);
+						this._ContactIdDomicilieland = value.Id;
+					}
+					else
+					{
+						this._ContactIdDomicilieland = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Land3");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="NationaliteitType_Cursist", Storage="_NationaliteitType", ThisKey="IdNationaliteitType", OtherKey="Id", IsForeignKey=true)]
+		public NationaliteitType NationaliteitType
+		{
+			get
+			{
+				return this._NationaliteitType.Entity;
+			}
+			set
+			{
+				NationaliteitType previousValue = this._NationaliteitType.Entity;
+				if (((previousValue != value) 
+							|| (this._NationaliteitType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._NationaliteitType.Entity = null;
+						previousValue.Cursists.Remove(this);
+					}
+					this._NationaliteitType.Entity = value;
+					if ((value != null))
+					{
+						value.Cursists.Add(this);
+						this._IdNationaliteitType = value.Id;
+					}
+					else
+					{
+						this._IdNationaliteitType = default(int);
+					}
+					this.SendPropertyChanged("NationaliteitType");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Postcode_Cursist", Storage="_Postcode", ThisKey="IdPostcode", OtherKey="Id", IsForeignKey=true)]
+		public Postcode Postcode
+		{
+			get
+			{
+				return this._Postcode.Entity;
+			}
+			set
+			{
+				Postcode previousValue = this._Postcode.Entity;
+				if (((previousValue != value) 
+							|| (this._Postcode.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Postcode.Entity = null;
+						previousValue.Cursists.Remove(this);
+					}
+					this._Postcode.Entity = value;
+					if ((value != null))
+					{
+						value.Cursists.Add(this);
+						this._IdPostcode = value.Id;
+					}
+					else
+					{
+						this._IdPostcode = default(int);
+					}
+					this.SendPropertyChanged("Postcode");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Postcode_Cursist1", Storage="_Postcode1", ThisKey="ContactIdPostcode", OtherKey="Id", IsForeignKey=true)]
+		public Postcode Postcode1
+		{
+			get
+			{
+				return this._Postcode1.Entity;
+			}
+			set
+			{
+				Postcode previousValue = this._Postcode1.Entity;
+				if (((previousValue != value) 
+							|| (this._Postcode1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Postcode1.Entity = null;
+						previousValue.Cursists1.Remove(this);
+					}
+					this._Postcode1.Entity = value;
+					if ((value != null))
+					{
+						value.Cursists1.Add(this);
+						this._ContactIdPostcode = value.Id;
+					}
+					else
+					{
+						this._ContactIdPostcode = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Postcode1");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Aanmeldings(Aanmelding entity)
+		{
+			this.SendPropertyChanging();
+			entity.Cursist = this;
+		}
+		
+		private void detach_Aanmeldings(Aanmelding entity)
+		{
+			this.SendPropertyChanging();
+			entity.Cursist = null;
+		}
+		
+		private void attach_EidKaarts(EidKaart entity)
+		{
+			this.SendPropertyChanging();
+			entity.Cursist = this;
+		}
+		
+		private void detach_EidKaarts(EidKaart entity)
+		{
+			this.SendPropertyChanging();
+			entity.Cursist = null;
+		}
+		
+		private void attach_grp2_EvenementInschrijvings(grp2_EvenementInschrijving entity)
+		{
+			this.SendPropertyChanging();
+			entity.Cursist = this;
+		}
+		
+		private void detach_grp2_EvenementInschrijvings(grp2_EvenementInschrijving entity)
+		{
+			this.SendPropertyChanging();
+			entity.Cursist = null;
+		}
+		
+		private void attach_ParticipatieDavincis(ParticipatieDavinci entity)
+		{
+			this.SendPropertyChanging();
+			entity.Cursist = this;
+		}
+		
+		private void detach_ParticipatieDavincis(ParticipatieDavinci entity)
+		{
+			this.SendPropertyChanging();
+			entity.Cursist = null;
+		}
+		
+		private void attach_Plaatsings(Plaatsing entity)
+		{
+			this.SendPropertyChanging();
+			entity.Cursist = this;
+		}
+		
+		private void detach_Plaatsings(Plaatsing entity)
+		{
+			this.SendPropertyChanging();
+			entity.Cursist = null;
+		}
+		
+		private void attach_PlaatsingHistorieks(PlaatsingHistoriek entity)
+		{
+			this.SendPropertyChanging();
+			entity.Cursist = this;
+		}
+		
+		private void detach_PlaatsingHistorieks(PlaatsingHistoriek entity)
+		{
+			this.SendPropertyChanging();
+			entity.Cursist = null;
+		}
+		
+		private void attach_Studiebewijs(Studiebewij entity)
+		{
+			this.SendPropertyChanging();
+			entity.Cursist = this;
+		}
+		
+		private void detach_Studiebewijs(Studiebewij entity)
+		{
+			this.SendPropertyChanging();
+			entity.Cursist = null;
 		}
 	}
 }

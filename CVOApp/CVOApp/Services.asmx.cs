@@ -119,6 +119,20 @@ namespace CVOApp
         }
 
         [WebMethod]
+        static void search_engine(string query, string type, uint index)
+        {
+            /*
+                :type
+             *      opleiding
+             *      module
+             *      event
+             *      campus
+             *      personeel
+             *      cursist
+             */
+        }
+
+        [WebMethod]
         public void test_opleidingen(string query, uint index)
         {
             DBMDataContext db = new DBMDataContext();
@@ -129,12 +143,12 @@ namespace CVOApp
                                  select opl.Naam)
                                  .ToList<string>();
             
-            int lx = 12;
+            int lx = 10;
             export(fuzzy(query,Base).GetRange(Convert.ToInt32(((index-1)*lx)), lx));
         }
 
         [WebMethod]
-        public void test_modules(string query, uint index)
+        public void test_modules(string query, uint index )
         {
             DBMDataContext db = new DBMDataContext();
             List<node> set = new List<node>();
@@ -144,7 +158,7 @@ namespace CVOApp
                                  select mdl.Naam)
                                  .ToList<string>();
 
-            int lx = 12;
+            int lx = 10;
             export(fuzzy(query, Base).GetRange(Convert.ToInt32(((index - 1) * lx)), lx));
         }
 
@@ -153,7 +167,6 @@ namespace CVOApp
         {
             DBMDataContext db = new DBMDataContext();
             List<node> set = new List<node>();
-
 
         }
 
@@ -326,7 +339,17 @@ namespace CVOApp
         [WebMethod]
         public void cursist_login(string cursistnummer, string wachtwoord)
         {
-            export("Success, " + cursistnummer + "!");
+            DBMDataContext db = new DBMDataContext();
+
+            var query = from cs in db.Cursists 
+                        select new {
+                            cs.CursistNummer,
+                            cs.Wachtwoord
+                        };
+
+           
+            
+            export(query);
         }
 
         [WebMethod]

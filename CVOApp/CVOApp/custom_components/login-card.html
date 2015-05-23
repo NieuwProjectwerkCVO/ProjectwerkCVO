@@ -2,30 +2,49 @@
 <link rel="import" href="../bower_components/core-elements/core-elements.html" />
 <link rel="import" href="../bower_components/paper-elements/paper-elements.html" />
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html" />
-
+<link rel="import" href="../bower_components/core-icons/social-icons.html" />
 <polymer-element name="login-card" attributes="url">
    
     <template>
         <style>
-            paper-card {
+            paper-card.base {
                 font-family: RobotoDraft;
-                padding: 35px;
-                margin: 5px;
-                background-color: #2c3a40;
-                color: white;
-                /*height: 200px;
-                width: 600px;*/
-                /*background-image: url('../Picture/ngc6960_block_big.jpg');*/
+                margin: 10px;
+                background-color: #fff;
+                color: black;
+                height: 100px;
+                max-width: 800px;
+            }
+
+            paper-input {
+                padding-left: 30px;
+             
+            }
+
+            .button {
+                width: 300px;
+                height: 100px;
+                border-left: thin solid;
+                border-left-width: 1px;
+                border-left-color: lightgrey;
+                font-size: 40px;
+                padding: 0px;
+                
+            }
+            .icon{
+                width: 200px;
+                height: 440px;
+                color: #0094ff;
             }
         </style>
 
-        <paper-card vertical layout z="1">
-            <paper-input type="text" label="cursistnummer" value="{{cursistnummer}}" ></paper-input>
-            <paper-input type="text" label="wachtwoord" value="{{wachtwoord}}" ></paper-input>
-            <div horizontal layout>
-                <paper-button raised on-click="{{login}}" z="1">login</paper-button>
-                <paper-item>{{data}}</paper-item>
+        <paper-card class="base" horizontal layout z="1">
+            <div style="width: 500px;" horizontal layout>
+                <paper-input floatinglabel type="text" label="Cursistnummer" value="{{cursistnummer}}"></paper-input>
+                <paper-input floatinglabel type="password" label="Wachtwoord" value="{{wachtwoord}}"></paper-input>
             </div>
+                <paper-button class="button" on-click="{{login}}" z="0">login</paper-button>
+               
         </paper-card>
 
         <core-ajax id="login_submit"
