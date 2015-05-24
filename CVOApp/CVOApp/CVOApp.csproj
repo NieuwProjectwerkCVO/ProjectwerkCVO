@@ -288,8 +288,8 @@
     <Content Include="calendar\d-date-utils.html" />
     <Content Include="calendar\demo.html" />
     <Content Include="calendar\index.html" />
-    <Content Include="custom_components\base-card.html" />
     <Content Include="custom_components\event-card.html" />
+    <Content Include="custom_components\resultaat-card.html" />
     <Content Include="custom_components\search-card.html" />
     <Content Include="Services.asmx" />
     <Content Include="Source\DBM.dbml">
@@ -1176,7 +1176,6 @@
     <Content Include="bower_components\webcomponentsjs\webcomponents.js" />
     <Content Include="bower_components\webcomponentsjs\webcomponents.min.js" />
     <Content Include="custom_components\cursist-card.html" />
-    <Content Include="custom_components\image-card.html" />
     <Content Include="custom_components\login-card.html" />
     <Content Include="custom_components\register-card.html" />
     <Content Include="custom_components\tool-card.html" />

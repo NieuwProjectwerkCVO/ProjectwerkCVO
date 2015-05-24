@@ -8,56 +8,179 @@
     <template>
         <style>
             
-            paper-card {
+            paper-card.base {
                 font-family: RobotoDraft;
-                padding: 35px;
-                margin: 5px;
-                background-color: #2c3a40;
-                color: white;
-                height: 500px;
+                margin: 10px;
+                background-color: #fff;
+                color: black;
+                height: 600px;
+            }
+
+            paper-card.top {
+                height: 100px;
+                font-size: 50px;
+                border-bottom: thin solid;
+                border-bottom-color: lightgrey;
+                border-bottom-width: 1px;
+            }
+
+            paper-card.login {
+                font-family: RobotoDraft;
+                margin: 10px;
+                background-color: #fff;
+                color: black;
+                height: 100px;
+                max-width: 800px;
+            }
+
+            paper-input {
+                padding-left: 30px;
+             
+            }
+
+            .button {
+                width: 300px;
+                height: 100px;
+                border-left: thin solid;
+                border-left-width: 1px;
+                border-left-color: lightgrey;
+                font-size: 40px;
+                padding: 0px;
+                
+            }
+            .icon{
+                width: 200px;
+                height: 440px;
+                color: #0094ff;
             }
         </style>
-
-        <paper-card z="1" horizontal layout flex style="height: 50px;">
-            <paper-input type="text" label="Cursistnummer" value="{{cursistnummer}}"></paper-input>
-            <paper-button on-click="{{submit}}" raised>OPHALEN (vb. 43703)</paper-button>
+        
+        <paper-card class="login" horizontal layout z="1">
+            <div style="width: 500px;" horizontal layout>
+                <paper-input floatinglabel type="text" label="Cursistnummer" value="{{cursistnummer}}"></paper-input>
+                <paper-input floatinglabel type="password" label="Wachtwoord" value="{{wachtwoord}}"></paper-input>
+            </div>
+            <paper-button class="button" on-click="{{submit}}" z="0">login</paper-button>
         </paper-card>
-        <paper-card vertical layout z="1" flex>
-            
-            <div fit style="overflow:auto;">
-                <core-list data="{{set}}" class="mylist" style="height: 100%" flex multi>
+
+        <core-ajax id="login"
+                   url="{{url}}"
+                   params='{ "cursistnummer": "{{cursistnummer}}" , "wachtwoord": "{{password}}"}'
+                   response="{{data}}"
+                   method="POST"
+                   handleas="json">
+        </core-ajax>
+
+        <paper-card class="base" vertical layout z="1" flex>
+            <paper-card class="top" style="height: 100px;" horizontal layout>
+                <div style="padding: 20px;">MODULES</div>
+            </paper-card>
+            <paper-card style="height: 495px; overflow: auto;" z="0">
+               
+                    <core-list data="{{modules}}" class="mylist" style="height: 100%" flex multi>
+                        <template>
+                            <div layout vertical flex>
+                                <div data-index="{{index}}">
+                                    <paper-item>
+                                        {{model.CursusNummer}}
+                                        {{model.Naam}}
+                                    </paper-item>
+                                </div>
+                            </div>
+                        </template>
+                    </core-list>
+
+            </paper-card>
+        </paper-card>
+
+        <core-ajax id="modules"
+                   url="{{modules_address}}"
+                   params='{ "cursistnummer": "{{cursistnummer}}" }'
+                   response="{{modules}}"
+                   method="POST"
+                   handleas="json">
+        </core-ajax>
+
+        <paper-card class="base" vertical layout z="1" flex>
+            <paper-card class="top" style="height: 100px;" horizontal layout>
+                <div style="padding: 20px;">EVENTS</div>
+            </paper-card>
+            <paper-card style="height: 495px; overflow: auto;" z="0">
+
+                <core-list data="{{events}}" class="mylist" style="height: 100%" flex multi>
+                    <template>
+                        <div layout vertical flex>
+                            <div data-index="{{index}}">
+                                <paper-item>
+                                    {{model.Naam}}
+                                    {{model.Lokaal}}
+                                    {{model.Afgelast}}
+                                    {{model.Aanvangsdatum}},
+                                    {{model.Einddatum}}
+                                </paper-item>
+                            </div>
+                        </div>
+                    </template>
+                </core-list>
+                </paper-card>
+            </paper-card>
+
+        <core-ajax id="events"
+                   url="{{events_address}}"
+                   params='{ "cursistnummer": "{{cursistnummer}}" }'
+                   response="{{events}}"
+                   method="POST"
+                   handleas="json">
+        </core-ajax>
+
+        <paper-card class="base" vertical layout z="1" flex>
+            <paper-card class="top" style="height: 100px;" horizontal layout>
+                <div style="padding: 20px;">RESULTATEN</div>
+            </paper-card>
+            <paper-card style="height: 495px; overflow: auto;" z="0">
+
+                <core-list data="{{resultaten}}" class="mylist" style="height: 100%" flex multi>
                     <template>
                         <div layout vertical flex>
                             <div data-index="{{index}}">
                                 <paper-item>
                                     {{model.CursusNummer}}
                                     {{model.Naam}}
+                                    {{model.PuntenTotaal}}
                                 </paper-item>
                             </div>
                         </div>
                     </template>
                 </core-list>
-            </div>
-        </paper-card>
+                </paper-card>
+            </paper-card>
 
-        <core-ajax id="cursist_submit"
-                   url="{{url}}"
+        <core-ajax id="resultaten"
+                   url="{{resultaten_address}}"
                    params='{ "cursistnummer": "{{cursistnummer}}" }'
-                   response="{{set}}"
+                   response="{{resultaten}}"
                    method="POST"
                    handleas="json">
         </core-ajax>
-    </template>
 
+    </template>
 
     <script>
         Polymer('cursist-card', {
+            cursistnummer: "43703",
+            wachtwoord: "blabla",
+            login_address: "http://localhost:57306/Services.asmx/cursist_login",
+            modules_address: "http://localhost:57306/Services.asmx/cursist_modules",
+            events_address: "http://localhost:57306/Services.asmx/cursist_events",
+            resultaten_address: "http://localhost:57306/Services.asmx/cursist_resultaten",
             success: function (response) {
                 console.log("data!");
                 alert(this.response);
             },
             submit: function () {
-                this.$.cursist_submit.go();
+                this.$.modules.go();
+                this.$.resultaten.go();
+                this.$.events.go();
                 console.log("button works!");
             },
             responseChanged: function (oldValue) {
