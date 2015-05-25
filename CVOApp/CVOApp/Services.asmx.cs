@@ -342,20 +342,18 @@ namespace CVOApp
         public void cursist_login(string cursistnummer, string wachtwoord)
         {
             DBMDataContext db = new DBMDataContext();
-<<<<<<< HEAD
+
 
             // cursistnummer ophalen
-            var query = from cs in db.Cursists 
-=======
+
             bool test = false;
             var query = from cs in db.Cursists
->>>>>>> origin/master
+
                         where cs.CursistNummer == cursistnummer
                         select new {
                             dx = cs.CursistNummer,
                             cs.Wachtwoord
                         };
-<<<<<<< HEAD
 
 
             // bestaat cursistnummer?
@@ -365,7 +363,6 @@ namespace CVOApp
             // genereer een nieuwe token en reset tokentimer
 
             // 
-=======
             foreach (var c in query)
             {
                 if (c.Wachtwoord == wachtwoord)
@@ -375,7 +372,6 @@ namespace CVOApp
             }
            
             
->>>>>>> origin/master
             export(query);
         }
 
