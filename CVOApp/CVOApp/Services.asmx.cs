@@ -340,13 +340,20 @@ namespace CVOApp
         public void cursist_login(string cursistnummer, string wachtwoord)
         {
             DBMDataContext db = new DBMDataContext();
-
-            var query = from cs in db.Cursists 
+            bool test = false;
+            var query = from cs in db.Cursists
+                        where cs.CursistNummer == cursistnummer
                         select new {
                             cs.CursistNummer,
                             cs.Wachtwoord
                         };
-
+            foreach (var c in query)
+            {
+                if (c.Wachtwoord == wachtwoord)
+                {
+                    test = true;
+                }
+            }
            
             
             export(query);
