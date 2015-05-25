@@ -76,8 +76,7 @@ namespace CVOApp
                     if ( cINSERT     ) v1[j + 1] = v0[j + 1] + 0;
                     if ( cSUBSTITUTE ) v1[j + 1] = v0[j] + cost;
                 }
-
-               Array.Copy(v1, 0, v0, 0, v0.Length);
+                Array.Copy(v1, 0, v0, 0, v0.Length);
             }
 
             return v1[lexB.Length];
@@ -331,7 +330,10 @@ namespace CVOApp
         // CURSIST ACTIONS //////////////////////////////////////////////
 
         [WebMethod]
-        public void cursist_registreer(string voornaam, string familienaam)
+        public void cursist_registreer(
+            string voornaam, 
+            string familienaam
+        )
         {
             export("Success, " + voornaam + "!");
         }
@@ -341,14 +343,22 @@ namespace CVOApp
         {
             DBMDataContext db = new DBMDataContext();
 
+            // cursistnummer ophalen
             var query = from cs in db.Cursists 
+                        where cs.CursistNummer == cursistnummer
                         select new {
-                            cs.CursistNummer,
+                            dx = cs.CursistNummer,
                             cs.Wachtwoord
                         };
 
-           
-            
+
+            // bestaat cursistnummer?
+
+            // is wachtwoord correct?
+
+            // genereer een nieuwe token en reset tokentimer
+
+            // 
             export(query);
         }
 
@@ -384,21 +394,20 @@ namespace CVOApp
             // export(query);
         }
 
-
-        // Cursist Data | Gegevens - Resultaten - Modules 
+        // Cursist Data | Gegevens - Resultaten - Modules  - Events
 
         [WebMethod]
-        public void cursist_gegevens(int id_cursist)
+        public void cursist_gegevens(string cursistnummer)
         {
             DBMDataContext db = new DBMDataContext();
 
-            var query = from cursist in db.Cursists
-                        where cursist.Id == id_cursist
+            var query = from crs in db.Cursists
+                        where crs.CursistNummer == cursistnummer
                         select new
                         {
-                            cursist.CursistNummer,
-                            cursist.Voornaam,
-                            cursist.Familienaam
+                            crs.CursistNummer,
+                            crs.Voornaam,
+                            crs.Familienaam
                         };
 
             export(query);
@@ -409,34 +418,35 @@ namespace CVOApp
         {
             DBMDataContext db = new DBMDataContext();
 
-            var query = from cursist in db.Cursists
-                        join mdl in db.Plaatsings
-                            on cursist.Id equals mdl.IdCursist
-                        join m in db.IngerichteModulevariants
-                            on mdl.IdIngerichteModulevariant equals m.Id
-                        where cursist.CursistNummer == cursistnummer
+            var query = from crs in db.Cursists
+                        join plts in db.Plaatsings
+                            on crs.Id equals plts.IdCursist
+                        join mdl in db.IngerichteModulevariants
+                            on plts.IdIngerichteModulevariant equals mdl.Id
+                        where crs.CursistNummer == cursistnummer
                         select new
                         {
-                            
-                            m.CursusNummer,
-                            m.Id,
-                            m.Naam
+                            mdl.CursusNummer,
+                            mdl.Id,
+                            mdl.Naam
                         };
 
             export(query);
         }
 
         [WebMethod]
-        public void cursist_resultaten(int id_cursist)
+        public void cursist_resultaten(string cursistnummer)
         {
             DBMDataContext db = new DBMDataContext();
 
-            var query = from plts in db.Plaatsings
+            var query = from crs in db.Cursists
+                        join plts in db.Plaatsings
+                            on crs.Id equals plts.IdCursist
                         join mdl in db.IngerichteModulevariants
                             on plts.IdIngerichteModulevariant equals mdl.Id
                         join res in db.PlaatsingResultaats
                             on plts.IdPlaatsingResultaat equals res.Id
-                        where plts.IdCursist == id_cursist
+                        where crs.CursistNummer == cursistnummer
                         select new
                         {
                             mdl.CursusNummer,
@@ -447,26 +457,80 @@ namespace CVOApp
             export(query);
         }
 
-
-        // EVENTS //////////////////////////////////////////////////////
-        // Specifiek | Lesmomenten - Deadlines - Examen - Herexamen - Deliberatie
-
         [WebMethod]
-        public void cursist_lesmomenten(int cursist_nummer)
+        public void cursist_data(int id_module)
         {
             DBMDataContext db = new DBMDataContext();
 
-            var query = from c in db.LesDavincis
-                        where c.IdIngerichteModulevariant == cursist_nummer
+            // lesmomenten
+            var query = from mdl in db.IngerichteModulevariants    
+                        join evt in db.LesDavincis
+                            on mdl.Id equals evt.IdIngerichteModulevariant
+                        join lkl in db.Lokaals
+                            on evt.IdLokaal equals lkl.Id
+                        where mdl.IdModuleVariant == id_module
+                        orderby evt.Aanvangsdatum
                         select new
                         {
-                            c.Afgelast,
-                            c.Aanvangsdatum,
-                            c.Einddatum
+                            mdl.Naam,
+                            Lokaal = lkl.Naam,
+                            evt.Afgelast,
+                            Aanvangsdatum = evt.Aanvangsdatum.ToString(),
+                            Einddatum = evt.Einddatum.ToString()
                         };
+
+            // taken
+
+            // notificatie
+
+            // deliberatie moment
+
+            // examen
+
+            // herexamen
+
+            // docent
+
+            // lestijden
+
+            // campus
+        }
+
+        [WebMethod]
+        public void cursist_events(string cursistnummer)
+        {
+            DBMDataContext db = new DBMDataContext();
+
+            var query = from crs in db.Cursists
+                        join plts in db.Plaatsings
+                            on crs.Id equals plts.IdCursist
+                        join mdl in db.IngerichteModulevariants
+                            on plts.IdIngerichteModulevariant equals mdl.Id  
+                        join evt in db.LesDavincis
+                            on mdl.Id equals evt.IdIngerichteModulevariant
+                        join lkl in db.Lokaals
+                            on evt.IdLokaal equals lkl.Id
+                        where crs.CursistNummer == cursistnummer
+                        orderby evt.Aanvangsdatum
+                        select new
+                        {
+                            mdl.Naam,
+                            Lokaal = lkl.Naam,
+                            evt.Afgelast,
+                            Aanvangsdatum = evt.Aanvangsdatum.ToString(),
+                            Einddatum = evt.Einddatum.ToString()
+                        };
+
+            // deadlines
+            // deliberatie
+            // examen
+            // herexamen
 
             export(query);
         }
+
+        // EVENTS //////////////////////////////////////////////////////
+        // Specifiek | Lesmomenten - Deadlines - Examen - Herexamen - Deliberatie
 
         [WebMethod]
         public void all_lesmomenten(int id_modulevariant)

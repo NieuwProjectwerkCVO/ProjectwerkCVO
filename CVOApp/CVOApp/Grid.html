@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
+    <script src="bower_components/platform/platform.js"></script>
+    <link rel="import" href="bower_components/polymer/polymer.html" />
+    <link rel="import" href="bower_components/core-elements/core-elements.html" />
+    <link rel="import" href="bower_components/paper-elements/paper-elements.html" />
+    <link rel="import" href="bower_components/paper-card/paper-card.html" />
+    <link rel="stylesheet" type="text/css" href="font/RobotoDraft.css" />
+
+
+
+</head>
+<body unresolved style="font-family: RobotoDraft;" fullbleed layout vertical>
+
+    <div>
+        <drag-card></drag-card>
+    </div>
+    <polymer-element name="drag-card">
+        <template>
+            <style>
+                paper-card.menu {
+                    background-color: #ffffff;
+                    margin: 10px;
+                    height: 40px;
+                }
+
+                paper-card.s1 {
+                    background-color: #ffffff;
+                    height: 150px;
+                    width: 150px;
+                    
+                }
+                
+                paper-card.top {
+                    background-color: #808080;
+                    height: 50px;
+                    width: 150px;
+                }
+                paper-card.s1{  
+                    transform: matrix(1, 0, 0, 1, 50, 50);
+                    transition: transform 200ms ease-in-out;
+                    z-index: 100;
+                }
+                paper-card.s1:hover {
+                    transform: matrix(1.2, 0, 0, 1.2, 50, 50);
+                    transition: transform 200ms ease-in-out;
+                    z-index: 110;
+                }
+            </style>
+
+            <paper-card class="menu" horizontal layout>
+                <paper-icon-button icon="add" on-click="{{new_card}}"></paper-icon-button>
+                <paper-icon-button icon="clear" on-click="{{delete_card}}"></paper-icon-button>
+                <paper-icon-button icon="copy" on-click="{{copy_card}}"></paper-icon-button>
+            </paper-card>
+            <template repeat="{{ x in base_array }}">
+                <paper-card 
+                            class="s1" 
+                            onmousedown="{{select_card}}"
+                            style="top: {{x.y}}; left: {{x.x}}; width: {{x.dx}}; height: {{x.dy}};">
+                    <paper-card class="top" z="0">
+                        <paper-input value="{{x.selected}}">
+                            <!-- hide button -->
+                            {{x.}}
+                        </paper-input>
+                    </paper-card>
+
+                    <div horizontal layout>
+                        <div flex></div>
+                        <core-icon icon="clear"></core-icon>
+                        <paper-ripple fit></paper-ripple>
+                    </div>
+                </paper-card>
+            </template>
+
+        </template>
+
+        <script>
+
+
+
+            Polymer("drag-card", {
+                base_array: [
+                    { "x": "0", "y": "0", "dx": "50", "dy": "50" },
+                    { "x": "0", "y": "0", "dx": "0", "dy": "0" },
+                    { "x": "0", "y": "0", "dx": "0", "dy": "0" },
+                    { "x": "0", "y": "0", "dx": "0", "dy": "0" },
+                ],
+                onmousemove: function (e) {
+                    console.log("hello");
+                    this.base_array[0].x = e.clientX;
+                    this.base_array[0].y = e.clientY;
+                },
+                selected_array: [
+                ],
+
+                new_card: function(){
+                    console.log("new_card");
+                    this.card_array[this.card_array.length] = 4;
+                    
+                },
+                delete_card: function(){
+                    console.log("delete_card");
+                    this.card_array.length -= 1;
+                },
+                copy_card: function(){
+                    console.log("copy_card");
+                },
+
+
+
+                select_card: function () {
+                    console.log("select_card");
+                },
+                drag_card: function(){
+                    console.log("drag_card");
+                },
+                drop_card: function(){
+                    console.log("drop_card");
+                },
+                deselect_card: function(){
+                    console.log("deselect_card");
+                },
+                preselect_card: function () {
+                    console.log("preselect_card");
+                },
+
+            });
+        </script>
+    </polymer-element>
+</body>
+</html>

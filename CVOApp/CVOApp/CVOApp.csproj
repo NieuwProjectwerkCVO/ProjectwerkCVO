@@ -291,6 +291,7 @@
     <Content Include="custom_components\event-card.html" />
     <Content Include="custom_components\resultaat-card.html" />
     <Content Include="custom_components\search-card.html" />
+    <Content Include="Grid.html" />
     <Content Include="Services.asmx" />
     <Content Include="Source\DBM.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>

@@ -71,6 +71,10 @@
                    handleas="json">
         </core-ajax>
 
+        <!--/////////////////////////////////////////////////////////
+            /////////////////////////////////////////////////////////
+            /////////////////////////////////////////////////////////
+            -->
         <paper-card class="base" vertical layout z="1" flex>
             <paper-card class="top" style="height: 100px;" horizontal layout>
                 <div style="padding: 20px;">MODULES</div>
@@ -101,6 +105,10 @@
                    handleas="json">
         </core-ajax>
 
+        <!--/////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////
+        -->
         <paper-card class="base" vertical layout z="1" flex>
             <paper-card class="top" style="height: 100px;" horizontal layout>
                 <div style="padding: 20px;">EVENTS</div>
@@ -133,6 +141,10 @@
                    handleas="json">
         </core-ajax>
 
+        <!--/////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////
+        -->
         <paper-card class="base" vertical layout z="1" flex>
             <paper-card class="top" style="height: 100px;" horizontal layout>
                 <div style="padding: 20px;">RESULTATEN</div>
@@ -167,21 +179,27 @@
 
     <script>
         Polymer('cursist-card', {
-            cursistnummer: "43703",
+            cursistnummer: "46371",
             wachtwoord: "blabla",
+
             login_address: "http://localhost:57306/Services.asmx/cursist_login",
             modules_address: "http://localhost:57306/Services.asmx/cursist_modules",
             events_address: "http://localhost:57306/Services.asmx/cursist_events",
             resultaten_address: "http://localhost:57306/Services.asmx/cursist_resultaten",
-            success: function (response) {
-                console.log("data!");
-                alert(this.response);
-            },
+
+            modules: [],
+            resultaten: [],
+            events: [],
+            
             submit: function () {
                 this.$.modules.go();
                 this.$.resultaten.go();
                 this.$.events.go();
                 console.log("button works!");
+            },
+            success: function (response) {
+                console.log("data!");
+                alert(this.response);
             },
             responseChanged: function (oldValue) {
                 console.log("data!");
