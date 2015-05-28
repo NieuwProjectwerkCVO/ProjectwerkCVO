@@ -343,10 +343,13 @@ namespace CVOApp
         {
             DBMDataContext db = new DBMDataContext();
 
+            //result
+            //1=logged in
+            //2=ww fout
+            //3=cursistnummer bestaat niet
+            int result = 0;
 
             // cursistnummer ophalen
-
-            bool test = false;
             var query = from cs in db.Cursists
 
                         where cs.CursistNummer == cursistnummer
@@ -356,19 +359,28 @@ namespace CVOApp
                         };
 
 
-            // bestaat cursistnummer?
-
-            // is wachtwoord correct?
 
             // genereer een nieuwe token en reset tokentimer
 
-            // 
-            foreach (var c in query)
+            //bestaan cursistnummer controleren
+            if (query.Any())
             {
-                if (c.Wachtwoord == wachtwoord)
+                //wachtwoord controleren 
+                foreach (var c in query)
                 {
-                    test = true;
-                }
+                    if (c.Wachtwoord == wachtwoord)
+                    {
+                        result = 1;
+                    }
+                    else
+                    {
+                        result = 2;
+                    }
+                } 
+            }
+            else
+            {
+                result = 3;
             }
            
             
