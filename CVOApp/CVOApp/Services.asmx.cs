@@ -402,56 +402,14 @@ namespace CVOApp
         [WebMethod]
         public void cursist_gegevens(string access_token)
         {
-<<<<<<< HEAD
             DBMDataContext db = new DBMDataContext();
 
             validator vx = new validator(access_token);
 
-            if (vx.is_valid == false) {
-                export(vx);
+            if (vx.is_valid == false)
+            {
+                export(new { Message = "Incorrecte wachtwoord en/of cursistnummer"});
                 return;
-=======
-            DBMDataContext db = new DBMDataContext();
-
-            //result
-            //1=logged in
-            //2=ww fout
-            //3=cursistnummer bestaat niet
-            int result = 0;
-
-            // cursistnummer ophalen
-            var query = from cs in db.Cursists
-
-                        where cs.CursistNummer == cursistnummer
-                        select new {
-                            dx = cs.CursistNummer,
-                            cs.Wachtwoord
-                        };
-
-
-
-            // genereer een nieuwe token en reset tokentimer
-
-            //bestaan cursistnummer controleren
-            if (query.Any())
-            {
-                //wachtwoord controleren 
-                foreach (var c in query)
-                {
-                    if (c.Wachtwoord == wachtwoord)
-                    {
-                        result = 1;
-                    }
-                    else
-                    {
-                        result = 2;
-                    }
-                } 
-            }
-            else
-            {
-                result = 3;
->>>>>>> origin/master
             }
 
             var query = from crs in db.Cursists
@@ -469,7 +427,7 @@ namespace CVOApp
                         };
 
             export(query);
-            
+  
         }
 
         [WebMethod]
