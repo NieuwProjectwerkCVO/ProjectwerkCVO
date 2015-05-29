@@ -15,121 +15,540 @@
 </head>
 <body unresolved style="font-family: RobotoDraft;" fullbleed layout vertical>
 
-    <div>
-        <drag-card></drag-card>
-    </div>
-    <polymer-element name="drag-card">
+
+
+    <!--
+        pages
+            page 1
+            page 2
+        transitions
+            page 1 [login]> page 2
+            page 2 [logout]> page 1
+    -->
+
+    <core-header-panel flex>
+        <taken-page></taken-page>
+        <login-page></login-page>
+        <register-page></register-page>
+        <module-subscribe-page></module-subscribe-page>
+        <module-page cursistnummer="43703"></module-page>
+        <appointment-page></appointment-page>
+        <calendar-page></calendar-page>
+        <campus-page></campus-page>
+        
+    </core-header-panel>
+
+
+    <polymer-element name="login-page">
         <template>
             <style>
-                paper-card.menu {
-                    background-color: #ffffff;
+                 paper-card.base {
+                    font-family: RobotoDraft;
                     margin: 10px;
-                    height: 40px;
+                    background-color: #fff;
+                    color: black;
+                    width: 600px;
+                    height: 600px;
                 }
 
-                paper-card.s1 {
-                    background-color: #ffffff;
-                    height: 150px;
-                    width: 150px;
+                paper-input {
+                    padding-left: 30px;
+                    padding-right: 30px;
+                }
+
+                paper-button {
                     
+                    width: auto;
+                    transition: background-color 200ms ease-in-out;
                 }
-                
-                paper-card.top {
-                    background-color: #808080;
-                    height: 50px;
-                    width: 150px;
+
+                paper-button:hover {
+                    background-color: lightgrey;
+                    transition: background-color 200ms ease-in-out;
                 }
-                paper-card.s1{  
-                    transform: matrix(1, 0, 0, 1, 50, 50);
-                    transition: transform 200ms ease-in-out;
-                    z-index: 100;
-                }
-                paper-card.s1:hover {
-                    transform: matrix(1.2, 0, 0, 1.2, 50, 50);
-                    transition: transform 200ms ease-in-out;
-                    z-index: 110;
+                paper-card.selected {
+
                 }
             </style>
 
-            <paper-card class="menu" horizontal layout>
-                <paper-icon-button icon="add" on-click="{{new_card}}"></paper-icon-button>
-                <paper-icon-button icon="clear" on-click="{{delete_card}}"></paper-icon-button>
-                <paper-icon-button icon="copy" on-click="{{copy_card}}"></paper-icon-button>
+            <paper-card class="base" z="1" vertical layout>
+                <div></div>
+                <paper-icon-button icon="add" on-click="{{registeer_transition}}"></paper-icon-button>
+                <paper-input floatinglabel type="text" label="Cursistnummer" value="{{cursistnummer}}"></paper-input>
+                <paper-input floatinglabel type="password" label="Wachtwoord" value="{{wachtwoord}}"></paper-input>
+                <paper-button class="button" on-click="{{login_transition}}" z="0">login</paper-button>
             </paper-card>
-            <template repeat="{{ x in base_array }}">
-                <paper-card 
-                            class="s1" 
-                            onmousedown="{{select_card}}"
-                            style="top: {{x.y}}; left: {{x.x}}; width: {{x.dx}}; height: {{x.dy}};">
-                    <paper-card class="top" z="0">
-                        <paper-input value="{{x.selected}}">
-                            <!-- hide button -->
-                            {{x.}}
-                        </paper-input>
-                    </paper-card>
 
-                    <div horizontal layout>
-                        <div flex></div>
-                        <core-icon icon="clear"></core-icon>
-                        <paper-ripple fit></paper-ripple>
-                    </div>
-                </paper-card>
-            </template>
+            <core-ajax id="login_submit"
+                       url="http://localhost:57306/Services.asmx/cursist_login"
+                       params='{ "cursistnummer": "{{cursistnummer}}" , "wachtwoord": "{{password}}"}'
+                       response="{{login_response}}"
+                       method="POST"
+                       handleas="json">
+            </core-ajax>
 
         </template>
+        <script>
+            Polymer("login-page", {
+                login_transition: function () {
+                    console.log("login_transition");
+                },
+                registeer_transition: function () {
+                    console.log("registreer_transition");
+                }
+            });
+        </script>
+    </polymer-element>
+
+    <polymer-element name="register-page">
+        <template>
+            <style>
+
+                paper-card.selected {
+                }
+
+                paper-card.base {
+                    font-family: RobotoDraft;
+                    margin: 10px;
+                    background-color: #fff;
+                    color: black;
+                    width: 600px;
+                    height: 600px;
+                }
+
+                paper-card.bottom {
+                    border-top: thin solid;
+                    border-top-color: lightgrey;
+                    border-top-width: 1px;
+                }
+
+                paper-input {
+                    padding-left: 30px;
+                    padding-right: 30px;
+                }
+
+                paper-radio-group {
+                    padding-top: 10px;
+                    padding-left: 30px;
+                    padding-right: 30px;
+                }
+
+                paper-button {
+                    width: 200px;
+                    height: 100px;
+                    border-right: thin solid;
+                    border-right-color: lightgrey;
+                    border-right-width: 1px;
+                    font-size: 30px;
+                    padding-right: 20px;
+                    padding-top: 10px;
+                }
+            </style>
+
+            <paper-card class="base" vertical layout z="1">
+                <div horizontal layout>
+                    <paper-input floatinglabel label="Voornaam" value="{{voornaam}}"></paper-input>
+                    <paper-input floatinglabel label="Familienaam" value="{{familienaam}}"></paper-input>
+                    <paper-radio-group onselect="male" value="{{geslacht}}">
+                        <paper-radio-button name="male" label="Male"></paper-radio-button>
+                        <paper-radio-button name="female" label="Female"></paper-radio-button>
+                    </paper-radio-group>
+                </div>
+
+                <paper-input floatinglabel label="Email" value="{{email}}"></paper-input>
+                <div horizontal layout>
+                    <paper-input floatinglabel label="Straat" value="{{straat}}"></paper-input>
+                    <paper-input floatinglabel label="Huisnummer" value="{{huisnummer}}"></paper-input>
+                </div>
+                <paper-input floatinglabel label="Email" value="{{email}}"></paper-input>
+                <paper-input floatinglabel label="GSM" value="{{gsm}}"></paper-input>
+                <paper-input floatinglabel label="Tel" value="{{tel}}"></paper-input>
+                <paper-input floatinglabel label="DD/MM/JJJJ" value="{{email}}"></paper-input>
+                <paper-card class="bottom" z="0" horizontal layout>
+                    <paper-button on-click="{{register}}">SUBMIT</paper-button>
+                    <paper-item flex>{{data}}</paper-item>
+                </paper-card>
+            </paper-card>
+
+            <core-ajax id="login_submit"
+                       url="http://localhost:57306/Services.asmx/cursist_login"
+                       params='{ "cursistnummer": "{{cursistnummer}}" , "wachtwoord": "{{password}}"}'
+                       response="{{login_response}}"
+                       method="POST"
+                       handleas="json">
+            </core-ajax>
+
+        </template>
+        <script>
+            Polymer("register-page", {
+                register: function () {
+                    console.log("login_transition");
+                },
+                registeer_transition: function () {
+                    console.log("registreer_transition");
+                }
+            });
+        </script>
+    </polymer-element>
+
+    <polymer-element name="module-page" attributes="cursistnummer">
+        <template>
+            <style>
+                paper-card.base {
+                    font-family: RobotoDraft;
+                    margin: 10px;
+                    background-color: #fff;
+                    color: black;
+                    width: 600px;
+                    height: 600px;
+                }
+
+                paper-input {
+                    padding-left: 30px;
+                    padding-right: 30px;
+                }
+
+                paper-card.selected {
+                }
+            </style>
+
+            <paper-card class="base" vertical layout z="1" flex>
+                <paper-card class="top" style="height: 100px;" horizontal layout>
+                    <div style="padding: 20px;">MODULES</div>
+                </paper-card>
+                <paper-card style="height: 495px; overflow: auto;" z="0">
+
+                    <core-list data="{{modules}}" class="mylist" style="height: 100%" flex multi>
+                        <template>
+                            <div layout vertical flex>
+                                <div data-index="{{index}}">
+                                    <paper-item>
+                                        {{model.CursusNummer}}
+                                        {{model.Naam}}
+                                    </paper-item>
+                                </div>
+                            </div>
+                        </template>
+                    </core-list>
+
+                </paper-card>
+            </paper-card>
+
+            <core-ajax auto
+                       id="modules"
+                       url="http://localhost:57306/Services.asmx/cursist_modules"
+                       params='{ "cursistnummer": "{{cursistnummer}}" }'
+                       response="{{modules}}"
+                       method="POST"
+                       handleas="json">
+            </core-ajax>
+        </template>
+
 
         <script>
-
-
-
-            Polymer("drag-card", {
-                base_array: [
-                    { "x": "0", "y": "0", "dx": "50", "dy": "50" },
-                    { "x": "0", "y": "0", "dx": "0", "dy": "0" },
-                    { "x": "0", "y": "0", "dx": "0", "dy": "0" },
-                    { "x": "0", "y": "0", "dx": "0", "dy": "0" },
-                ],
-                onmousemove: function (e) {
-                    console.log("hello");
-                    this.base_array[0].x = e.clientX;
-                    this.base_array[0].y = e.clientY;
-                },
-                selected_array: [
-                ],
-
-                new_card: function(){
-                    console.log("new_card");
-                    this.card_array[this.card_array.length] = 4;
-                    
-                },
-                delete_card: function(){
-                    console.log("delete_card");
-                    this.card_array.length -= 1;
-                },
-                copy_card: function(){
-                    console.log("copy_card");
-                },
-
-
-
-                select_card: function () {
-                    console.log("select_card");
-                },
-                drag_card: function(){
-                    console.log("drag_card");
-                },
-                drop_card: function(){
-                    console.log("drop_card");
-                },
-                deselect_card: function(){
-                    console.log("deselect_card");
-                },
-                preselect_card: function () {
-                    console.log("preselect_card");
-                },
+            Polymer("module-page", {
 
             });
         </script>
     </polymer-element>
+
+    <polymer-element name="module-subscribe-page">
+        <template>
+            <style>
+                paper-card.base {
+                    font-family: RobotoDraft;
+                    margin: 10px;
+                    background-color: #fff;
+                    color: black;
+                    width: 600px;
+                    height: 600px;
+                }
+
+                paper-input {
+                    padding-left: 30px;
+                    padding-right: 30px;
+                }
+
+                paper-card.selected {
+                }
+            </style>
+            <paper-card class="base" vertical layout flex>
+                <paper-card class="top" horizontal layout z="0">
+                    <paper-input label="{{category}}" floatinglabel value="{{query}}" flex z="0">
+                    </paper-input>
+                    <paper-card z="0">
+                        <core-icon class="arrow" icon="chevron-left"></core-icon>
+                        <paper-ripple fit on-click="{{decrement}}" style="color: #0094ff"> </paper-ripple>
+                    </paper-card>
+                    <paper-card z="0">
+                        <core-icon class="arrow" icon="chevron-right"></core-icon>
+                        <paper-ripple fit on-click="{{increment}}" style="color: #0094ff"> </paper-ripple>
+                    </paper-card>
+                    <paper-card class="index" z="0" style="user-select: none;">{{index}}</paper-card>
+                </paper-card>
+                <paper-card class="middle" vertical layout flex z="0">
+                    <core-list id="datalist"
+                               selectionenabled="true"
+                               data="{{set}}"
+                               style="height: 100%"
+                               selection="{{selection}}"
+                               flex>
+                        <template>
+                            <paper-item class="{{ {selected: selected } | tokenList }}">
+                                {{model.data}}
+                            </paper-item>
+                        </template>
+                    </core-list>
+                </paper-card>
+                <!--<paper-card horizontal layout z="0" class="bottom">
+            <paper-card z="0">
+                <core-icon class="arrow" icon="add"></core-icon>
+                <paper-ripple fit on-click="{{schedule}}" style="color: #0094ff"> </paper-ripple>
+            </paper-card>
+            <paper-card z="0">
+                <core-icon class="arrow" icon="clear"></core-icon>
+                <paper-ripple fit on-click="{{cancel}}" style="color: #0094ff"> </paper-ripple>
+            </paper-card>
+        </paper-card>-->
+            </paper-card>
+
+            <core-ajax auto
+                       id="cursist_submit"
+                       url="http://localhost:57306/Services.asmx/test_opleidingen"
+                       params='{ "query": "{{query}}", "index": {{index}} }'
+                       response="{{set}}"
+                       method="POST"
+                       handleas="json">
+            </core-ajax>
+        </template>
+
+        <script>
+            Polymer("module-subscribe-page",
+            {
+                index: 1
+            });
+        </script>
+    </polymer-element>
+
+    <polymer-element name="appointment-page">
+        <template>
+            <style>
+                paper-card.base {
+                    font-family: RobotoDraft;
+                    margin: 10px;
+                    background-color: #fff;
+                    color: black;
+                    width: 600px;
+                    height: 600px;
+                }
+
+                paper-input {
+                    padding-left: 30px;
+                    padding-right: 30px;
+                }
+
+                paper-card.selected {
+                }
+            </style>
+
+            <paper-card class="base" vertical layout>APPOINTMENT</paper-card>
+        </template>
+
+        <script>
+            Polymer("appointment-page");
+        </script>
+    </polymer-element>
+    
+    <polymer-element name="calendar-page">
+        <template>
+            <style>
+                paper-card.base {
+                    font-family: RobotoDraft;
+                    margin: 10px;
+                    background-color: #fff;
+                    color: black;
+                    width: 600px;
+                    height: 600px;
+                }
+            </style>
+
+            <paper-card class="base" vertical layout>CALENDAR</paper-card>
+        </template>
+        <script>
+            Polymer("calendar-page");
+        </script>
+    </polymer-element>
+
+    <polymer-element name="campus-page">
+        <template>
+            <style>
+                paper-card.base {
+                    font-family: RobotoDraft;
+                    margin: 10px;
+                    background-color: #fff;
+                    color: black;
+                    width: 600px;
+                    height: 600px;
+                }
+
+                paper-item {
+                    height: 50px;
+                }
+                paper-item:hover{
+                    background-color: lightgrey;
+                    transition: background-color 200ms ease-in-out;
+                }
+            </style>
+
+            
+            <paper-card class="base" vertical layout>
+                <template repeat="{{element in set}}">
+                    <paper-item>
+                        {{element.Naam}}
+                        {{element.Telefoon}}
+                    </paper-item>
+                </template>
+            </paper-card>
+
+            <core-ajax auto
+                       id="cursist_submit"
+                       url="http://localhost:57306/Services.asmx/campussen"
+                       response="{{set}}"
+                       method="POST"
+                       handleas="json">
+            </core-ajax>
+        </template>
+        <script>
+            Polymer("campus-page");
+        </script>
+    </polymer-element>
+
+    <polymer-element name="taken-page">
+        <template>
+            <style>
+                paper-card.base {
+                    font-family: RobotoDraft;
+                    margin: 10px;
+                    background-color: #fff;
+                    color: black;
+                    width: 600px;
+                    height: 600px;
+                }
+            </style>
+
+            <paper-card class="base" vertical layout>taken</paper-card>
+        </template>
+        <script>
+            Polymer("taken-page");
+        </script>
+    </polymer-element>
+
+
+
+
+
+
+    <polymer-element name="transit-page">
+        <template>
+            <style>
+                paper-card.selector {
+                    height: 100px;
+                    width: 600px;
+                }
+
+                paper-card.page {
+                    height: 600px;
+                    width: 600px;
+                    margin: 10px;
+                }
+
+                core-pages-animated transitions {
+                    width: 100%;
+                    height: 100%;
+                }
+
+                paper-icon-button:hover {
+                    transition: background-color 200ms ease-in-out;
+                }
+
+                paper-icon-button:hover {
+                    background-color: lightgrey;
+                    transition: background-color 200ms ease-in-out;
+                }
+            </style>
+            <core-drawer-panel responsivewidth="800px;">
+                <div drawer>
+                    <core-collapse opened?="{{selected == i}}" fixedsize style="height:150px"></core-collapse>
+                </div>
+                <div main></div>
+            </core-drawer-panel>
+
+            <core-animated-pages selected="{{current_page}}" transitions="cross-fade-all" valueattr="identity">
+                <!-- /////////////////////////////////////////////////////////////////////
+                /////////////////////////////////////////////////////////////////////
+                // LOGIN -->
+                <section identity="login_page">
+                    <login-page></login-page>
+                </section>
+                <!-- /////////////////////////////////////////////////////////////////////
+                /////////////////////////////////////////////////////////////////////
+                // REGISTREER -->
+                <section identity="registreer_page">
+                    <paper-card class="page" vertical layout z="1">
+                        <paper-icon-button icon="chevron-left" on-click="{{B}}"></paper-icon-button>
+                        <div horizontal layout>
+                            <paper-input floatinglabel label="Voornaam" value="{{voornaam}}"></paper-input>
+                            <paper-input floatinglabel label="Familienaam" value="{{familienaam}}"></paper-input>
+                            <paper-radio-group onselect="male">
+                                <paper-radio-button name="male" label="Male"></paper-radio-button>
+                                <paper-radio-button name="female" label="Female"></paper-radio-button>
+                            </paper-radio-group>
+                        </div>
+
+                        <paper-input floatinglabel label="Email" value="{{email}}"></paper-input>
+                        <div horizontal layout>
+                            <paper-input floatinglabel label="Straat"></paper-input>
+                            <paper-input floatinglabel label="Huisnummer"></paper-input>
+                        </div>
+                        <paper-input floatinglabel label="Email"></paper-input>
+                        <paper-input floatinglabel label="GSM"></paper-input>
+                        <paper-input floatinglabel label="Tel"></paper-input>
+                        <paper-input floatinglabel label="DD/MM/JJJJ"></paper-input>
+                        <paper-card class="bottom" z="0" horizontal layout>
+                            <paper-button on-click="{{register}}">SUBMIT</paper-button>
+                            <paper-item flex>{{data}}</paper-item>
+                        </paper-card>
+                    </paper-card>
+                </section>
+                <!-- /////////////////////////////////////////////////////////////////////
+                /////////////////////////////////////////////////////////////////////
+                // REGISTREER -->
+                <section>
+                    <paper-card>
+
+                    </paper-card>
+                </section>
+            </core-animated-pages>
+        </template>
+
+        <script>
+            Polymer("transit-page", {
+                current_page: "login_page",
+                login_response: {},
+                A: function () {
+                    this.current_page = "registreer_page";
+                },
+                B: function () {
+                    this.current_page = "login_page";
+                },
+                login: function () {
+
+                }
+            });
+        </script>
+    </polymer-element>
+
+
 </body>
+
 </html>

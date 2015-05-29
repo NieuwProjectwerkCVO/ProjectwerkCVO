@@ -16,6 +16,7 @@ using System.Xml;
 using System.Text.RegularExpressions;
 using System.Web.Script.Services;
 using System.Web.Script.Serialization;
+using System.Text.RegularExpressions;
 
 namespace CVOApp
 {
@@ -37,6 +38,57 @@ namespace CVOApp
             Context.Response.ContentType = "application/json";
             Context.Response.Write(js.Serialize(obj));
         }
+
+        class validator
+        {
+            public int id_cursist;
+            public string cursistnummer;
+            public string wachtwoord;
+            public bool is_valid;
+
+            public validator(string access_token)
+            {
+                DBMDataContext db = new DBMDataContext();
+
+                if (access_token.Length > 4) { 
+                    cursistnummer = access_token.Substring(0,5);
+                    wachtwoord = access_token.Substring(5);
+                    is_valid = true;
+                }
+                // cursistnummer ophalen
+                var query = from cs in db.Cursists
+                            where cs.CursistNummer == cursistnummer
+                            select new
+                            {
+                                cs.Id,
+                                cs.CursistNummer,
+                                cs.Wachtwoord
+                            };
+
+
+                // bestaat cursistnummer?
+                int count = 0;
+                foreach (var c in query) count++;
+
+
+                if (count == 0) is_valid = false;
+                
+                else
+                {
+                    // correcte wachtwoord
+                    bool test = false;
+                    foreach (var cs in query)
+                    {
+                        if (cs.Wachtwoord == wachtwoord) id_cursist = cs.Id;
+                        else is_valid = false;
+                    }
+                    
+                }
+            }
+        }
+        
+        
+
     
         class Test { public int Id; public string Naam; }
 
@@ -169,27 +221,71 @@ namespace CVOApp
 
         }
 
-        // PLAATSEN | Campussen ///////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
+        /// GENERIEKE DATA | Gegevens - Resultaten - Modules  - Events
+        ///////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
+      
         [WebMethod]
-        public void campussen()
+        public void select_campussen()
         {
             DBMDataContext db = new DBMDataContext();
 
-            var query = from centrum in db.Centrums
-                        join vestiging in db.Vestigingsplaats
-                            on centrum.Id equals vestiging.IdCentrum
-                        where vestiging.Geografie == "Antwerpen"
-                        select new { 
-                            centrum.OfficieleNaam, 
-                            vestiging.Geografie 
-                        };
+            var Campus = new[] {
+                new {
+                    Naam = "Campus Hoboken (Hoofdzetel)",
+                    Straat = "Distelvinklaan 22",
+                    Postcode = "2660 Hoboken",
+                    Telefoon = "03 830 41 05",
+                    Fax = "03 830 33 79",
+                    Openingsuren = "Maandag t.e.m. donderdag: 09 - 13 u., 13.30 - 17.30 u. en 18  - 21 u. Vrijdag: 09 - 13 u. "
+                },
+                new
+                {
+                    Naam = "Campus Breughel",
+                    Straat = "Breughelstraat 35",
+                    Postcode = "2018 Antwerpen",
+                    Telefoon = "03 230 10 21",
+                    Fax = "03 830 33 79",
+                    Openingsuren = "Maandag t.e.m. vrijdag: 09 - 13 u. en 13.30 - 15 u."
+                },
+                new
+                {
+                    Naam = "Campus Craeybeckx",
+                    Straat = "Frank Craeybeckxlaan 22",
+                    Postcode = "2100 Deurne",
+                    Telefoon = "03 360 80 40",
+                    Fax = "03 830 33 79",
+                    Openingsuren = "Maandag t.e.m. donderdag: 09 - 13 u. , 13.30 - 17.30 u. en 18 - 21 u. Vrijdag: 09 - 13 u."
+                },
+                new
+                {
+                    Naam = "Campus Roosevelt",
+                    Straat = "Frank Rooseveltplaats 11",
+                    Postcode = "2060 Antwerpen",
+                    Telefoon = "0493 598 175",
+                    Fax = "03 830 33 79",
+                    Openingsuren = "Maandag t.e.m. donderdag: 18.30 - 21 u."
+                },
+                new
+                {
+                    Naam = "Campus Ruggeveld",
+                    Straat = "Ruggeveldlaan 496",
+                    Postcode = "2100 Deurne",
+                    Telefoon = "03 328 05 30",
+                    Fax = "03 830 33 79",
+                    Openingsuren = "Maandag t.e.m. donderdag: 17.30 - 21 u."
+                }
+            };
 
-            export(query);
+            export(Campus);
         }
 
-        // PERSONEN | Cursisten - Trajectbegeleiders - Lesgevers - Medewerkers ////
         [WebMethod]
-        public void personeel()
+        public void select_personeel()
         {
             DBMDataContext db = new DBMDataContext();
 
@@ -207,7 +303,7 @@ namespace CVOApp
         }
 
         [WebMethod]
-        public void cursisten()
+        public void select_cursisten()
         {
             DBMDataContext db = new DBMDataContext();
 
@@ -222,64 +318,57 @@ namespace CVOApp
             export(query);
         }
 
-        //  GENERIEK OPLEIDING + MODULES ////////////////////////////////////////////
+        // OPLEIDINGEN + MODULES ////////////////////////////////////////////
         
         [WebMethod]
-        public void all_opleidingen()
+        public void select_opleidingen()
         {
             DBMDataContext db = new DBMDataContext();
 
-            var query = from c in db.Opleidingsvariants
-                        select new {  
-                            c.Id,
-                            c.Naam
-                        };
+            // IngerichteOpleidingsvariant is praktisch leeg 
+            // Dit is dus een andere manier om alsnog de opleidingen
+            // te krijgen die ingericht zijn.
+            // Deze lijst komt overeen met de lijst op de website.
+
+            var query = (from c in db.IngerichteModulevariants
+                         join opl in db.Opleidingsvariants
+                            on c.IdOpleidingsVariant equals opl.Id
+                         select new
+                         {
+                             c.IdOpleidingsVariant,
+                             opl.IdOpleiding,
+                             opl.Naam
+                         })
+                         .GroupBy(x => x.IdOpleidingsVariant)
+                         .Select(grp => grp.First());
 
             export(query);
         }
 
         [WebMethod]
-        public void all_traject(int id_opleiding)
+        public void select_modules_filter_opleiding(int id_opleidingsvariant)
         {
             DBMDataContext db = new DBMDataContext();
 
-            var query = from c in db.Opleidingsvariants
+            var query = (from c in db.Opleidingsvariants
                         join cnc in db.OpleidingsvariantModulevariants
                             on c.Id equals cnc.IdOpleidingsvariant
                         join m in db.Modulevariants
                             on cnc.IdModulevariant equals m.Id
-                        where c.Id == id_opleiding
+                        where c.Id == id_opleidingsvariant
                         select new
                         {
                             ModuleId = m.Id,
+                            m.Code,
                             Modulenaam = m.Naam
-                        };
+                        })
+                        .OrderBy(x => x.ModuleId);
 
             export(query);
         }
 
         [WebMethod]
-        public void all_modules()
-        {
-            DBMDataContext db = new DBMDataContext();
-
-            var query = from c in db.Opleidingsvariants
-                        join cnc in db.OpleidingsvariantModulevariants
-                            on c.Id equals cnc.IdOpleidingsvariant
-                        join m in db.Modulevariants
-                            on cnc.IdModulevariant equals m.Id
-                        select new
-                        {
-                            Opleidingnaam = c.Naam,
-                            Modulenaam = m.Naam
-                        };
-
-            export(query);
-        }
-
-        //  SPECIFIEK :: OPLEIDING | MODULES ////////////////////////////////////////////
-        [WebMethod]
-        public void all_ingerichte_modules()
+        public void select_ingerichte_modules_filter_opleiding(int id_opleidingsvariant)
         {
             DBMDataContext db = new DBMDataContext();
 
@@ -290,31 +379,7 @@ namespace CVOApp
                             on cnc.IdModulevariant equals m.Id
                         join im in db.IngerichteModulevariants
                             on m.Id equals im.IdModuleVariant
-                        select new
-                        {
-                            Opleiding = c.Naam,
-                            im.CursusNummer,
-                            im.Id,
-                            Modulenaam = m.Naam,
-                            im.AanvangsDatum,
-                            im.EindDatum
-                        };
-
-            export(query);
-        }
-
-        [WebMethod]
-        public void all_ingerichte_modules_filter_opleiding(int id_opleiding)
-        {
-            DBMDataContext db = new DBMDataContext();
-
-            var query = from c in db.Opleidingsvariants
-                        join cnc in db.OpleidingsvariantModulevariants
-                            on c.Id equals cnc.IdOpleidingsvariant
-                        join m in db.Modulevariants
-                            on cnc.IdModulevariant equals m.Id
-                        join im in db.IngerichteModulevariants
-                            on m.Id equals im.IdModuleVariant
+                        where c.Id == id_opleidingsvariant
                         select new
                         {
                             Opleiding = c.Naam,
@@ -326,117 +391,59 @@ namespace CVOApp
             export(query);
         }
 
-
-        // CURSIST ACTIONS //////////////////////////////////////////////
-
-        [WebMethod]
-        public void cursist_registreer(
-            string voornaam, 
-            string familienaam
-        )
-        {
-            export("Success, " + voornaam + "!");
-        }
+        ///////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
+        /// CURSIST DATA | Gegevens - Resultaten - Modules  - Events
+        ///////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
 
         [WebMethod]
-        public void cursist_login(string cursistnummer, string wachtwoord)
+        public void cursist_gegevens(string access_token)
         {
             DBMDataContext db = new DBMDataContext();
 
+            validator vx = new validator(access_token);
 
-            // cursistnummer ophalen
-
-            bool test = false;
-            var query = from cs in db.Cursists
-
-                        where cs.CursistNummer == cursistnummer
-                        select new {
-                            dx = cs.CursistNummer,
-                            cs.Wachtwoord
-                        };
-
-
-            // bestaat cursistnummer?
-
-            // is wachtwoord correct?
-
-            // genereer een nieuwe token en reset tokentimer
-
-            // 
-            foreach (var c in query)
-            {
-                if (c.Wachtwoord == wachtwoord)
-                {
-                    test = true;
-                }
+            if (vx.is_valid == false) {
+                export(vx);
+                return;
             }
-           
-            
-            export(query);
-        }
-
-        [WebMethod]
-        public void cursist_inschrijven_module(int id_cursist, int id_modulevariant)
-        {
-            DBMDataContext db = new DBMDataContext();
-
-            // export(query);
-        }
-
-        [WebMethod]
-        public void cursist_stopzetten_module(int id_cursist, int id_modulevariant)
-        {
-            DBMDataContext db = new DBMDataContext();
-
-            // export(query);
-        }
-
-        [WebMethod]
-        public void cursist_afspraak_plannen(int id_cursist, int id_modulevariant)
-        {
-            DBMDataContext db = new DBMDataContext();
-
-            // export(query);
-        }
-
-        [WebMethod]
-        public void cursist_afspraak_cancellen(int id_cursist, int id_modulevariant)
-        {
-            DBMDataContext db = new DBMDataContext();
-
-            // export(query);
-        }
-
-        // Cursist Data | Gegevens - Resultaten - Modules  - Events
-
-        [WebMethod]
-        public void cursist_gegevens(string cursistnummer)
-        {
-            DBMDataContext db = new DBMDataContext();
 
             var query = from crs in db.Cursists
-                        where crs.CursistNummer == cursistnummer
+                        where crs.CursistNummer == vx.cursistnummer
                         select new
                         {
-                            crs.CursistNummer,
                             crs.Voornaam,
-                            crs.Familienaam
+                            crs.Familienaam,
+                            crs.Email,
+                            crs.GSM,
+                            crs.Straat,
+                            crs.Tel1,
+                            crs.GeboorteDatum,
+                            crs.GeboortePlaats
                         };
 
             export(query);
+            
         }
 
         [WebMethod]
-        public void cursist_modules(string cursistnummer)
+        public void cursist_modules(string access_token)
         {
             DBMDataContext db = new DBMDataContext();
+
+            validator vx = new validator(access_token);
+
+            if (vx.is_valid == false) return;
 
             var query = from crs in db.Cursists
                         join plts in db.Plaatsings
                             on crs.Id equals plts.IdCursist
                         join mdl in db.IngerichteModulevariants
                             on plts.IdIngerichteModulevariant equals mdl.Id
-                        where crs.CursistNummer == cursistnummer
+                        where crs.CursistNummer == vx.cursistnummer
                         select new
                         {
                             mdl.CursusNummer,
@@ -445,12 +452,17 @@ namespace CVOApp
                         };
 
             export(query);
+            
         }
 
         [WebMethod]
-        public void cursist_resultaten(string cursistnummer)
+        public void cursist_resultaten(string access_token)
         {
             DBMDataContext db = new DBMDataContext();
+
+            validator vx = new validator(access_token);
+
+            if (vx.is_valid == false) return;
 
             var query = from crs in db.Cursists
                         join plts in db.Plaatsings
@@ -459,7 +471,7 @@ namespace CVOApp
                             on plts.IdIngerichteModulevariant equals mdl.Id
                         join res in db.PlaatsingResultaats
                             on plts.IdPlaatsingResultaat equals res.Id
-                        where crs.CursistNummer == cursistnummer
+                        where crs.CursistNummer == vx.cursistnummer
                         select new
                         {
                             mdl.CursusNummer,
@@ -468,7 +480,80 @@ namespace CVOApp
                         };
 
             export(query);
+            
         }
+
+        [WebMethod]
+        public void cursist_events(string access_token, string t1, string t2)
+        {
+            DBMDataContext db = new DBMDataContext();
+
+            validator vx = new validator(access_token);
+
+            if (vx.is_valid == false) return;
+
+            var query = from crs in db.Cursists
+                        join plts in db.Plaatsings
+                            on crs.Id equals plts.IdCursist
+                        join mdl in db.IngerichteModulevariants
+                            on plts.IdIngerichteModulevariant equals mdl.Id
+                        join evt in db.LesDavincis
+                            on mdl.Id equals evt.IdIngerichteModulevariant
+                        join lkl in db.Lokaals
+                            on evt.IdLokaal equals lkl.Id
+                        where crs.CursistNummer == vx.cursistnummer
+                        orderby evt.Aanvangsdatum
+                        select new
+                        {
+                            mdl.Naam,
+                            Lokaal = lkl.Naam,
+                            evt.Afgelast,
+                            Aanvangsdatum = evt.Aanvangsdatum.ToString(),
+                            Einddatum = evt.Einddatum.ToString()
+                        };
+
+                // deadlines
+               /* query = from c in db.LesDavincis // db.Deadlines
+                        select new
+                        {
+                            c.Afgelast,
+                            c.Aanvangsdatum,
+                            c.Einddatum
+                        };
+
+                // deliberatie
+                query = from c in db.IngerichteModulevariants
+                        where c.Id == id_modulevariant
+                        select new
+                        {
+                            c.DeliberatieDatum
+                        };
+                // examen
+                query = from c in db.IngerichteModulevariants
+                            where c.Id == id_modulevariant
+                            select new
+                            {
+                                c.DatumTweedeZit
+                            };
+
+                // herexamen
+                query = from c in db.IngerichteModulevariants
+                            where c.Id == id_modulevariant
+                            select new
+                            {
+                                c.DatumTweedeZit
+                            };
+                */
+                // afspraken
+
+                // feestdagen
+
+                export(query);
+            
+        }
+
+           
+        //////////////////////////////////////////////////////////////////////
 
         [WebMethod]
         public void cursist_data(int id_module)
@@ -476,7 +561,7 @@ namespace CVOApp
             DBMDataContext db = new DBMDataContext();
 
             // lesmomenten
-            var query = from mdl in db.IngerichteModulevariants    
+            var query = from mdl in db.IngerichteModulevariants
                         join evt in db.LesDavincis
                             on mdl.Id equals evt.IdIngerichteModulevariant
                         join lkl in db.Lokaals
@@ -509,150 +594,254 @@ namespace CVOApp
             // campus
         }
 
+        ///////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
+        /// CURSIST ACTIONS
+        ///////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
+
         [WebMethod]
-        public void cursist_events(string cursistnummer)
+        public void cursist_registreer(
+            string Voornaam,
+            string Familienaam,
+            string Wachtwoord
+            /* string Straat,
+               string Email,
+               string GSM,
+             
+             */
+        )
         {
             DBMDataContext db = new DBMDataContext();
 
-            var query = from crs in db.Cursists
+            // Wachtwoord correcte formaat?
+            if (Regex.Match("[A-Za-z0-9]{8,}", Wachtwoord).Success)
+            {
+                export(new { Message = "Incorrecte wachtwoord!" });
+                return;
+            }
+
+            // Ophalen Cursistnummer
+            var query = (from crs in db.Cursists
+                         select new { crs.CursistNummer })
+                        .OrderByDescending(item => item.CursistNummer).First();
+
+            // Inschrijven
+            Cursist cx = new Cursist
+            {
+                CursistNummer = (Convert.ToInt32(query.CursistNummer) + 1).ToString(),
+                Voornaam = Voornaam,
+                Familienaam = Familienaam,
+                Wachtwoord = Wachtwoord,
+                Geslacht = "M",
+                Straat = "Straat",
+                HuisNr = "1",
+                IdPostcode = 2328,
+                IdGeboorteLand = 19,
+                IdDomicilieLand = 19,
+                IdNationaliteitType = 43,
+
+            };
+
+            db.Cursists.InsertOnSubmit(cx);
+            db.SubmitChanges();
+            export(new { Message = "Success, " + cx.CursistNummer + "!"});
+        }
+
+        [WebMethod]
+        public void cursist_login(string access_token)
+        {
+            export(new validator(access_token));
+        }
+
+        [WebMethod]
+        public void cursist_inschrijven_module(string access_token, int id_ingerichte_modulevariant)
+        {
+            DBMDataContext db = new DBMDataContext();
+
+            // juiste login?
+            validator vx = new validator(access_token);
+            if (vx.is_valid == false) 
+                return;
+
+            // bestaat module?
+            var imv_query = (from igm in db.IngerichteModulevariants
+                             where igm.Id == id_ingerichte_modulevariant
+                             select new
+                             {
+                                 igm.IsInschrijfbaar,
+                                 igm.AanvangsDatum,
+                                 igm.RegistratieMoment,
+                                 igm.MaximumCapaciteit,
+                                 igm.PlaatsenVoorDerden
+                             }).ToList();
+
+            if (imv_query.Count == 0)
+            {
+                export(new { Message = "Module bestaat niet." });
+                return;
+            }
+
+            var imv = imv_query.First();
+
+            // al ingeschreven?
+            var query = (from crs in db.Cursists
+                         join plts in db.Plaatsings
+                             on crs.Id equals plts.IdCursist
+                         join mdl in db.IngerichteModulevariants
+                             on plts.IdIngerichteModulevariant equals mdl.Id
+
+                         where crs.CursistNummer == vx.cursistnummer
+                         && plts.IdIngerichteModulevariant == id_ingerichte_modulevariant
+                         select plts.Id).ToList();
+
+            if (query.Count > 0 )
+            {
+                export(new { Message = "Al ingeschreven." });
+                return;
+            }
+
+            // inschrijfbaar?
+            if ( !imv.IsInschrijfbaar ){
+                export(new { Message = "Niet inschrijfbaar."});
+                return;
+            }
+
+            // binnen inschrijvingsdatum?
+            if ( DateTime.Now > imv.RegistratieMoment ) {
+                export(new { Message = "Registratie [" + imv.RegistratieMoment + "] is voorbij. Je kunt je niet langer inschrijven."});
+               // return;
+            }
+
+            // is er nog plaats?
+            if ( imv.PlaatsenVoorDerden == 0 ){
+                export(new { Message = "De module is volzet."});
+               // return;
+            }
+
+            // bezit cursist nodige voorkennis?
+            var kennis = from vk in db.ModulevariantTrajectVoorkennis
+                         join igm in db.IngerichteModulevariants
+                            on id_ingerichte_modulevariant equals igm.Id
+                         join crs in db.Cursists
+                            on vx.id_cursist equals crs.Id
+                         join plts in db.PlaatsingHistorieks
+                                  on crs.Id equals plts.IdCursist
+                         join ev in db.EvaluatieresultaattypeCVOs
+                             on plts.IdEvaluatieresultaat equals ev.IdEvaluatieresultaattype
+                         where vk.VoorkennisModulevariantId == igm.IdModuleVariant
+                         && ev.Code == "GESLAAGD"
+                         select new
+                         {
+                             plts.IdModulevariant,
+                             vk.VoorkennisModulevariantId,
+                             ev.Code
+                         };
+
+            bool condition = true;
+            foreach(var kns in kennis){
+                if (kns.Code != "GESLAAGD")
+                    condition = false;
+            }
+
+            if (condition == false)
+            {
+                export(new { Message = "Je bezit niet de nodige voorkennis." });
+                return;
+            }
+
+
+            // inschrijven
+            var plaatsing = from plts in db.Plaatsings
+                            select plts;
+
+            Plaatsing px = new Plaatsing 
+            {
+                IdCursist = vx.id_cursist,
+                IdIngerichteModulevariant = id_ingerichte_modulevariant,
+                IdIngerichteOpleidingsvariant = 1,
+                Inschrijvingsdatum = DateTime.Now,
+                IdPlaatsingsstatus = 1
+            };
+
+            db.Plaatsings.InsertOnSubmit(px);
+            db.SubmitChanges();
+
+            export(new { Message = "Inschrijving successvol." });
+        }
+
+
+        [WebMethod]
+        public void cursist_stopzetten_module(string access_token, int id_ingerichte_modulevariant)
+        {
+            DBMDataContext db = new DBMDataContext();
+
+            validator vx = new validator(access_token);
+
+            if (vx.is_valid == false) return;
+
+            var query = -1;
+            int cancelled = 6;
+
+            query = (from crs in db.Cursists
                         join plts in db.Plaatsings
                             on crs.Id equals plts.IdCursist
-                        join mdl in db.IngerichteModulevariants
-                            on plts.IdIngerichteModulevariant equals mdl.Id  
-                        join evt in db.LesDavincis
-                            on mdl.Id equals evt.IdIngerichteModulevariant
-                        join lkl in db.Lokaals
-                            on evt.IdLokaal equals lkl.Id
-                        where crs.CursistNummer == cursistnummer
-                        orderby evt.Aanvangsdatum
-                        select new
-                        {
-                            mdl.Naam,
-                            Lokaal = lkl.Naam,
-                            evt.Afgelast,
-                            Aanvangsdatum = evt.Aanvangsdatum.ToString(),
-                            Einddatum = evt.Einddatum.ToString()
-                        };
+                        where crs.Id == vx.id_cursist && 
+                        plts.IdIngerichteModulevariant == id_ingerichte_modulevariant
+                        select 
+                            plts.IdPlaatsingsstatus
+                        ).First();
+            
+            
+            // niet ingeschreven?
+            if (query == -1) {
+                export(new { Message = "Niet ingeschreven." });
+                return;
+            }
+            
+            // al uitgeschreven?
+            if (query ==  cancelled){
+                export(new { Message = "Al uitgeschreven." });
+                return;
+            }
+             
+            query = cancelled;
+            db.SubmitChanges();
 
-            // deadlines
-            // deliberatie
-            // examen
-            // herexamen
-
-            export(query);
-        }
-
-        // EVENTS //////////////////////////////////////////////////////
-        // Specifiek | Lesmomenten - Deadlines - Examen - Herexamen - Deliberatie
-
-        [WebMethod]
-        public void all_lesmomenten(int id_modulevariant)
-        {
-            DBMDataContext db = new DBMDataContext();
-
-            var query = from c in db.LesDavincis
-                        where c.IdIngerichteModulevariant == id_modulevariant
-                        select new
-                        {
-                            c.Afgelast,
-                            c.Aanvangsdatum,
-                            c.Einddatum
-                        };
-
-            export(query);
         }
 
         [WebMethod]
-        public void all_deadlines(int id_modulevariant)
+        public void cursist_afspraak_plannen(string access_token, int id_modulevariant)
         {
             DBMDataContext db = new DBMDataContext();
 
-            var query = from c in  db.LesDavincis // db.Deadlines
-                        select new
-                        {
-                            c.Afgelast,
-                            c.Aanvangsdatum,
-                            c.Einddatum
-                        };
-
-            export(query);
+            // export(query);
         }
 
         [WebMethod]
-        public void deliberatie_moment(int id_modulevariant)
+        public void cursist_afspraak_cancellen(string access_token, int id_modulevariant)
         {
             DBMDataContext db = new DBMDataContext();
 
-            var query = from c in db.IngerichteModulevariants
-                        where c.Id == id_modulevariant
-                        select new
-                        {
-                            c.DeliberatieDatum
-                        };
-
-            export(query);
+            // export(query);
         }
 
         [WebMethod]
-        public void herexamen_moment(int id_modulevariant)
+        public void cursist_herexamen_inschrijven(string access_token, int id_modulevariant)
         {
             DBMDataContext db = new DBMDataContext();
 
-            var query = from c in db.IngerichteModulevariants
-                        where c.Id == id_modulevariant
-                        select new
-                        {
-                            c.DatumTweedeZit
-                        };
-
-            export(query);
-        }
-
-        // Global | Feestdagen
-        [WebMethod]
-        public void all_feestdagen()
-        {
-            DBMDataContext db = new DBMDataContext();
-
-            var query = from c in db.Kalenders
-                        select new
-                        {
-                            c.Datum,
-                            c.Omschrijving
-                        };
-
-            export(query);
+            // export(query);
         }
 
         [WebMethod]
-        public void all_afspraken()
+        public void cursist_herexamen_cancellen(string access_token, int id_modulevariant)
         {
             DBMDataContext db = new DBMDataContext();
 
-            var query = from c in db.Kalenders
-                        select new
-                        {
-                            c.Datum,
-                            c.Omschrijving
-                        };
-
-            export(query);
-        }
-
-        // NOTIFICATIES //////////////////////////////////////////////////
-        [WebMethod]
-        public void all_notificatie()
-        {
-            DBMDataContext db = new DBMDataContext();
-
-            var query = from c in db.Kalenders
-                        select new
-                        {
-                            c.Datum,
-                            c.Omschrijving
-                        };
-
-            export(query);
+            // export(query);
         }
 
     }
