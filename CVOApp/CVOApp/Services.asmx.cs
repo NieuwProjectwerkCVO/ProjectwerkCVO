@@ -553,7 +553,6 @@ namespace CVOApp
             
         }
 
-           
         //////////////////////////////////////////////////////////////////////
 
         [WebMethod]
@@ -726,14 +725,13 @@ namespace CVOApp
             var kennis = from vk in db.ModulevariantTrajectVoorkennis
                          join igm in db.IngerichteModulevariants
                             on id_ingerichte_modulevariant equals igm.Id
-                         join crs in db.Cursists
-                            on vx.id_cursist equals crs.Id
-                         join plts in db.PlaatsingHistorieks
-                                  on crs.Id equals plts.IdCursist
+                          join crs in db.Cursists
+                             on vx.id_cursist equals crs.Id
+                          join plts in db.PlaatsingHistorieks
+                                   on crs.Id equals plts.IdCursist
                          join ev in db.EvaluatieresultaattypeCVOs
-                             on plts.IdEvaluatieresultaat equals ev.IdEvaluatieresultaattype
+                             on plts.IdEvaluatieresultaat equals ev.IdEvaluatieresultaattype  
                          where vk.VoorkennisModulevariantId == igm.IdModuleVariant
-                         && ev.Code == "GESLAAGD"
                          select new
                          {
                              plts.IdModulevariant,
@@ -754,7 +752,7 @@ namespace CVOApp
             }
 
 
-            // inschrijven
+            // inschrijving
             var plaatsing = from plts in db.Plaatsings
                             select plts;
 
@@ -763,7 +761,7 @@ namespace CVOApp
                 IdCursist = vx.id_cursist,
                 IdIngerichteModulevariant = id_ingerichte_modulevariant,
                 IdIngerichteOpleidingsvariant = 1,
-                Inschrijvingsdatum = DateTime.Now,
+                Reservatiedatum = DateTime.Now,
                 IdPlaatsingsstatus = 1
             };
 
@@ -783,36 +781,36 @@ namespace CVOApp
 
             if (vx.is_valid == false) return;
 
-            var query = -1;
+            
             int cancelled = 6;
 
-            query = (from crs in db.Cursists
-                        join plts in db.Plaatsings
-                            on crs.Id equals plts.IdCursist
-                        where crs.Id == vx.id_cursist && 
-                        plts.IdIngerichteModulevariant == id_ingerichte_modulevariant
-                        select 
-                            plts.IdPlaatsingsstatus
-                        ).First();
+            var query = (from plts in db.Plaatsings
+                         join crs in db.Cursists
+                             on plts.IdCursist equals crs.Id
+                         where crs.Id == vx.id_cursist &&
+                         plts.IdIngerichteModulevariant == id_ingerichte_modulevariant
+                         select  plts ).ToList();
             
-            
+            //Plaatsing px = db.Plaatsings.join
+                 //Single( c => c.IdCursist == vx.id_cursist)
+                
             // niet ingeschreven?
-            if (query == -1) {
+            if (query.Count == 0 ) {
                 export(new { Message = "Niet ingeschreven." });
                 return;
             }
-            
+
             // al uitgeschreven?
-            if (query ==  cancelled){
+            if (query.First().IdPlaatsingsstatus == cancelled){
                 export(new { Message = "Al uitgeschreven." });
                 return;
             }
-             
-            query = cancelled;
+
+            query.First().IdPlaatsingsstatus = cancelled;
             db.SubmitChanges();
-
+            export(new { Message = "Module stopgezet.", Status = query.First().IdPlaatsingsstatus });
         }
-
+       
         [WebMethod]
         public void cursist_afspraak_plannen(string access_token, int id_modulevariant)
         {
