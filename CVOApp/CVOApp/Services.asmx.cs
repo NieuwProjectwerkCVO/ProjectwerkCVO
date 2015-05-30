@@ -771,7 +771,6 @@ namespace CVOApp
             export(new { Message = "Inschrijving successvol." });
         }
 
-
         [WebMethod]
         public void cursist_stopzetten_module(string access_token, int id_ingerichte_modulevariant)
         {
@@ -791,9 +790,6 @@ namespace CVOApp
                          plts.IdIngerichteModulevariant == id_ingerichte_modulevariant
                          select  plts ).ToList();
             
-            //Plaatsing px = db.Plaatsings.join
-                 //Single( c => c.IdCursist == vx.id_cursist)
-                
             // niet ingeschreven?
             if (query.Count == 0 ) {
                 export(new { Message = "Niet ingeschreven." });
@@ -812,7 +808,7 @@ namespace CVOApp
         }
        
         [WebMethod]
-        public void cursist_afspraak_plannen(string access_token, int id_modulevariant)
+        public void cursist_event_plannen(string access_token, int id_modulevariant)
         {
             DBMDataContext db = new DBMDataContext();
 
@@ -820,7 +816,7 @@ namespace CVOApp
         }
 
         [WebMethod]
-        public void cursist_afspraak_cancellen(string access_token, int id_modulevariant)
+        public void cursist_event_cancellen(string access_token, int id_modulevariant)
         {
             DBMDataContext db = new DBMDataContext();
 
@@ -828,17 +824,56 @@ namespace CVOApp
         }
 
         [WebMethod]
-        public void cursist_herexamen_inschrijven(string access_token, int id_modulevariant)
+        public void cursist_event_inschrijven(string access_token, int id_modulevariant)
         {
             DBMDataContext db = new DBMDataContext();
 
             // export(query);
         }
+      
 
         [WebMethod]
-        public void cursist_herexamen_cancellen(string access_token, int id_modulevariant)
+        public void cursist_herexamen_inschrijven(string access_token, int id_ingerichte_modulevariant)
         {
             DBMDataContext db = new DBMDataContext();
+
+            // access_code correct?
+            validator vx = new validator(access_token);
+            if (vx.is_valid == false)
+                return;
+
+            // bestaat module?
+            var imv_query = (from imv in db.IngerichteModulevariants
+                             where imv.Id == id_ingerichte_modulevariant
+                             select imv).ToList();
+
+            if (imv_query.Count == 0){
+                export(new { Message = "Module bestaat niet." });
+                return;
+            }
+
+
+            // ingeschreven?
+            var query = (from crs in db.Cursists
+                         join plts in db.Plaatsings
+                             on crs.Id equals plts.IdCursist
+                         join mdl in db.IngerichteModulevariants
+                             on plts.IdIngerichteModulevariant equals mdl.Id
+
+                         where crs.CursistNummer == vx.cursistnummer
+                         && plts.IdIngerichteModulevariant == id_ingerichte_modulevariant
+                         select plts.Id).ToList();
+
+            if (query.Count > 0)
+            {
+                export(new { Message = "Al ingeschreven." });
+                return;
+            }
+
+            // gebuisd?
+
+
+            // code { inschrijven }
 
             // export(query);
         }
