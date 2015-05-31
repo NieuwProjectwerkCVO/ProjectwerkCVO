@@ -76,7 +76,6 @@ namespace CVOApp
                 else
                 {
                     // correcte wachtwoord
-                    bool test = false;
                     foreach (var cs in query)
                     {
                         if (cs.Wachtwoord == wachtwoord) id_cursist = cs.Id;
