@@ -10,3 +10,9 @@ C:\Users\Arno\Source\Repos\Projectwerk\CVOApp\CVOApp\bin\CVOApp.pdb
 C:\Users\Arno\Source\Repos\Projectwerk\CVOApp\CVOApp\obj\Debug\CVOApp.csprojResolveAssemblyReference.cache
 C:\Users\Arno\Source\Repos\Projectwerk\CVOApp\CVOApp\obj\Debug\CVOApp.dll
 C:\Users\Arno\Source\Repos\Projectwerk\CVOApp\CVOApp\obj\Debug\CVOApp.pdb
+E:\Github projectwerk\Projectwerk\CVOApp\CVOApp\bin\CVOApp.dll.config
+E:\Github projectwerk\Projectwerk\CVOApp\CVOApp\bin\CVOApp.dll
+E:\Github projectwerk\Projectwerk\CVOApp\CVOApp\bin\CVOApp.pdb
+E:\Github projectwerk\Projectwerk\CVOApp\CVOApp\obj\Debug\CVOApp.csprojResolveAssemblyReference.cache
+E:\Github projectwerk\Projectwerk\CVOApp\CVOApp\obj\Debug\CVOApp.dll
+E:\Github projectwerk\Projectwerk\CVOApp\CVOApp\obj\Debug\CVOApp.pdb

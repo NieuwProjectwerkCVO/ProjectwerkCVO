@@ -77,7 +77,6 @@ namespace CVOApp
                 else
                 {
                     // correcte wachtwoord
-                    bool test = false;
                     foreach (var cs in query)
                     {
                         if (cs.Wachtwoord == wachtwoord) id_cursist = cs.Id;
@@ -485,6 +484,33 @@ namespace CVOApp
             // lestijden
 
             // campus
+
+        }
+
+        //////////////////////////////////////////////////////////////////////
+
+        [WebMethod]
+        public void cursist_diplomas(string access_token)
+        {
+            DBMDataContext db = new DBMDataContext();
+
+            validator vx = new validator(access_token);
+            if (vx.is_valid == false) return;
+
+            var query = from stbw in db.Studiebewijs
+                        join mv in db.Modulevariants on stbw.IdModuleVariant equals mv.Id
+                        join stt in db.StudiebewijsTypes on stbw.IdStudiebewijsType equals stt.Id
+                        join c in db.Cursists on stbw.IdCursist equals c.Id
+                        where c.CursistNummer == vx.cursistnummer
+                        
+                        select new
+                        {
+                            mv.Naam,
+                            stt.Code
+                        };
+
+
+            export(query);
         }
 
         //////////////////////////////////////////////////////////////////////////////////////
