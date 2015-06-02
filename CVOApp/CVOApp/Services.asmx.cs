@@ -754,7 +754,22 @@ namespace CVOApp
                                }).ToList();
 
             // afspraken
-
+            var afspraken = (from afk in db.AfspraakTrajectbegleiders
+                             join spk in db.Afspraaks
+                                on afk.IdAfspraak equals spk.Id
+                             join prs in db.Personeels
+                                on spk.IdPersoneel equals prs.Id
+                             where afk.IdCursist == vx.id_cursist
+                             select new Event
+                             {
+                                 type = "afspraak",
+                                 description = afk.Commentaar,
+                                 source = prs.Naam,
+                                 location = "N/A",
+                                 cancelled = false,
+                                 t1 = spk.Startdatum,
+                                 t2 = spk.Einddatum
+                             }).ToList();
 
 
             List<Event> query = new List<Event>();
@@ -911,8 +926,6 @@ namespace CVOApp
             export(query);
 
         }
-
-
 
         [WebMethod]
         public void cursist_module_plannen(string access_token, int id_ingerichte_modulevariant)
