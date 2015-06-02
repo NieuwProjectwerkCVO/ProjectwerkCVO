@@ -24,20 +24,215 @@
         transitions
             page 1 [login]> page 2
             page 2 [logout]> page 1
+
+
+        .root
+            .login
+                .cursist_resultaten
+                .cursist_modules
+                .cursist_events
+                .cursist_
+            .register
+            .modules
+            .events
+            
     -->
 
     <core-header-panel flex>
-        <taken-page></taken-page>
+        <directory-page></directory-page>
+        <!--<taken-page></taken-page>
         <login-page></login-page>
         <register-page></register-page>
         <module-subscribe-page></module-subscribe-page>
         <module-page cursistnummer="43703"></module-page>
         <appointment-page></appointment-page>
         <calendar-page></calendar-page>
-        <campus-page></campus-page>
+        <campus-page></campus-page>-->
         
     </core-header-panel>
 
+ 
+
+    <polymer-element name="directory-page">
+        <template>
+            <style>
+                paper-card.base {
+                    font-family: RobotoDraft;
+                    margin: 10px;
+                    background-color: #fff;
+                    color: black;
+                    width: 600px;
+                    height: 100px;
+                }
+
+                paper-card.element {
+                    font-family: RobotoDraft;
+                    margin-left: 10px;
+                    background-color: white;
+                    color: black;
+                    width: 600px;
+                    height: 50px;
+                    margin: 5px;
+                    transition: background-color 200ms ease-in-out;
+                    transition: opacity 300ms ease-in-out;
+                }
+
+                paper-card.element:hover {
+                    background-color:  lightgrey;
+                    transition: background-color 200ms ease-in-out;
+                }
+                
+                paper-input {
+                    padding-left: 30px;
+                    padding-right: 30px;
+                }
+
+                div.body {
+                    height: 500px;
+                }
+
+                paper-item {
+                    height: 50px;
+                }
+
+                core-icon {
+                    height: 100px;
+                    width: 100px;
+                }
+               
+                paper-card {
+                    font-family: RobotoDraft;
+                    background-color: #fff;
+                    color: black;
+                }
+                paper-card.page {
+                    margin: 10px;
+                    width: 600px;
+                    height: 800px;
+                }
+
+                paper-card.upper {
+                    height: 100px;
+                    border-bottom: thin solid;
+                    border-bottom-color: lightgrey;
+                    border-bottom-width: 1px;
+                }
+
+                paper-card.mid {
+                    height: 650px;
+                }
+
+                paper-card.lower {
+                    height: 50px;
+                    border-top: thin solid;
+                    border-top-color: lightgrey;
+                    border-top-width: 1px;
+                }
+            </style>
+
+
+            <!-- DIRECTORY -->
+
+           
+            <paper-card class="page" z="1" vertical layout>
+                <paper-card class="upper" z="0" vertical layout>
+                    <paper-input label="SEARCH" disabled></paper-input>
+                    <paper-input label="search"></paper-input>
+                </paper-card>
+                <paper-card class="mid" z="0">
+                    <paper-ripple fit></paper-ripple>
+                </paper-card>
+                <paper-card class="lower" z="0"></paper-card>
+            </paper-card>
+
+
+
+            <paper-toolbar class="medium-tall" style="background-color: #0094ff; color: white; " z="1" flex  horizontal layout>
+                <paper-button z="0" >
+                    <core-icon icon="chevron-left"></core-icon>
+                </paper-button>
+                <paper-input label="DIRECTORY" value="{{query}}"></paper-input>
+                <paper-button z="0" >
+                    <core-icon icon="send"></core-icon>
+                </paper-button>
+            </paper-toolbar>
+                
+           
+            <div vertical layout>
+                <template repeat="{{ d in data }}">
+                    <!-- LINK -->
+                    <template if="{{ d.type == 'link'}}">
+                        <paper-card class="element">
+                            <div style="padding: 15px;">
+                                {{d.label}}
+                            </div>
+                            <paper-ripple fit></paper-ripple>
+                        </paper-card>
+                    </template>
+                    <!-- OPLEIDINGEN -->
+                    <template if="{{ d.type == 'login'}}">
+                        <login-page></login-page>
+                    </template>
+                    <!-- MODULE -->
+                    <template if="{{ d.type == 'registreer'}}">
+                        <paper-card class="element">
+                            <div style="padding: 15px;">
+                                {{d.type}}
+                            </div>
+                            <paper-ripple fit></paper-ripple>
+                        </paper-card>
+                    </template>
+                    <!-- OPLEIDINGEN -->
+                    <template if="{{ d.type == 'opleidingen'}}">
+                        <paper-card class="element">
+                            <div style="padding: 15px;">
+                                {{d.type}}
+                            </div>
+                            <paper-ripple fit></paper-ripple>
+                        </paper-card>
+                    </template>
+                    <!-- MODULES -->
+                    <template if="{{ d.type == 'modules'}}">
+                        <paper-card class="element">
+                            <div style="padding: 15px;">
+                                {{d.type}}
+                            </div>
+                            <paper-ripple fit></paper-ripple>
+                        </paper-card>
+                    </template>
+                    <!--<core-list data="{{data}}" style="height: 100%" flex multi>
+                <template>
+                    <div layout vertical flex>
+                        <div data-index="{{index}}">
+                            <paper-card class="base">
+                                {{model.Naam}}
+                            </paper-card>
+
+                        </div>
+                    </div>
+                </template>
+            </core-list>-->
+                </template>
+                </div>
+                <core-ajax auto
+                           id="search"
+                           url="http://localhost:57306/Services.asmx/search_engine"
+                           params='{ "query": "{{query}}", "lvl": {{lvl}} }'
+                           response="{{data}}"
+                           method="POST"
+                           handleas="json">
+                </core-ajax>
+</template>
+        <script>
+            Polymer("directory-page", {
+                    query: "",
+                    index: 1,
+                    lvl: 0,
+                    compute_type: "login"
+                }
+                );
+        </script>
+    </polymer-element>
 
     <polymer-element name="login-page">
         <template>

@@ -165,6 +165,21 @@ namespace CVOApp
     partial void InsertCursist(Cursist instance);
     partial void UpdateCursist(Cursist instance);
     partial void DeleteCursist(Cursist instance);
+    partial void InsertTaak(Taak instance);
+    partial void UpdateTaak(Taak instance);
+    partial void DeleteTaak(Taak instance);
+    partial void InsertNotificatie(Notificatie instance);
+    partial void UpdateNotificatie(Notificatie instance);
+    partial void DeleteNotificatie(Notificatie instance);
+    partial void InsertAfspraak(Afspraak instance);
+    partial void UpdateAfspraak(Afspraak instance);
+    partial void DeleteAfspraak(Afspraak instance);
+    partial void InsertAfspraakTrajectbegleider(AfspraakTrajectbegleider instance);
+    partial void UpdateAfspraakTrajectbegleider(AfspraakTrajectbegleider instance);
+    partial void DeleteAfspraakTrajectbegleider(AfspraakTrajectbegleider instance);
+    partial void InsertTaakCursist(TaakCursist instance);
+    partial void UpdateTaakCursist(TaakCursist instance);
+    partial void DeleteTaakCursist(TaakCursist instance);
     #endregion
 		
 		public DBMDataContext() : 
@@ -562,6 +577,46 @@ namespace CVOApp
 			get
 			{
 				return this.GetTable<Cursist>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Taak> Taaks
+		{
+			get
+			{
+				return this.GetTable<Taak>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Notificatie> Notificaties
+		{
+			get
+			{
+				return this.GetTable<Notificatie>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Afspraak> Afspraaks
+		{
+			get
+			{
+				return this.GetTable<Afspraak>();
+			}
+		}
+		
+		public System.Data.Linq.Table<AfspraakTrajectbegleider> AfspraakTrajectbegleiders
+		{
+			get
+			{
+				return this.GetTable<AfspraakTrajectbegleider>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TaakCursist> TaakCursists
+		{
+			get
+			{
+				return this.GetTable<TaakCursist>();
 			}
 		}
 	}
@@ -21611,6 +21666,8 @@ namespace CVOApp
 		
 		private EntitySet<Studiebewij> _Studiebewijs;
 		
+		private EntitySet<AfspraakTrajectbegleider> _AfspraakTrajectbegleiders;
+		
 		private EntityRef<Land> _Land;
 		
 		private EntityRef<Land> _Land1;
@@ -21750,6 +21807,7 @@ namespace CVOApp
 			this._Plaatsings = new EntitySet<Plaatsing>(new Action<Plaatsing>(this.attach_Plaatsings), new Action<Plaatsing>(this.detach_Plaatsings));
 			this._PlaatsingHistorieks = new EntitySet<PlaatsingHistoriek>(new Action<PlaatsingHistoriek>(this.attach_PlaatsingHistorieks), new Action<PlaatsingHistoriek>(this.detach_PlaatsingHistorieks));
 			this._Studiebewijs = new EntitySet<Studiebewij>(new Action<Studiebewij>(this.attach_Studiebewijs), new Action<Studiebewij>(this.detach_Studiebewijs));
+			this._AfspraakTrajectbegleiders = new EntitySet<AfspraakTrajectbegleider>(new Action<AfspraakTrajectbegleider>(this.attach_AfspraakTrajectbegleiders), new Action<AfspraakTrajectbegleider>(this.detach_AfspraakTrajectbegleiders));
 			this._Land = default(EntityRef<Land>);
 			this._Land1 = default(EntityRef<Land>);
 			this._Land2 = default(EntityRef<Land>);
@@ -22979,6 +23037,19 @@ namespace CVOApp
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_AfspraakTrajectbegleider", Storage="_AfspraakTrajectbegleiders", ThisKey="Id", OtherKey="IdCursist")]
+		public EntitySet<AfspraakTrajectbegleider> AfspraakTrajectbegleiders
+		{
+			get
+			{
+				return this._AfspraakTrajectbegleiders;
+			}
+			set
+			{
+				this._AfspraakTrajectbegleiders.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Land_Cursist", Storage="_Land", ThisKey="IdGeboorteLand", OtherKey="Id", IsForeignKey=true)]
 		public Land Land
 		{
@@ -23319,6 +23390,966 @@ namespace CVOApp
 		{
 			this.SendPropertyChanging();
 			entity.Cursist = null;
+		}
+		
+		private void attach_AfspraakTrajectbegleiders(AfspraakTrajectbegleider entity)
+		{
+			this.SendPropertyChanging();
+			entity.Cursist = this;
+		}
+		
+		private void detach_AfspraakTrajectbegleiders(AfspraakTrajectbegleider entity)
+		{
+			this.SendPropertyChanging();
+			entity.Cursist = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Taak")]
+	public partial class Taak : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _IdIngerichteModulevariant;
+		
+		private string _Naam;
+		
+		private string _Beschrijving;
+		
+		private System.DateTime _Deadline;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnIdIngerichteModulevariantChanging(int value);
+    partial void OnIdIngerichteModulevariantChanged();
+    partial void OnNaamChanging(string value);
+    partial void OnNaamChanged();
+    partial void OnBeschrijvingChanging(string value);
+    partial void OnBeschrijvingChanged();
+    partial void OnDeadlineChanging(System.DateTime value);
+    partial void OnDeadlineChanged();
+    #endregion
+		
+		public Taak()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdIngerichteModulevariant", DbType="Int NOT NULL")]
+		public int IdIngerichteModulevariant
+		{
+			get
+			{
+				return this._IdIngerichteModulevariant;
+			}
+			set
+			{
+				if ((this._IdIngerichteModulevariant != value))
+				{
+					this.OnIdIngerichteModulevariantChanging(value);
+					this.SendPropertyChanging();
+					this._IdIngerichteModulevariant = value;
+					this.SendPropertyChanged("IdIngerichteModulevariant");
+					this.OnIdIngerichteModulevariantChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Naam", DbType="NVarChar(64) NOT NULL", CanBeNull=false)]
+		public string Naam
+		{
+			get
+			{
+				return this._Naam;
+			}
+			set
+			{
+				if ((this._Naam != value))
+				{
+					this.OnNaamChanging(value);
+					this.SendPropertyChanging();
+					this._Naam = value;
+					this.SendPropertyChanged("Naam");
+					this.OnNaamChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Beschrijving", DbType="NVarChar(255)")]
+		public string Beschrijving
+		{
+			get
+			{
+				return this._Beschrijving;
+			}
+			set
+			{
+				if ((this._Beschrijving != value))
+				{
+					this.OnBeschrijvingChanging(value);
+					this.SendPropertyChanging();
+					this._Beschrijving = value;
+					this.SendPropertyChanged("Beschrijving");
+					this.OnBeschrijvingChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Deadline", DbType="DateTime NOT NULL")]
+		public System.DateTime Deadline
+		{
+			get
+			{
+				return this._Deadline;
+			}
+			set
+			{
+				if ((this._Deadline != value))
+				{
+					this.OnDeadlineChanging(value);
+					this.SendPropertyChanging();
+					this._Deadline = value;
+					this.SendPropertyChanged("Deadline");
+					this.OnDeadlineChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Notificatie")]
+	public partial class Notificatie : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _IdIngerichteModulevariant;
+		
+		private System.DateTime _Datum;
+		
+		private string _Bericht;
+		
+		private string _EventType;
+		
+		private int _EventIndex;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnIdIngerichteModulevariantChanging(int value);
+    partial void OnIdIngerichteModulevariantChanged();
+    partial void OnDatumChanging(System.DateTime value);
+    partial void OnDatumChanged();
+    partial void OnBerichtChanging(string value);
+    partial void OnBerichtChanged();
+    partial void OnEventTypeChanging(string value);
+    partial void OnEventTypeChanged();
+    partial void OnEventIndexChanging(int value);
+    partial void OnEventIndexChanged();
+    #endregion
+		
+		public Notificatie()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdIngerichteModulevariant", DbType="Int NOT NULL")]
+		public int IdIngerichteModulevariant
+		{
+			get
+			{
+				return this._IdIngerichteModulevariant;
+			}
+			set
+			{
+				if ((this._IdIngerichteModulevariant != value))
+				{
+					this.OnIdIngerichteModulevariantChanging(value);
+					this.SendPropertyChanging();
+					this._IdIngerichteModulevariant = value;
+					this.SendPropertyChanged("IdIngerichteModulevariant");
+					this.OnIdIngerichteModulevariantChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Datum", DbType="DateTime NOT NULL")]
+		public System.DateTime Datum
+		{
+			get
+			{
+				return this._Datum;
+			}
+			set
+			{
+				if ((this._Datum != value))
+				{
+					this.OnDatumChanging(value);
+					this.SendPropertyChanging();
+					this._Datum = value;
+					this.SendPropertyChanged("Datum");
+					this.OnDatumChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Bericht", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string Bericht
+		{
+			get
+			{
+				return this._Bericht;
+			}
+			set
+			{
+				if ((this._Bericht != value))
+				{
+					this.OnBerichtChanging(value);
+					this.SendPropertyChanging();
+					this._Bericht = value;
+					this.SendPropertyChanged("Bericht");
+					this.OnBerichtChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EventType", DbType="NVarChar(16) NOT NULL", CanBeNull=false)]
+		public string EventType
+		{
+			get
+			{
+				return this._EventType;
+			}
+			set
+			{
+				if ((this._EventType != value))
+				{
+					this.OnEventTypeChanging(value);
+					this.SendPropertyChanging();
+					this._EventType = value;
+					this.SendPropertyChanged("EventType");
+					this.OnEventTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EventIndex", DbType="Int NOT NULL")]
+		public int EventIndex
+		{
+			get
+			{
+				return this._EventIndex;
+			}
+			set
+			{
+				if ((this._EventIndex != value))
+				{
+					this.OnEventIndexChanging(value);
+					this.SendPropertyChanging();
+					this._EventIndex = value;
+					this.SendPropertyChanged("EventIndex");
+					this.OnEventIndexChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Afspraak")]
+	public partial class Afspraak : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _IdPersoneel;
+		
+		private System.DateTime _Startdatum;
+		
+		private System.DateTime _Einddatum;
+		
+		private int _Count;
+		
+		private int _Capacity;
+		
+		private bool _Cancelled;
+		
+		private EntitySet<AfspraakTrajectbegleider> _AfspraakTrajectbegleiders;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnIdPersoneelChanging(int value);
+    partial void OnIdPersoneelChanged();
+    partial void OnStartdatumChanging(System.DateTime value);
+    partial void OnStartdatumChanged();
+    partial void OnEinddatumChanging(System.DateTime value);
+    partial void OnEinddatumChanged();
+    partial void OnCountChanging(int value);
+    partial void OnCountChanged();
+    partial void OnCapacityChanging(int value);
+    partial void OnCapacityChanged();
+    partial void OnCancelledChanging(bool value);
+    partial void OnCancelledChanged();
+    #endregion
+		
+		public Afspraak()
+		{
+			this._AfspraakTrajectbegleiders = new EntitySet<AfspraakTrajectbegleider>(new Action<AfspraakTrajectbegleider>(this.attach_AfspraakTrajectbegleiders), new Action<AfspraakTrajectbegleider>(this.detach_AfspraakTrajectbegleiders));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdPersoneel", DbType="Int NOT NULL")]
+		public int IdPersoneel
+		{
+			get
+			{
+				return this._IdPersoneel;
+			}
+			set
+			{
+				if ((this._IdPersoneel != value))
+				{
+					this.OnIdPersoneelChanging(value);
+					this.SendPropertyChanging();
+					this._IdPersoneel = value;
+					this.SendPropertyChanged("IdPersoneel");
+					this.OnIdPersoneelChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Startdatum", DbType="DateTime NOT NULL")]
+		public System.DateTime Startdatum
+		{
+			get
+			{
+				return this._Startdatum;
+			}
+			set
+			{
+				if ((this._Startdatum != value))
+				{
+					this.OnStartdatumChanging(value);
+					this.SendPropertyChanging();
+					this._Startdatum = value;
+					this.SendPropertyChanged("Startdatum");
+					this.OnStartdatumChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Einddatum", DbType="DateTime NOT NULL")]
+		public System.DateTime Einddatum
+		{
+			get
+			{
+				return this._Einddatum;
+			}
+			set
+			{
+				if ((this._Einddatum != value))
+				{
+					this.OnEinddatumChanging(value);
+					this.SendPropertyChanging();
+					this._Einddatum = value;
+					this.SendPropertyChanged("Einddatum");
+					this.OnEinddatumChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Count", DbType="Int NOT NULL")]
+		public int Count
+		{
+			get
+			{
+				return this._Count;
+			}
+			set
+			{
+				if ((this._Count != value))
+				{
+					this.OnCountChanging(value);
+					this.SendPropertyChanging();
+					this._Count = value;
+					this.SendPropertyChanged("Count");
+					this.OnCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Capacity", DbType="Int NOT NULL")]
+		public int Capacity
+		{
+			get
+			{
+				return this._Capacity;
+			}
+			set
+			{
+				if ((this._Capacity != value))
+				{
+					this.OnCapacityChanging(value);
+					this.SendPropertyChanging();
+					this._Capacity = value;
+					this.SendPropertyChanged("Capacity");
+					this.OnCapacityChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Cancelled", DbType="Bit NOT NULL")]
+		public bool Cancelled
+		{
+			get
+			{
+				return this._Cancelled;
+			}
+			set
+			{
+				if ((this._Cancelled != value))
+				{
+					this.OnCancelledChanging(value);
+					this.SendPropertyChanging();
+					this._Cancelled = value;
+					this.SendPropertyChanged("Cancelled");
+					this.OnCancelledChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Afspraak_AfspraakTrajectbegleider", Storage="_AfspraakTrajectbegleiders", ThisKey="Id", OtherKey="IdAfspraak")]
+		public EntitySet<AfspraakTrajectbegleider> AfspraakTrajectbegleiders
+		{
+			get
+			{
+				return this._AfspraakTrajectbegleiders;
+			}
+			set
+			{
+				this._AfspraakTrajectbegleiders.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_AfspraakTrajectbegleiders(AfspraakTrajectbegleider entity)
+		{
+			this.SendPropertyChanging();
+			entity.Afspraak = this;
+		}
+		
+		private void detach_AfspraakTrajectbegleiders(AfspraakTrajectbegleider entity)
+		{
+			this.SendPropertyChanging();
+			entity.Afspraak = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.AfspraakTrajectbegleider")]
+	public partial class AfspraakTrajectbegleider : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _IdAfspraak;
+		
+		private int _IdCursist;
+		
+		private System.DateTime _RegistratieDatum;
+		
+		private string _Commentaar;
+		
+		private System.Nullable<bool> _Vastgelegd;
+		
+		private EntityRef<Cursist> _Cursist;
+		
+		private EntityRef<Afspraak> _Afspraak;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnIdAfspraakChanging(int value);
+    partial void OnIdAfspraakChanged();
+    partial void OnIdCursistChanging(int value);
+    partial void OnIdCursistChanged();
+    partial void OnRegistratieDatumChanging(System.DateTime value);
+    partial void OnRegistratieDatumChanged();
+    partial void OnCommentaarChanging(string value);
+    partial void OnCommentaarChanged();
+    partial void OnVastgelegdChanging(System.Nullable<bool> value);
+    partial void OnVastgelegdChanged();
+    #endregion
+		
+		public AfspraakTrajectbegleider()
+		{
+			this._Cursist = default(EntityRef<Cursist>);
+			this._Afspraak = default(EntityRef<Afspraak>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdAfspraak", DbType="Int NOT NULL")]
+		public int IdAfspraak
+		{
+			get
+			{
+				return this._IdAfspraak;
+			}
+			set
+			{
+				if ((this._IdAfspraak != value))
+				{
+					if (this._Afspraak.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnIdAfspraakChanging(value);
+					this.SendPropertyChanging();
+					this._IdAfspraak = value;
+					this.SendPropertyChanged("IdAfspraak");
+					this.OnIdAfspraakChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdCursist", DbType="Int NOT NULL")]
+		public int IdCursist
+		{
+			get
+			{
+				return this._IdCursist;
+			}
+			set
+			{
+				if ((this._IdCursist != value))
+				{
+					if (this._Cursist.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnIdCursistChanging(value);
+					this.SendPropertyChanging();
+					this._IdCursist = value;
+					this.SendPropertyChanged("IdCursist");
+					this.OnIdCursistChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RegistratieDatum", DbType="DateTime NOT NULL")]
+		public System.DateTime RegistratieDatum
+		{
+			get
+			{
+				return this._RegistratieDatum;
+			}
+			set
+			{
+				if ((this._RegistratieDatum != value))
+				{
+					this.OnRegistratieDatumChanging(value);
+					this.SendPropertyChanging();
+					this._RegistratieDatum = value;
+					this.SendPropertyChanged("RegistratieDatum");
+					this.OnRegistratieDatumChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Commentaar", DbType="NVarChar(256)")]
+		public string Commentaar
+		{
+			get
+			{
+				return this._Commentaar;
+			}
+			set
+			{
+				if ((this._Commentaar != value))
+				{
+					this.OnCommentaarChanging(value);
+					this.SendPropertyChanging();
+					this._Commentaar = value;
+					this.SendPropertyChanged("Commentaar");
+					this.OnCommentaarChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Vastgelegd", DbType="Bit")]
+		public System.Nullable<bool> Vastgelegd
+		{
+			get
+			{
+				return this._Vastgelegd;
+			}
+			set
+			{
+				if ((this._Vastgelegd != value))
+				{
+					this.OnVastgelegdChanging(value);
+					this.SendPropertyChanging();
+					this._Vastgelegd = value;
+					this.SendPropertyChanged("Vastgelegd");
+					this.OnVastgelegdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Cursist_AfspraakTrajectbegleider", Storage="_Cursist", ThisKey="IdCursist", OtherKey="Id", IsForeignKey=true)]
+		public Cursist Cursist
+		{
+			get
+			{
+				return this._Cursist.Entity;
+			}
+			set
+			{
+				Cursist previousValue = this._Cursist.Entity;
+				if (((previousValue != value) 
+							|| (this._Cursist.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Cursist.Entity = null;
+						previousValue.AfspraakTrajectbegleiders.Remove(this);
+					}
+					this._Cursist.Entity = value;
+					if ((value != null))
+					{
+						value.AfspraakTrajectbegleiders.Add(this);
+						this._IdCursist = value.Id;
+					}
+					else
+					{
+						this._IdCursist = default(int);
+					}
+					this.SendPropertyChanged("Cursist");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Afspraak_AfspraakTrajectbegleider", Storage="_Afspraak", ThisKey="IdAfspraak", OtherKey="Id", IsForeignKey=true)]
+		public Afspraak Afspraak
+		{
+			get
+			{
+				return this._Afspraak.Entity;
+			}
+			set
+			{
+				Afspraak previousValue = this._Afspraak.Entity;
+				if (((previousValue != value) 
+							|| (this._Afspraak.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Afspraak.Entity = null;
+						previousValue.AfspraakTrajectbegleiders.Remove(this);
+					}
+					this._Afspraak.Entity = value;
+					if ((value != null))
+					{
+						value.AfspraakTrajectbegleiders.Add(this);
+						this._IdAfspraak = value.Id;
+					}
+					else
+					{
+						this._IdAfspraak = default(int);
+					}
+					this.SendPropertyChanged("Afspraak");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TaakCursist")]
+	public partial class TaakCursist : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _IdCursist;
+		
+		private System.Data.Linq.Binary _Taak;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnIdCursistChanging(int value);
+    partial void OnIdCursistChanged();
+    partial void OnTaakChanging(System.Data.Linq.Binary value);
+    partial void OnTaakChanged();
+    #endregion
+		
+		public TaakCursist()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdCursist", DbType="Int NOT NULL")]
+		public int IdCursist
+		{
+			get
+			{
+				return this._IdCursist;
+			}
+			set
+			{
+				if ((this._IdCursist != value))
+				{
+					this.OnIdCursistChanging(value);
+					this.SendPropertyChanging();
+					this._IdCursist = value;
+					this.SendPropertyChanged("IdCursist");
+					this.OnIdCursistChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Taak", DbType="VarBinary(MAX) NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public System.Data.Linq.Binary Taak
+		{
+			get
+			{
+				return this._Taak;
+			}
+			set
+			{
+				if ((this._Taak != value))
+				{
+					this.OnTaakChanging(value);
+					this.SendPropertyChanging();
+					this._Taak = value;
+					this.SendPropertyChanged("Taak");
+					this.OnTaakChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }

@@ -974,6 +974,7 @@
       <Association Name="Cursist_Plaatsing" Member="Plaatsings" ThisKey="Id" OtherKey="IdCursist" Type="Plaatsing" />
       <Association Name="Cursist_PlaatsingHistoriek" Member="PlaatsingHistorieks" ThisKey="Id" OtherKey="IdCursist" Type="PlaatsingHistoriek" />
       <Association Name="Cursist_Studiebewij" Member="Studiebewijs" ThisKey="Id" OtherKey="IdCursist" Type="Studiebewij" />
+      <Association Name="Cursist_AfspraakTrajectbegleider" Member="AfspraakTrajectbegleiders" ThisKey="Id" OtherKey="IdCursist" Type="AfspraakTrajectbegleider" />
       <Association Name="Land_Cursist" Member="Land" ThisKey="IdGeboorteLand" OtherKey="Id" Type="Land" IsForeignKey="true" />
       <Association Name="Land_Cursist1" Member="Land1" ThisKey="IdDiplomaLand" OtherKey="Id" Type="Land" IsForeignKey="true" />
       <Association Name="Land_Cursist2" Member="Land2" ThisKey="IdDomicilieLand" OtherKey="Id" Type="Land" IsForeignKey="true" />
@@ -981,6 +982,56 @@
       <Association Name="NationaliteitType_Cursist" Member="NationaliteitType" ThisKey="IdNationaliteitType" OtherKey="Id" Type="NationaliteitType" IsForeignKey="true" />
       <Association Name="Postcode_Cursist" Member="Postcode" ThisKey="IdPostcode" OtherKey="Id" Type="Postcode" IsForeignKey="true" />
       <Association Name="Postcode_Cursist1" Member="Postcode1" ThisKey="ContactIdPostcode" OtherKey="Id" Type="Postcode" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Taak" Member="Taaks">
+    <Type Name="Taak">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdIngerichteModulevariant" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Naam" Type="System.String" DbType="NVarChar(64) NOT NULL" CanBeNull="false" />
+      <Column Name="Beschrijving" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Deadline" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Notificatie" Member="Notificaties">
+    <Type Name="Notificatie">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdIngerichteModulevariant" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Datum" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Bericht" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="EventType" Type="System.String" DbType="NVarChar(16) NOT NULL" CanBeNull="false" />
+      <Column Name="EventIndex" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Afspraak" Member="Afspraaks">
+    <Type Name="Afspraak">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdPersoneel" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Startdatum" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Einddatum" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Count" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Capacity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Cancelled" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Afspraak_AfspraakTrajectbegleider" Member="AfspraakTrajectbegleiders" ThisKey="Id" OtherKey="IdAfspraak" Type="AfspraakTrajectbegleider" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AfspraakTrajectbegleider" Member="AfspraakTrajectbegleiders">
+    <Type Name="AfspraakTrajectbegleider">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdAfspraak" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdCursist" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RegistratieDatum" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Commentaar" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Column Name="Vastgelegd" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Cursist_AfspraakTrajectbegleider" Member="Cursist" ThisKey="IdCursist" OtherKey="Id" Type="Cursist" IsForeignKey="true" />
+      <Association Name="Afspraak_AfspraakTrajectbegleider" Member="Afspraak" ThisKey="IdAfspraak" OtherKey="Id" Type="Afspraak" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TaakCursist" Member="TaakCursists">
+    <Type Name="TaakCursist">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdCursist" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Taak" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
     </Type>
   </Table>
 </Database>
