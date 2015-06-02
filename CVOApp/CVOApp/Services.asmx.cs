@@ -197,7 +197,7 @@ namespace CVOApp
             };
 
 
-            rss_fetch("http://podcasts.engadget.com/rss.xml");
+            
             export(Directory.Where(x => x.lvl == lvl));
         }
 
