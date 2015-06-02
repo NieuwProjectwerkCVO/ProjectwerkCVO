@@ -634,8 +634,8 @@ namespace CVOApp
                              join lkl in db.Lokaals
                                  on evt.IdLokaal equals lkl.Id
                              where crs.CursistNummer == vx.cursistnummer
-                             && (evt.Aanvangsdatum > t1 || evt.Aanvangsdatum < t2)
-                             && (evt.Einddatum > t1 || evt.Einddatum < t2)
+                             && (( t1 < evt.Aanvangsdatum && evt.Aanvangsdatum < t2)
+                             || ( t1 < evt.Einddatum && evt.Einddatum < t2))
                              select new Event
                              {
                                  type = "lesmoment",
@@ -655,7 +655,7 @@ namespace CVOApp
                                 join mdl in db.IngerichteModulevariants
                                     on plts.IdIngerichteModulevariant equals mdl.Id
                                 where crs.CursistNummer == vx.cursistnummer
-                                && (mdl.ExamenDatum > t1 || mdl.ExamenDatum < t2)
+                                && t1 < mdl.ExamenDatum && mdl.ExamenDatum < t2
                                 select new Event
                                 {
                                     type = "examen",
@@ -674,7 +674,7 @@ namespace CVOApp
                                    join mdl in db.IngerichteModulevariants
                                        on plts.IdIngerichteModulevariant equals mdl.Id
                                    where crs.CursistNummer == vx.cursistnummer
-                                   && (mdl.DatumTweedeZit > t1 || mdl.DatumTweedeZit < t2)
+                                   && t1 < mdl.DatumTweedeZit && mdl.DatumTweedeZit < t2
                                    select new Event
                                    {
                                        type = "herexamen",
@@ -693,7 +693,7 @@ namespace CVOApp
                                      join mdl in db.IngerichteModulevariants
                                          on plts.IdIngerichteModulevariant equals mdl.Id
                                      where crs.CursistNummer == vx.cursistnummer
-                                     && (mdl.DeliberatieDatum > t1 || mdl.DeliberatieDatum < t2)
+                                     && t1 < mdl.DeliberatieDatum && mdl.DeliberatieDatum < t2
                                      select new Event
                                      {
                                          type = "deliberatie",
@@ -708,6 +708,7 @@ namespace CVOApp
 
             // evenementen
             var evenement_query = (from evn in db.Evenements
+                                   where t1 < evn.Datum && evn.Datum < t2
                                    select new Event
                                    {
                                        type = "evenement",
@@ -715,12 +716,13 @@ namespace CVOApp
                                        description = evn.Naam,
                                        location = evn.Locatie,
                                        cancelled = false,
-                                       t1 = Convert.ToDateTime(evn.StartUur),
-                                       t2 = Convert.ToDateTime(evn.EindUur)
+                                       t1 = Convert.ToDateTime(evn.Datum),
+                                       t2 = Convert.ToDateTime(evn.Datum)
                                    }).ToList();
 
             // feestdagen
             var feestdag_query = (from evn in db.Kalenders
+                                  where t1 < evn.Datum && evn.Datum < t2
                                   select new Event
                                   {
                                       type = "feestdag",
@@ -741,7 +743,7 @@ namespace CVOApp
                                join tk in db.Taaks
                                    on plts.IdIngerichteModulevariant equals tk.IdIngerichteModulevariant
                                where crs.CursistNummer == vx.cursistnummer
-                               && (tk.Deadline > t1 || tk.Deadline < t2)
+                               && t1 < tk.Deadline && tk.Deadline < t2
                                select new Event
                                {
                                    type = "taak",
@@ -754,12 +756,13 @@ namespace CVOApp
                                }).ToList();
 
             // afspraken
-            var afspraken = (from afk in db.AfspraakTrajectbegleiders
+            var afspraak_query = (from afk in db.AfspraakTrajectbegleiders
                              join spk in db.Afspraaks
                                 on afk.IdAfspraak equals spk.Id
                              join prs in db.Personeels
                                 on spk.IdPersoneel equals prs.Id
                              where afk.IdCursist == vx.id_cursist
+                             && t1 < spk.Startdatum && spk.Startdatum < t2
                              select new Event
                              {
                                  type = "afspraak",
@@ -777,6 +780,10 @@ namespace CVOApp
             query.AddRange(examen_query);
             query.AddRange(herexamen_query);
             query.AddRange(deliberatie_query);
+            query.AddRange(evenement_query);
+            query.AddRange(taken_query);
+            query.AddRange(feestdag_query);
+            query.AddRange(afspraak_query);
 
             export(query);
         }
