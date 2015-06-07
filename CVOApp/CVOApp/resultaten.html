@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <title>CvoApp - Resultaten</title>
     <link rel="stylesheet" type="text/css" href="Menu.css" />
     <style>
@@ -8,6 +9,37 @@
             background-color: white;
         }
     </style>
+
+    <script>
+
+    function punten_ophalen() {
+
+        $.ajax({
+            url: "services.asmx/cursist_resultaten",
+            data: "{}", //ur data to be sent to server
+            contentType: "application/json; charset=utf-8",
+            type: "GET",
+            sucess: function (data) {
+                $('#divResult').html(data);
+                alert(data);
+                // text = data;
+                //$('h3').html(data.code);
+
+            },
+
+            error: function (x, y, z) {
+
+
+                $('#divResult').html();
+                alert(x.responseText + "  " + x.status);
+            }
+        });
+    }
+
+    </script>
+
+
+
 </head>
 <body>
     <div id="Menu" style="width: 100%;">
@@ -20,10 +52,31 @@
             <li class="menu"><a class="current" href="resultaten.html">Resultaten</a></li>
             <li class="menu"><a>Trajectbegeleiding</a></li>
             <li class="menuEnd"><a href="evenementen.html">Evenementen</a></li>
+            <li class="menuEnd"><a href="attest.html">Attesten</a></li>
         </ul>
     </div>
 
-    <div id="centerContainer">
+
+    <form action="javascript:punten_ophalen();">
+        <input name="submit" type="submit" value="punten_ophalen" />
+
+        <div id="divResult" style="margin-top: 20px;"></div>
+    </form>
+
+
+
+    <table cellpadding="5" border="0" id="cartprod">
+        <tr>
+            <td width="60%"><b>Type</b></td>
+            <td width="20%"><b>Naam</b></td>
+        </tr>
+        <tr>
+            <td width="60%" class="attest"></td>
+            <td width="60%" class="attest"></td>
+        </tr>
+    </table>
+
+    <!--<div id="centerContainer">
         <div id="contentContainer">
             <nav></nav>
             <h1>Resultaten</h1>
@@ -57,7 +110,7 @@
                 </tr>
             </table>                    
         </div>
-    </div>
+    </div>-->
 
 </body>
 </html>

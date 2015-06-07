@@ -51,6 +51,13 @@ namespace CVOApp
                 HttpContext.Current.Session["LoginSession"] = value.ToString();
             }
         }
+
+        [WebMethod(EnableSession = true)]
+        public int TestLoginSession()
+        {
+            return LoginSession;
+        }
+
         public void export(Object obj)
         {
             JavaScriptSerializer js = new JavaScriptSerializer();
@@ -447,15 +454,11 @@ namespace CVOApp
         {
             // module, les, afspraak, taak, globaal, examen, herexamen, deliberatie
             // feestdagen, ...
-            public string type;
-            public int index;
-            public string source;
-            public string description;
-            public DateTime t1;
-            public DateTime t2;
-            public string location;
-            public bool cancelled;
-            public bool subscribed;
+            public string className;
+            public int id;
+            public string title;
+            public DateTime start;
+            public DateTime end;
         }
 
      
@@ -657,14 +660,11 @@ namespace CVOApp
                              || (t1 < evt.Einddatum && evt.Einddatum < t2))
                              select new Event
                              {
-                                 type = "lesmoment",
-                                 source = (mdl.CursusNummer + " " + mdl.Naam),
-                                 index = evt.Id,
-                                 description = mdl.Naam,
-                                 location = lkl.Naam,
-                                 cancelled = evt.Afgelast,
-                                 t1 = evt.Aanvangsdatum,
-                                 t2 = evt.Einddatum
+                                 className = "lesmoment",
+                                 title = (mdl.CursusNummer + " " + mdl.Naam),
+                                 id = evt.Id,
+                                 start = evt.Aanvangsdatum,
+                                 end = evt.Einddatum
                              }).ToList();
 
             // examen
@@ -677,13 +677,10 @@ namespace CVOApp
                                 && t1 < mdl.ExamenDatum && mdl.ExamenDatum < t2
                                 select new Event
                                 {
-                                    type = "examen",
-                                    source = (mdl.CursusNummer + " " + mdl.Naam),
-                                    description = mdl.Naam,
-                                    location = mdl.InfoLokaal,
-                                    cancelled = false,
-                                    t1 = Convert.ToDateTime(mdl.ExamenDatum),
-                                    t2 = Convert.ToDateTime(mdl.ExamenDatum)
+                                    className = "examen",
+                                    title = (mdl.CursusNummer + " " + mdl.Naam),
+                                    start = Convert.ToDateTime(mdl.ExamenDatum),
+                                    end = Convert.ToDateTime(mdl.ExamenDatum)
                                 }).ToList();
 
             // herexamen
@@ -696,13 +693,10 @@ namespace CVOApp
                                    && t1 < mdl.DatumTweedeZit && mdl.DatumTweedeZit < t2
                                    select new Event
                                    {
-                                       type = "herexamen",
-                                       source = (mdl.CursusNummer + " " + mdl.Naam),
-                                       description = mdl.Naam,
-                                       location = mdl.InfoLokaal,
-                                       cancelled = false,
-                                       t1 = Convert.ToDateTime(mdl.DatumTweedeZit),
-                                       t2 = Convert.ToDateTime(mdl.DatumTweedeZit)
+                                       className = "herexamen",
+                                       title = (mdl.CursusNummer + " " + mdl.Naam),
+                                       start = Convert.ToDateTime(mdl.DatumTweedeZit),
+                                       end = Convert.ToDateTime(mdl.DatumTweedeZit)
                                    }).ToList();
 
             // deliberatie
@@ -715,13 +709,10 @@ namespace CVOApp
                                      && t1 < mdl.DeliberatieDatum && mdl.DeliberatieDatum < t2
                                      select new Event
                                      {
-                                         type = "deliberatie",
-                                         source = (mdl.CursusNummer + " " + mdl.Naam),
-                                         description = mdl.Naam,
-                                         location = mdl.InfoLokaal,
-                                         cancelled = false,
-                                         t1 = Convert.ToDateTime(mdl.DeliberatieDatum),
-                                         t2 = Convert.ToDateTime(mdl.DeliberatieDatum)
+                                         className = "deliberatie",
+                                         title = (mdl.CursusNummer + " " + mdl.Naam),
+                                         start = Convert.ToDateTime(mdl.DeliberatieDatum),
+                                         end = Convert.ToDateTime(mdl.DeliberatieDatum)
                                      }).ToList();
 
 
@@ -730,13 +721,10 @@ namespace CVOApp
                                    where t1 < evn.Datum && evn.Datum < t2
                                    select new Event
                                    {
-                                       type = "evenement",
-                                       source = "CVO",
-                                       description = evn.Naam,
-                                       location = evn.Locatie,
-                                       cancelled = false,
-                                       t1 = Convert.ToDateTime(evn.Datum),
-                                       t2 = Convert.ToDateTime(evn.Datum)
+                                       className = "evenement",
+                                       title = "CVO",
+                                       start = Convert.ToDateTime(evn.Datum),
+                                       end = Convert.ToDateTime(evn.Datum)
                                    }).ToList();
 
             // feestdagen
@@ -744,13 +732,10 @@ namespace CVOApp
                                   where t1 < evn.Datum && evn.Datum < t2
                                   select new Event
                                   {
-                                      type = "feestdag",
-                                      source = "CVO",
-                                      description = evn.Omschrijving,
-                                      location = "N/A",
-                                      cancelled = false,
-                                      t1 = Convert.ToDateTime(evn.Datum),
-                                      t2 = Convert.ToDateTime(evn.Datum)
+                                      className = "feestdag",
+                                      title = "CVO",
+                                      start = Convert.ToDateTime(evn.Datum),
+                                      end = Convert.ToDateTime(evn.Datum)
                                   }).ToList();
 
             // taken
@@ -765,13 +750,10 @@ namespace CVOApp
                                && t1 < tk.Deadline && tk.Deadline < t2
                                select new Event
                                {
-                                   type = "taak",
-                                   source = (mdl.CursusNummer + " " + mdl.Naam),
-                                   description = tk.Naam,
-                                   location = "N/A",
-                                   cancelled = false,
-                                   t1 = Convert.ToDateTime(tk.Deadline),
-                                   t2 = Convert.ToDateTime(tk.Deadline)
+                                   className = "taak",
+                                   title = (mdl.CursusNummer + " " + mdl.Naam),
+                                   start = Convert.ToDateTime(tk.Deadline),
+                                   end = Convert.ToDateTime(tk.Deadline)
                                }).ToList();
 
             // afspraken
@@ -784,13 +766,10 @@ namespace CVOApp
                                   && t1 < spk.Startdatum && spk.Startdatum < t2
                                   select new Event
                                   {
-                                      type = "afspraak",
-                                      description = afk.Commentaar,
-                                      source = prs.Naam,
-                                      location = "N/A",
-                                      cancelled = false,
-                                      t1 = spk.Startdatum,
-                                      t2 = spk.Einddatum
+                                      className = "afspraak",
+                                      title = prs.Naam,
+                                      start = spk.Startdatum,
+                                      end = spk.Einddatum
                                   }).ToList();
 
 
@@ -1112,11 +1091,9 @@ namespace CVOApp
                         && afk.Startdatum < t2 && t2 < afk.Einddatum
                         select new Event
                         {
-                            type = "afspraak",
-                            t1 = afk.Startdatum,
-                            t2 = afk.Einddatum,
-                            cancelled = afk.Cancelled,
-                            location = ""
+                            className = "afspraak",
+                            start = afk.Startdatum,
+                            end = afk.Einddatum,
                         };
         }
 

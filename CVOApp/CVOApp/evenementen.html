@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -38,7 +38,21 @@
                 //    // change the day's background color just for fun
                 //    $(this).css('background-color', 'red');
 
-                //}
+                //},
+
+                events: {
+                    url: 'http://localhost/services.asmx/cursist_all_events',
+                    type: 'POST',
+                    data: {
+                        t1: new Date('2014/9/1'),
+                        t2: new Date()
+                    },
+                    error: function () {
+                        alert('there was an error while fetching events!');
+                    },
+                    color: 'yellow',   // a non-ajax option
+                    textColor: 'black' // a non-ajax option
+                }
             })
         });
     </script>
@@ -71,6 +85,7 @@
             <li class="menu"><a href="resultaten.html">Resultaten</a></li>
             <li class="menu"><a>Trajectbegeleiding</a></li>
             <li class="menuEnd"><a class="current" href="evenementen.html">Evenementen</a></li>
+            <li class="menuEnd"><a href="attest.html">Attesten</a></li>
         </ul>
     </div>
     <br /><br />
