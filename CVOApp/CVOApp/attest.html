@@ -6,15 +6,16 @@
     <script>
 
         function attesten_ophalen() {
-            var text;
+
             $.ajax({
                 url: "services.asmx/cursist_diplomas",
-                data: "", //ur data to be sent to server
+                data: "{}", //ur data to be sent to server
                 contentType: "application/json; charset=utf-8",
                 type: "GET",
                 sucess: function (data) {
-                    $('#divResult').html(data.d);
-                    text = data;
+                    $('#divResult').html(data);
+                    alert(data);
+                   // text = data;
                     //$('h3').html(data.code);
                   
                 },
@@ -22,7 +23,7 @@
                 error: function (x, y, z) {
 
                  
-                   // $('#divResult').html();
+                   $('#divResult').html();
                     alert(x.responseText + "  " + x.status);
                 }
             });
