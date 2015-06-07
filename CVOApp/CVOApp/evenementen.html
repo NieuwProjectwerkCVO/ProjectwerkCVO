@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>CvoApp - Evenementen</title>
+    <link rel="stylesheet" type="text/css" href="Menu.css" />
+
+    <link rel='stylesheet' href='fullcalendar/fullcalendar.css' />
+    <script src='fullcalendar/lib/jquery.min.js'></script>
+    <script src='fullcalendar/lib/moment.min.js'></script>
+    <script src='fullcalendar/fullcalendar.js'></script>
+
+    <script>
+        $(document).ready(function () {
+
+            // page is now ready, initialize the calendar...
+
+            $('#calendar').fullCalendar({
+                // put your options and callbacks here
+                firstDay: 1,
+                selectable: true,
+                selectHelper: true,
+
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+
+                //dayClick: function (date, jsEvent, view) {
+
+                //    alert('Clicked on: ' + date.format());
+
+                //    alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+
+                //    alert('Current view: ' + view.name);
+
+                //    // change the day's background color just for fun
+                //    $(this).css('background-color', 'red');
+
+                //}
+            })
+        });
+    </script>
+
+    <style>
+        body {
+	        background-color: white;
+        }
+
+        .dynamic {
+            width: 48%;
+            float: right;
+            background-color:#0076C8;
+            border-radius:15px;
+            margin:5px; padding:5px;
+            color: white;
+            margin-bottom: -38%; padding-bottom: 38%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="Menu" style="width: 100%;">
+        <a href="Index.html"><img src="img/logocvoantwerpenLink.png" style="float:left; width: 20.5%;" /></a>
+        <img src="img/logocvoantwerpen.png" style="float: left; width: 59%;" />
+        <label onclick class="lbl" for="toggle"><img src="img/MenuIcon.png" style="width: 20.5%;" /></label>
+        <input name="" class="toggle" value="" id="toggle" type="checkbox" />
+        <ul class="test">
+            <li class="menu"><a>Inschrijven</a></li>
+            <li class="menu"><a href="resultaten.html">Resultaten</a></li>
+            <li class="menu"><a>Trajectbegeleiding</a></li>
+            <li class="menuEnd"><a class="current" href="evenementen.html">Evenementen</a></li>
+        </ul>
+    </div>
+    <br /><br />
+    <div class="static" style="width: 50%; float:left; padding-bottom: 5px;" id='calendar'></div>
+    <div class="dynamic">test</div>
+</body>
+</html>

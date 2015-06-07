@@ -1,61 +1,28 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title></title>
-    <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
-    <script src="bower_components/platform/platform.js" ></script>
-    <link rel="import" href="bower_components/polymer/polymer.html" />
-    <link rel="import" href="bower_components/core-elements/core-elements.html" />
-    <link rel="import" href="bower_components/paper-elements/paper-elements.html" />
-    <link rel="import" href="bower_components/paper-card/paper-card.html" />
-     <link rel="stylesheet" type="text/css" href="font/RobotoDraft.css" />
-    
-
-    <link rel="import" href="custom_components/login-card.html"/>
-    <link rel="import" href="custom_components/event-card.html" />
-    <link rel="import" href="custom_components/register-card.html" />
-    <link rel="import" href="custom_components/tool-card.html" />
-    <link rel="import" href="custom_components/image-card.html" />
-    <link rel="import" href="custom_components/cursist-card.html" />
-    <link rel="import" href="custom_components/search-card.html" />
-    <link rel="import" href="custom_components/test-card.html" />
-    <link rel="import" href="custom_components/base-card.html" />
-    <link rel="import" href="custom_components/resultaat-card.html" />
-
-<style>
-   body {
-       background-color: #ffffff; 
-   }
-
-   core-card {
-       background-color: #ffffff;
-       padding: 35px;
-       margin: 5px;
-   }
-</style>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>CvoApp - Home</title>
+    <link rel="stylesheet" type="text/css" href="Menu.css" />
+    <style>
+        body {
+	        background-color: white;
+        }
+    </style>
 </head>
-<body unresolved style="font-family: RobotoDraft;" fullbleed layout vertical>
-  
 
-    <core-header-panel flex >
-        <core-toolbar style="background-color: #0094ff; color:white;">
-            <paper-icon-button icon="menu" z="0" ></paper-icon-button>
-            <span flex> APP </span>   
-            <paper-icon icon="plus"></paper-icon>    
-            <paper-icon-button icon=""></paper-icon-button>
-            <paper-icon-button icon=""></paper-icon-button>
-            <paper-icon-button icon=""></paper-icon-button>
-            <paper-icon-button icon=""></paper-icon-button>
-        </core-toolbar>
-        <!--<event-card url="http://localhost:57306/Services.asmx/test_modules"></event-card>-->
-        <cursist-card url="http://localhost:57306/Services.asmx/cursist_modules"></cursist-card>
-        <register-card url="http://localhost:57306/Services.asmx/cursist_registreer"></register-card>
-        
-        <search-card url="http://localhost:57306/Services.asmx/test_opleidingen" category="Opleidingen"></search-card>
-        <search-card url="http://localhost:57306/Services.asmx/test_modules" category="Modules"></search-card>
-
-    </core-header-panel>
-              
+<body>
+    <div id="Menu" style="width: 100%;">
+        <a href="Index.html"><img src="img/logocvoantwerpenLink.png" style="float:left; width: 20.5%;" /></a>
+        <img src="img/logocvoantwerpen.png" style="float: left; width: 59%;" />
+        <label onclick class="lbl" for="toggle"><img src="img/MenuIcon.png" style="width: 20.5%;" /></label>
+        <input name="" class="toggle" value="" id="toggle" type="checkbox" />
+        <ul class="test">
+            <li class="menu"><a>Inschrijven</a></li>
+            <li class="menu"><a href="resultaten.html">Resultaten</a></li>
+            <li class="menu"><a>Trajectbegeleiding</a></li>
+            <li class="menuEnd"><a href="evenementen.html">Evenementen</a></li>
+        </ul>
+    </div>
 </body>
 </html>

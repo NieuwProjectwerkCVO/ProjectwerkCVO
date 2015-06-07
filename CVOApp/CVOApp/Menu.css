@@ -8,8 +8,8 @@ li:hover li {float: none;	background: white; color: black;}
 li:hover li a:hover {background: #f0f0f0;}
 .menuEnd {border: #1678CD 2px solid; display: block;}
 .menu { border: #1678CD 2px solid; border-bottom-width: 0px; display: block;}
-.current {background: black;}
-a:visited { color: #1678CD; }
+.current {color: #1678CD;}
+a:visited {color: black;}
 
 input + .test { display: none; }
 input:checked + .test {
