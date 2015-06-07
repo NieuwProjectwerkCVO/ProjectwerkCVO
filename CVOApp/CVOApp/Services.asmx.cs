@@ -53,7 +53,7 @@ namespace CVOApp
         }
 
         [WebMethod(EnableSession = true)]
-        public static int TestLoginSession()
+        public int TestLoginSession()
         {
             return LoginSession;
         }
