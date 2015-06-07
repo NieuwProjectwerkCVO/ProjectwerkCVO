@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>
+
+        function attesten_ophalen() {
+            var text;
+            $.ajax({
+                url: "services.asmx/cursist_diplomas",
+                data: "", //ur data to be sent to server
+                contentType: "application/json; charset=utf-8",
+                type: "GET",
+                sucess: function (data) {
+                    $('#divResult').html(data.d);
+                    text = data;
+                    //$('h3').html(data.code);
+                  
+                },
+
+                error: function (x, y, z) {
+
+                 
+                   // $('#divResult').html();
+                    alert(x.responseText + "  " + x.status);
+                }
+            });
+        }
+
+    </script>
+	<meta charset="utf-8" />
+</head>
+<body>
+    <form action="javascript:attesten_ophalen();">
+        <input name="submit" type="submit" value="attesten_ophalen" />
+
+        <div id="divResult" style="margin-top: 20px;"></div>
+        </form>
+
+
+
+    <table cellpadding="5"  border="0" id="cartprod">
+        <tr>
+            <td width="60%"><b>Type</b></td>
+            <td width="20%"><b>Naam</b></td>
+        </tr>
+        <tr>
+            <td width="60%" class="attest"></td>
+            <td width="60%" class="attest"></td>
+        </tr>
+    </table>
+
+</body>
+</html>

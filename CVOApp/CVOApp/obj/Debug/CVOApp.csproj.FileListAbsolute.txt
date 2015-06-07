@@ -55,3 +55,11 @@ C:\Users\Roderik\Documents\_Projectwerk\De_nieuwe_app\ProjectwerkCVO\CVOApp\CVOA
 C:\Users\Roderik\Documents\_Projectwerk\De_nieuwe_app\ProjectwerkCVO\CVOApp\CVOApp\obj\Debug\CVOApp.csprojResolveAssemblyReference.cache
 C:\Users\Roderik\Documents\_Projectwerk\De_nieuwe_app\ProjectwerkCVO\CVOApp\CVOApp\obj\Debug\CVOApp.dll
 C:\Users\Roderik\Documents\_Projectwerk\De_nieuwe_app\ProjectwerkCVO\CVOApp\CVOApp\obj\Debug\CVOApp.pdb
+E:\Github projectwerk\projectwerkcvo2\ProjectwerkCVO\CVOApp\CVOApp\bin\CVOApp.dll.config
+E:\Github projectwerk\projectwerkcvo2\ProjectwerkCVO\CVOApp\CVOApp\bin\CVOApp.dll
+E:\Github projectwerk\projectwerkcvo2\ProjectwerkCVO\CVOApp\CVOApp\bin\CVOApp.pdb
+E:\Github projectwerk\projectwerkcvo2\ProjectwerkCVO\CVOApp\CVOApp\bin\Microsoft.Web.Infrastructure.dll
+E:\Github projectwerk\projectwerkcvo2\ProjectwerkCVO\CVOApp\CVOApp\bin\Microsoft.Web.Infrastructure.xml
+E:\Github projectwerk\projectwerkcvo2\ProjectwerkCVO\CVOApp\CVOApp\obj\Debug\CVOApp.csprojResolveAssemblyReference.cache
+E:\Github projectwerk\projectwerkcvo2\ProjectwerkCVO\CVOApp\CVOApp\obj\Debug\CVOApp.dll
+E:\Github projectwerk\projectwerkcvo2\ProjectwerkCVO\CVOApp\CVOApp\obj\Debug\CVOApp.pdb

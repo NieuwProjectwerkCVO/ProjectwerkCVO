@@ -27,6 +27,7 @@ namespace CVOApp
     [WebService(Namespace = "http://tempuri.org/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
+    [ScriptService]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
     // [System.Web.Script.Services.ScriptService]
     public class Services : System.Web.Services.WebService
@@ -501,6 +502,7 @@ namespace CVOApp
         //////////////////////////////////////////////////////////////////////
 
         [WebMethod(EnableSession=true)]
+        [ScriptMethod(UseHttpGet = true)]
         public void cursist_diplomas()
         {
             DBMDataContext db = new DBMDataContext();

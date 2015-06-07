@@ -19,6 +19,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -88,6 +89,7 @@
     <Content Include="App_Data\Instant_log.ldf">
       <DependentUpon>Instant.mdf</DependentUpon>
     </Content>
+    <Content Include="attest.html" />
     <Content Include="evenementen.html" />
     <Content Include="fullcalendar\changelog.txt" />
     <Content Include="fullcalendar\fullcalendar.css" />
