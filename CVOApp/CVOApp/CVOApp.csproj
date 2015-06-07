@@ -167,6 +167,7 @@
     <Content Include="fullcalendar\lib\jquery.min.js" />
     <Content Include="fullcalendar\lib\moment.min.js" />
     <Content Include="fullcalendar\license.txt" />
+    <Content Include="modules.html" />
     <Content Include="img\logocvoantwerpen.png" />
     <Content Include="img\logocvoantwerpenFull.png" />
     <Content Include="img\logocvoantwerpenLink.png" />
