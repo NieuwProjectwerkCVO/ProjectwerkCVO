@@ -95,8 +95,15 @@
     <Content Include="calendar\d-date-utils.html" />
     <Content Include="calendar\demo.html" />
     <Content Include="calendar\index.html" />
+    <Content Include="CvoApp-Home.html" />
     <Content Include="Grid.html" />
     <Content Include="Login.html" />
+    <Content Include="logocvoantwerpen.png" />
+    <Content Include="logocvoantwerpenFull.png" />
+    <Content Include="logocvoantwerpenLink.png" />
+    <Content Include="Menu.css" />
+    <Content Include="MenuBackground.png" />
+    <Content Include="MenuIcon.png" />
     <Content Include="Services.asmx" />
     <Content Include="Source\DBM.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
@@ -106,6 +113,7 @@
     <Content Include="calendar\.bowerrc" />
     <Content Include="calendar\bower.json" />
     <Content Include="calendar\README.md" />
+    <Content Include=".DS_Store" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

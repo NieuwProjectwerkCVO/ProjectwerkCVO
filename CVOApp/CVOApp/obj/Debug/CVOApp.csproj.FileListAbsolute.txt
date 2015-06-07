@@ -45,3 +45,5 @@ C:\Users\Arno\Documents\GitHub\Projectwerk\ProjectwerkCVO\CVOApp\CVOApp\bin\Syst
 C:\Users\Arno\Documents\GitHub\Projectwerk\ProjectwerkCVO\CVOApp\CVOApp\bin\System.Web.WebPages.xml
 C:\Users\Arno\Documents\GitHub\Projectwerk\ProjectwerkCVO\CVOApp\CVOApp\bin\System.Web.WebPages.Deployment.xml
 C:\Users\Arno\Documents\GitHub\Projectwerk\ProjectwerkCVO\CVOApp\CVOApp\bin\System.Web.WebPages.Razor.xml
+D:\Project\ProjectwerkCVO\CVOApp\CVOApp\bin\Microsoft.Web.Infrastructure.dll
+D:\Project\ProjectwerkCVO\CVOApp\CVOApp\bin\Microsoft.Web.Infrastructure.xml

@@ -1,0 +1,27 @@
+ul {list-style: none;padding: 0px;margin: 0px; width:inherit;}
+ul li {display: block;position: relative;}
+li ul {display: none;}
+ul li a {display: block; color: black; padding: 10px 10px 5px 10px;text-decoration: none;white-space: nowrap;}
+ul li a:hover { color: #1678CD;}
+li:hover ul {display: block; position: absolute;}
+li:hover li {float: none;	background: white; color: black;}
+li:hover li a:hover {background: #f0f0f0;}
+.menuEnd {border: #1678CD 2px solid; display: block;}
+.menu { border: #1678CD 2px solid; border-bottom-width: 0px; display: block;}
+.current {background: black;}
+a:visited { color: #1678CD; }
+
+input + .test { display: none; }
+input:checked + .test {
+display: block;
+}
+
+.test { margin-top: 5px; }
+
+.lbl:hover {
+cursor: pointer;
+}
+
+img { display: block;}
+
+.toggle { position: absolute; top: -999px; left: -999px; }
