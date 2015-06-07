@@ -7,8 +7,7 @@
         function login()
         {
             var at = $("#cn").val() + $("#ww").val();
-            alert(at);
-            $.post("http://localhost/CVOApp/Services.asmx/cursist_login", { access_token: at });
+            $.post("http://localhost:57306/Services.asmx/cursist_login", { access_token: at });
         }
     </script>
 </head>
