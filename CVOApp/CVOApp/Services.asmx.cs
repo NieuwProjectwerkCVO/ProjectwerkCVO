@@ -51,6 +51,13 @@ namespace CVOApp
                 HttpContext.Current.Session["LoginSession"] = value.ToString();
             }
         }
+
+        [WebMethod(EnableSession = true)]
+        public static int TestLoginSession()
+        {
+            return LoginSession;
+        }
+
         public void export(Object obj)
         {
             JavaScriptSerializer js = new JavaScriptSerializer();
