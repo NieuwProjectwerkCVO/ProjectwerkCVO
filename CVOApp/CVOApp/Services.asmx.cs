@@ -31,7 +31,25 @@ namespace CVOApp
     // [System.Web.Script.Services.ScriptService]
     public class Services : System.Web.Services.WebService
     {
-
+        public static int LoginSession
+        {
+            get
+            {
+                object value = HttpContext.Current.Session["LoginSession"];
+                if (value != null)
+                {
+                    return Convert.ToInt32(value);
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            set
+            {
+                HttpContext.Current.Session["LoginSession"] = value.ToString();
+            }
+        }
         public void export(Object obj)
         {
             JavaScriptSerializer js = new JavaScriptSerializer();
@@ -40,7 +58,53 @@ namespace CVOApp
             Context.Response.Write(js.Serialize(obj));
         }
 
-        
+        class validator
+        {
+            public int id_cursist;
+            public string cursistnummer;
+            public string wachtwoord;
+            public bool is_valid;
+
+            public validator(string access_token)
+            {
+                DBMDataContext db = new DBMDataContext();
+
+                if (access_token.Length > 4)
+                {
+                    cursistnummer = access_token.Substring(0, 5);
+                    wachtwoord = access_token.Substring(5);
+                    is_valid = true;
+                }
+                // cursistnummer ophalen
+                var query = from cs in db.Cursists
+                            where cs.CursistNummer == cursistnummer
+                            select new
+                            {
+                                cs.Id,
+                                cs.CursistNummer,
+                                cs.Wachtwoord
+                            };
+
+
+                // bestaat cursistnummer?
+                int count = 0;
+                foreach (var c in query) count++;
+
+
+                if (count == 0) is_valid = false;
+
+                else
+                {
+                    // correcte wachtwoord
+                    foreach (var cs in query)
+                    {
+                        if (cs.Wachtwoord == wachtwoord) id_cursist = cs.Id;
+                        else is_valid = false;
+                    }
+
+                }
+            }
+        }
      
         //class Test { public int Id; public string Naam; }
 
@@ -516,11 +580,19 @@ namespace CVOApp
         //    export(new { Message = "Success, " + cx.CursistNummer + "!"});
         //}
 
-        //[WebMethod]
-        //public void cursist_login(string cursistnummer)
-        //{
-        //    export();
-        //}
+        [WebMethod]
+        public void cursist_login(string access_token)
+        {
+            validator val = new validator(access_token);
+            if (val.is_valid)
+            {
+                LoginSession = val.id_cursist;
+            }
+            else
+            {
+                return;
+            }
+        }
 
         //////////////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////////
