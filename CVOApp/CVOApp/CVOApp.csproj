@@ -72,6 +72,7 @@
     <Content Include="calendar\demo.html" />
     <Content Include="calendar\index.html" />
     <Content Include="Grid.html" />
+    <Content Include="resultaten.html" />
     <Content Include="Services.asmx" />
     <Content Include="Source\DBM.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
