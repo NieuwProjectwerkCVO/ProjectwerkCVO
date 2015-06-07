@@ -169,7 +169,7 @@
     <Content Include="img\logocvoantwerpenFull.png" />
     <Content Include="img\logocvoantwerpenLink.png" />
     <Content Include="img\MenuIcon.png" />
-    <Content Include="Login.html" />
+    <Content Include="login.html" />
     <Content Include="Menu.css" />
     <Content Include="resultaten.html" />
     <Content Include="Services.asmx" />

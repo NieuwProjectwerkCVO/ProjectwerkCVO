@@ -47,3 +47,11 @@ C:\Users\Arno\Documents\GitHub\Projectwerk\ProjectwerkCVO\CVOApp\CVOApp\bin\Syst
 C:\Users\Arno\Documents\GitHub\Projectwerk\ProjectwerkCVO\CVOApp\CVOApp\bin\System.Web.WebPages.Razor.xml
 D:\Project\ProjectwerkCVO\CVOApp\CVOApp\bin\Microsoft.Web.Infrastructure.dll
 D:\Project\ProjectwerkCVO\CVOApp\CVOApp\bin\Microsoft.Web.Infrastructure.xml
+C:\Users\Roderik\Documents\_Projectwerk\De_nieuwe_app\ProjectwerkCVO\CVOApp\CVOApp\bin\CVOApp.dll.config
+C:\Users\Roderik\Documents\_Projectwerk\De_nieuwe_app\ProjectwerkCVO\CVOApp\CVOApp\bin\CVOApp.dll
+C:\Users\Roderik\Documents\_Projectwerk\De_nieuwe_app\ProjectwerkCVO\CVOApp\CVOApp\bin\CVOApp.pdb
+C:\Users\Roderik\Documents\_Projectwerk\De_nieuwe_app\ProjectwerkCVO\CVOApp\CVOApp\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\Roderik\Documents\_Projectwerk\De_nieuwe_app\ProjectwerkCVO\CVOApp\CVOApp\bin\Microsoft.Web.Infrastructure.xml
+C:\Users\Roderik\Documents\_Projectwerk\De_nieuwe_app\ProjectwerkCVO\CVOApp\CVOApp\obj\Debug\CVOApp.csprojResolveAssemblyReference.cache
+C:\Users\Roderik\Documents\_Projectwerk\De_nieuwe_app\ProjectwerkCVO\CVOApp\CVOApp\obj\Debug\CVOApp.dll
+C:\Users\Roderik\Documents\_Projectwerk\De_nieuwe_app\ProjectwerkCVO\CVOApp\CVOApp\obj\Debug\CVOApp.pdb
