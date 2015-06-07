@@ -635,7 +635,10 @@ namespace CVOApp
         {
             DBMDataContext db = new DBMDataContext();
 
-
+            string cursistnr = (from crs in db.Cursists
+                                where crs.Id == LoginSession
+                                select crs.CursistNummer).First().ToString();
+                                    
 
             // lesmomenten
             var les_query = (from crs in db.Cursists
@@ -647,9 +650,9 @@ namespace CVOApp
                                  on mdl.Id equals evt.IdIngerichteModulevariant
                              join lkl in db.Lokaals
                                  on evt.IdLokaal equals lkl.Id
-                             where crs.Id == LoginSession
-                             && (( t1 < evt.Aanvangsdatum && evt.Aanvangsdatum < t2)
-                             || ( t1 < evt.Einddatum && evt.Einddatum < t2))
+                             where crs.CursistNummer == cursistnr
+                             && ((t1 < evt.Aanvangsdatum && evt.Aanvangsdatum < t2)
+                             || (t1 < evt.Einddatum && evt.Einddatum < t2))
                              select new Event
                              {
                                  type = "lesmoment",
