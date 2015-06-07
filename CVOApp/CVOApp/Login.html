@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>
+        function login()
+        {
+            var at = $("#cn").val() + $("#ww").val();
+            alert(at);
+            $.post("http://localhost/CVOApp/Services.asmx/cursist_login", { access_token: at });
+        }
+    </script>
+</head>
+<body>
+    <form action="javascript:login();">
+        cursistnummer: <input name="cn" id="cn" type="text" value="45648"/>
+        wachtwoord: <input name="ww" id="ww" type="text" value="password" />
+        <input name="submit" type="submit" value="login" />
+    </form>
+</body>
+</html>
