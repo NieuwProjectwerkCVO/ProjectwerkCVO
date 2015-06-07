@@ -770,23 +770,23 @@ namespace CVOApp
                                }).ToList();
 
             // afspraken
-            //var afspraak_query = (from afk in db.AfspraakTrajectbegleiders
-            //                 join spk in db.Afspraaks
-            //                    on afk.IdAfspraak equals spk.Id
-            //                 join prs in db.Personeels
-            //                    on spk.IdPersoneel equals prs.Id
-            //                 where afk.IdCursist == id_cursist
-            //                 && t1 < spk.Startdatum && spk.Startdatum < t2
-            //                 select new Event
-            //                 {
-            //                     type = "afspraak",
-            //                     description = afk.Commentaar,
-            //                     source = prs.Naam,
-            //                     location = "N/A",
-            //                     cancelled = false,
-            //                     t1 = spk.Startdatum,
-            //                     t2 = spk.Einddatum
-            //                 }).ToList();
+            var afspraak_query = (from afk in db.AfspraakTrajectbegleiders
+                                  join spk in db.Afspraaks
+                                     on afk.IdAfspraak equals spk.Id
+                                  join prs in db.Personeels
+                                     on spk.IdPersoneel equals prs.Id
+                                  where afk.IdCursist == LoginSession
+                                  && t1 < spk.Startdatum && spk.Startdatum < t2
+                                  select new Event
+                                  {
+                                      type = "afspraak",
+                                      description = afk.Commentaar,
+                                      source = prs.Naam,
+                                      location = "N/A",
+                                      cancelled = false,
+                                      t1 = spk.Startdatum,
+                                      t2 = spk.Einddatum
+                                  }).ToList();
 
 
             List<Event> query = new List<Event>();
@@ -797,7 +797,7 @@ namespace CVOApp
             query.AddRange(evenement_query);
             query.AddRange(taken_query);
             query.AddRange(feestdag_query);
-            //query.AddRange(afspraak_query);
+            query.AddRange(afspraak_query);
 
             export(query);
         }
