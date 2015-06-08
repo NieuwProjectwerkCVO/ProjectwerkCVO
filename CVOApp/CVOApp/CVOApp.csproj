@@ -173,6 +173,7 @@
     <Content Include="img\logocvoantwerpenLink.png" />
     <Content Include="img\MenuIcon.png" />
     <Content Include="Menu.css" />
+    <Content Include="modules.html" />
     <Content Include="resultaten.html" />
     <Content Include="Services.asmx" />
     <Content Include="Source\DBM.dbml">
