@@ -27,16 +27,16 @@
                     right: 'month,agendaWeek,agendaDay'
                 },
 
-                dayClick: function (date, jsEvent, view) {
+                events: '/events.php',
 
-                    //alert('Clicked on: ' + date.format());
+                eventClick: function (calEvent, jsEvent, view) {
 
-                    //alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+                    
+                    $("#naam").text(calEvent.title);
+                    $("#start").text(calEvent.start);
+                    $("#stop").text(calEvent.end);
 
-                    //alert('Current view: ' + view.name);
-
-                    // change the day's background color just for fun
-                    //$(this).css('background-color', 'red');
+                
                     $('.voorbeeld').css({ "display": "block" });
 
                 },
@@ -97,19 +97,19 @@
         <table>
             <tr>
                 <td style="width:30%"><p>Evenement:</p></td>
-                <td><p class="voorbeeld">Opendeurdag</p></td>
+                <td><p id="naam" class="voorbeeld">Opendeurdag</p></td>
             </tr>
             <tr>
                 <td><p>Startdatum:</p></td>
-                <td><p class="voorbeeld">08-06-2015 - 13:00</p></td>
+                <td><p id="start" class="voorbeeld">08-06-2015 - 13:00</p></td>
             </tr>
             <tr>
                 <td><p>Einddatum:</p></td>
-                <td><p class="voorbeeld">08-06-2015 - 19:00</p></td>
+                <td><p id="stop" class="voorbeeld">08-06-2015 - 19:00</p></td>
             </tr>
-            <tr>
-                <td colspan="2"><p class="voorbeeld">Dit is de opendeurdag van CVO Antwerpen Zuid, voor meer info klik <a href="www.cvoantwerpenzuid.be">hier</a>.</p></td>
-            </tr>
+<!--            <tr>
+                <td colspan="2"><label class="voorbeeld">Dit is de opendeurdag van CVO Antwerpen Zuid, voor meer info klik <a href="www.cvoantwerpenzuid.be">hier</a>.</label></td>
+            </tr>-->
         </table>
     </div>
 </body>
