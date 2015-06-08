@@ -91,6 +91,7 @@
     </Content>
     <Content Include="attest.html" />
     <Content Include="evenementen.html" />
+    <Content Include="events.php" />
     <Content Include="fullcalendar\changelog.txt" />
     <Content Include="fullcalendar\fullcalendar.css" />
     <Content Include="fullcalendar\fullcalendar.js" />
