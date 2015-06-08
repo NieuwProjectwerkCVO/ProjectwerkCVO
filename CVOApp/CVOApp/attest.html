@@ -3,13 +3,44 @@
 <head>
     <title></title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="Menu.css" />
+    <style>
+        body {
+            background-color: white;
+        }
+
+        .myGrid {
+            width: 100%;
+            margin: 0px 0 0px 0;
+            border: solid 1px #525252;
+            border-collapse: collapse;
+            width: 600px;
+        }
+
+            .myGrid td {
+                padding: 2px;
+                border: solid 1px #c1c1c1;
+                color: Black;
+                font-family: Arial,Helvetica,sans-serif;
+                font-size: 0.9em;
+                width: 40px;
+            }
+
+            .myGrid th {
+                color: #fff;
+                background: url(images/grid_header.png) repeat-x top;
+                font-family: Arial,Helvetica,sans-serif;
+                font-size: 0.9em;
+            }
+    </style>
+
     <script>
 
         function attesten_ophalen() {
 
             $.ajax({
                 url: "services.asmx/cursist_diplomas",
-                data: "{}", //ur data to be sent to server
+                data: "", //ur data to be sent to server
                 contentType: "application/json; charset=utf-8",
                 type: "GET",
                 sucess: function (data) {
@@ -33,6 +64,22 @@
 	<meta charset="utf-8" />
 </head>
 <body>
+    <div id="Menu" style="width: 100%;">
+        <a href="home.html"><img src="img/logocvoantwerpenLink.png" style="float:left; width: 20.5%;" /></a>
+        <img src="img/logocvoantwerpen.png" style="float: left; width: 59%;" />
+        <label onclick class="lbl" for="toggle"><img src="img/MenuIcon.png" style="width: 20.5%;" /></label>
+        <input name="" class="toggle" value="" id="toggle" type="checkbox" />
+        <ul class="test">
+            <li class="menu"><a>Inschrijven</a></li>
+            <li class="menu"><a class="current" href="resultaten.html">Resultaten</a></li>
+            <li class="menu"><a>Trajectbegeleiding</a></li>
+            <li class="menu"><a href="evenementen.html">Evenementen</a></li>
+            <li class="menu"><a href="modules.html">Modules</a></li>
+            <li class="menuEnd"><a href="attest.html">Attesten</a></li>
+        </ul>
+    </div>
+
+
     <form action="javascript:attesten_ophalen();">
         <input name="submit" type="submit" value="attesten_ophalen" />
 
