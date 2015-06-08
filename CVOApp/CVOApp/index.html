@@ -1,29 +1,87 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>CvoApp - Home</title>
-    <link rel="stylesheet" type="text/css" href="Menu.css" />
+    <title>CvoApp - Login</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>
+        function login()
+        {
+            var at = $("#cn").val() + $("#ww").val();
+            $.post("http://localhost:57306/Services.asmx/cursist_login", { access_token: at });
+            window.location = "http://localhost:57306/home.html";
+        }
+    </script>
     <style>
-        body {
-	        background-color: white;
+        .form {
+            background-color: #0076C8;
+            width: 45%;
+            margin: 0 auto;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            border-radius: 15px;
+            color: white;
+        }
+        .text {
+            width: 90%;
+            border-radius: 20px;
+            text-align: center;
+            border-style:none;
+            padding:5px 0;
+        }
+        .button {
+            width: 40%;
+            border-style: outset;
+            border-width: thick;
+            border-color: white;
+            background-color: white;
+            border-radius: 20px;
+            color: #0076C8;
+            font-size: 1em;
+            font-family: 'Arial Rounded MT';
+            
+            cursor: pointer;
+        }
+        .button:active
+        {
+	        color: #4D9FD8;
+	        -webkit-transform: translateY(1px);
+	        transform: translateY(1px);
+	        -webkit-animation: none;
+	        animation: none;
+        }
+        td {
+            padding-bottom: 10px;
+        }
+        h3 {
+            margin: 0;
+            font-size: 1.1em;
+            letter-spacing: .8px;
+            font-weight: normal;
+            font-family: 'Arial Rounded MT';
         }
     </style>
 </head>
-
 <body>
-    <div id="Menu" style="width: 100%;">
-        <a href="index.html"><img src="img/logocvoantwerpenLink.png" style="float:left; width: 20.5%;" /></a>
-        <img src="img/logocvoantwerpen.png" style="float: left; width: 59%;" />
-        <label class="lbl" for="toggle"><img src="img/MenuIcon.png" style="width: 20.5%;" /></label>
-        <input name="" class="toggle" value="" id="toggle" type="checkbox" />
-        <ul class="test">
-            <li class="menu"><a>Inschrijven</a></li>
-            <li class="menu"><a href="resultaten.html">Resultaten</a></li>
-            <li class="menu"><a>Trajectbegeleiding</a></li>
-            <li class="menu"><a href="evenementen.html">Evenementen</a></li>
-            <li class="menuEnd"><a href="attest.html">Attesten</a></li>
-        </ul>
+    <div style="width:100%; text-align: center;"><img style="width:70%;" src="img/logocvoantwerpenFull.png" /></div>
+    <div style="width:100%; text-align: center; align-content: center;">
+        <br /><br />
+        <h1 style="color:#0076C8;">Welkom student!<br />Gelieve in te loggen</h1>
+
+        <div class="form">
+            <form action="javascript:login();">
+                <table style="width:100%">
+                    <tr>
+                        <td style="width:30%; text-align: right; padding-right: 10px;"><h3>Cursistnummer:</h3></td>
+                        <td style="text-align:left;"><input class="text" name="cn" id="cn" type="text" value="45648" /></td>
+                    </tr><tr>
+                        <td style="text-align: right; padding-right: 10px;"><h3>Wachtwoord:</h3></td>
+                        <td style="text-align:left;"><input class="text" name="ww" id="ww" type="text" value="password" /></td>
+                    </tr><tr>
+                        <td colspan="2" style="padding-bottom:0px; padding-top:10px;"><input class="button" name="submit" type="submit" value="Inloggen!" /></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
     </div>
 </body>
 </html>
