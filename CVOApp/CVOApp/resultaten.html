@@ -1,16 +1,42 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="jquery-1.4.2.min.js" type="text/javascript"></script>
+    <script src="jquery.dataTables.min.js" type="text/javascript"></script>
     <title>CvoApp - Resultaten</title>
     <link rel="stylesheet" type="text/css" href="Menu.css" />
     <style>
         body {
             background-color: white;
         }
+
+        .myGrid
+        {
+          width: 100%;
+          margin: 0px 0 0px 0;
+          border: solid 1px #525252;
+          border-collapse: collapse;
+          width: 600px;
+         }
+    .myGrid td
+      {
+        padding: 2px;
+        border: solid 1px #c1c1c1;
+        color: Black;
+        font-family: Arial,Helvetica,sans-serif;
+        font-size: 0.9em;
+        width:40px;
+       }
+    .myGrid th
+      {
+        color: #fff;
+        background: url(images/grid_header.png) repeat-x top;
+        font-family: Arial,Helvetica,sans-serif;
+        font-size: 0.9em;
+      }
     </style>
 
-    <script>
+    <!--<script>
 
     function punten_ophalen() {
 
@@ -18,12 +44,12 @@
             url: "services.asmx/cursist_resultaten",
             data: "{}", //ur data to be sent to server
             contentType: "application/json; charset=utf-8",
-            type: "GET",
+            type: "POST",
             sucess: function (data) {
                 $('#divResult').html(data);
                 alert(data);
-                // text = data;
-                //$('h3').html(data.code);
+                 text = data;
+                $('h3').html(data.code);
 
             },
 
@@ -36,7 +62,7 @@
         });
     }
 
-    </script>
+    </script>--> 
 
 
 
@@ -63,54 +89,69 @@
         <div id="divResult" style="margin-top: 20px;"></div>
     </form>
 
-
-
-    <table cellpadding="5" border="0" id="cartprod">
-        <tr>
-            <td width="60%"><b>Type</b></td>
-            <td width="20%"><b>Naam</b></td>
-        </tr>
-        <tr>
-            <td width="60%" class="attest"></td>
-            <td width="60%" class="attest"></td>
-        </tr>
+   
+    <table id="grid" class="myGrid">
+        <thead>
+            <tr>
+                <th>
+                    Modulenaam
+                </th>
+                <th>
+                    ModuleID
+                </th>
+                <th>
+                    Punten
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="5">
+                    Loading....
+                </td>
+            </tr>
+        </tbody>
     </table>
+    <div id="errorMessage">
+    </div>
 
-    <!--<div id="centerContainer">
-        <div id="contentContainer">
-            <nav></nav>
-            <h1>Resultaten</h1>
-            
-            <table>
-                <thead>Cursist:</thead>
-                <tr>
-                    <td>Modulenummer</td>
-                    <td>Modulenaam</td>
-                    <td>Punten</td>
-                </tr>
-                <tr>
-                    <td>x</td>
-                    <td>x</td>
-                    <td>70%</td>
-                </tr>
-                <tr>
-                    <td>x</td>
-                    <td>x</td>
-                    <td>60%</td>
-                </tr>
-                <tr>
-                    <td>x</td>
-                    <td>x</td>
-                    <td>50%</td>
-                </tr>
-                <tr>
-                    <td>x</td>
-                    <td>x</td>
-                    <td>84%</td>
-                </tr>
-            </table>                    
-        </div>
-    </div>-->
+    <script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        function renderTable(result) {
+            var dtData = [];
+            $.each(result, function () {
+                dtData.push([
+                      this.CursusNummer,
+                      this.Naam,
+                      this.PuntenTotaal,
+                      
+                ]);
+            });
+            $('#grid').dataTable({  //grid is the id of the table
+                'aaData': dtData,
+                'bPaginate': false,
+                'bInfo': false,
+                'bFilter': false
+            });
+        }
+
+        $.ajax({
+            type: "GET",
+            url: "Services.asmx/cursist_resultaten",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                renderTable(response.d);
+            },
+            failure: function (errMsg) {
+                $('#errorMessage').text(errMsg);  //errorMessage is id of the div
+            }
+        });
+    });
+    </script>
+
+
+
 
 </body>
 </html>
