@@ -167,11 +167,11 @@
     <Content Include="fullcalendar\lib\jquery.min.js" />
     <Content Include="fullcalendar\lib\moment.min.js" />
     <Content Include="fullcalendar\license.txt" />
+    <Content Include="home.html" />
     <Content Include="img\logocvoantwerpen.png" />
     <Content Include="img\logocvoantwerpenFull.png" />
     <Content Include="img\logocvoantwerpenLink.png" />
     <Content Include="img\MenuIcon.png" />
-    <Content Include="login.html" />
     <Content Include="Menu.css" />
     <Content Include="resultaten.html" />
     <Content Include="Services.asmx" />
