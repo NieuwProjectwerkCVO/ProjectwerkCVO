@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Data;
 using System.Data.SqlClient;
 using System.Web.Services;
 using System.Configuration;
@@ -454,11 +455,36 @@ namespace CVOApp
         {
             // module, les, afspraak, taak, globaal, examen, herexamen, deliberatie
             // feestdagen, ...
-            public string className;
             public int id;
             public string title;
             public DateTime start;
             public DateTime end;
+        }
+
+        [WebMethod(EnableSession=true)]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public object getAllEvents()
+        {
+            Dictionary<String, String> lijst = new Dictionary<string, string>();
+            string sql = "GET * FROM Evenement";
+
+            using (SqlConnection con = new SqlConnection("Data Source=92.222.220.213,1501;Initial Catalog=Administratix_cursist;Persist Security Info=True;User ID=sa;Password=***********"))
+            {
+                using (SqlCommand cmd = new SqlCommand(sql, con))
+                {
+                    con.Open();
+                    SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                    while (dr.Read())
+                    {
+                        lijst.Add("id",dr[0].ToString());
+                        lijst.Add("title",dr[1].ToString());
+                        lijst.Add("start",dr[2].ToString());
+                        lijst.Add("end",dr[3].ToString());
+                    }
+                }
+            }
+            return Newtonsoft.Json.JsonConvert.SerializeObject(lijst);
         }
 
      
