@@ -459,6 +459,8 @@ namespace CVOApp
             public string title;
             public DateTime start;
             public DateTime end;
+
+            public string className { get; set; }
         }
 
         [WebMethod(EnableSession=true)]

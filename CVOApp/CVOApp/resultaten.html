@@ -117,6 +117,20 @@
     </div>
 
     <script language="javascript" type="text/javascript">
+
+        $.ajax({
+            type: "GET",
+            url: "Services.asmx/cursist_resultaten",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                renderTable(response.d);
+            },
+            failure: function (errMsg) {
+                $('#errorMessage').text(errMsg);  //errorMessage is id of the div
+            }
+        });
+
     $(document).ready(function () {
         function renderTable(result) {
             var dtData = [];
@@ -136,18 +150,7 @@
             });
         }
 
-        $.ajax({
-            type: "GET",
-            url: "Services.asmx/cursist_resultaten",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (response) {
-                renderTable(response.d);
-            },
-            failure: function (errMsg) {
-                $('#errorMessage').text(errMsg);  //errorMessage is id of the div
-            }
-        });
+      
     });
     </script>
 

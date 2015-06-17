@@ -79,3 +79,5 @@ C:\Users\Ernst\Documents\GitHub\ProjectwerkCVO\CVOApp\CVOApp\bin\Microsoft.Web.I
 C:\Users\Ernst\Documents\GitHub\ProjectwerkCVO\CVOApp\CVOApp\obj\Debug\CVOApp.csprojResolveAssemblyReference.cache
 C:\Users\Ernst\Documents\GitHub\ProjectwerkCVO\CVOApp\CVOApp\obj\Debug\CVOApp.dll
 C:\Users\Ernst\Documents\GitHub\ProjectwerkCVO\CVOApp\CVOApp\obj\Debug\CVOApp.pdb
+C:\Users\Sam\Desktop\ProjectwerkCVO\CVOApp\CVOApp\bin\Newtonsoft.Json.dll
+C:\Users\Sam\Desktop\ProjectwerkCVO\CVOApp\CVOApp\bin\Newtonsoft.Json.xml
